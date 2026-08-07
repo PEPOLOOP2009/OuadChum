@@ -1,0 +1,19 @@
+# Baan OuadChum Coastal Treehouse
+
+> A 10-room treehouse resort, cafe, and community space by the sea in Pathio, Chumphon, Thailand. Guests can relax in treehouse rooms, join workshops, and experience a holistic community built around five core dimensions: habitat, health, education, occupation, and society.
+
+Baan OuadChum (บ้านอวดชุม) blends sustainable tourism with local community livelihoods. It offers coastal treehouse accommodation, a cafe/restaurant, hands-on workshops, and articles about its philosophy and design.
+
+## Pages
+
+- [Home](https://ouadchum.com/index.html): Overview, philosophy, treehouse room listings, and booking/contact information.
+- [Workshop](https://ouadchum.com/workshop.html): Hands-on community workshops (honey, palm sugar, seafood, cacao, flower crafts).
+- [Menu](https://ouadchum.com/menu.html): Cafe and restaurant menu.
+- [Articles](https://ouadchum.com/articles.html): Stories and design inspiration behind Baan OuadChum.
+- [News](https://ouadchum.com/news.html): Press coverage and news mentions.
+
+## Contact
+
+- LINE: @ouadchum
+- Phone: 098-009-8842
+- Location: Pathio, Chumphon, Thailand
