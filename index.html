@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -69,16 +69,17 @@
     --primary: #3E723B;
     --primary-dark: #3E723B;
     --primary-light: #f0f5f3;
-    --accent: #c5a880;        
+    --accent: #c5a880;
     --accent-dark: #b3946b;
-    --bg-light: #fbfcfb;      
-    --dark: #232b28;          
+    --bg-light: #fbfcfb;
+    --dark: #232b28;
     --white: #ffffff;
     --gray-light: #f4f6f5;
     --shadow-sm: 0 4px 12px rgba(35,43,40,0.04);
     --shadow-md: 0 15px 35px rgba(35,43,40,0.06);
     --shadow-lg: 0 25px 50px rgba(35,43,40,0.12);
     --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --nav-h: 140px;
 }
 
 *{
@@ -91,6 +92,9 @@
 html{
     scroll-behavior:smooth;
     overflow-x: hidden;
+    /* Keeps anchor jumps (e.g. the Reserve button scrolling to #contact) from
+       landing with the fixed nav bar covering the top of the target section. */
+    scroll-padding-top: var(--nav-h);
 }
 
 body{
@@ -688,14 +692,21 @@ nav{
 .filter-wrapper {
     margin-bottom: 35px;
     width: 100%;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+.filter-wrapper::-webkit-scrollbar {
+    display: none;
 }
 
 .filter-container {
     display: flex;
     justify-content: center;
+    width: fit-content;
+    min-width: 100%;
     gap: 10px;
-    width: 100%;
 }
 
 @media (max-width: 767px) {
@@ -923,10 +934,49 @@ nav{
 
 .highlight-box{
     background:var(--white);
-    padding:30px;
-    border-radius:14px;
-    box-shadow: var(--shadow-sm);
-    border-top: 4px solid var(--accent);
+    padding:34px 30px 30px;
+    border-radius: 18px;
+    box-shadow: var(--shadow-md);
+}
+
+.highlight-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    border: 2px solid var(--accent);
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.stat-badge {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-light);
+    border: 2px solid var(--accent);
+    color: var(--primary-dark);
+    font-family: 'Baloo 2', 'Mitr', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 800;
+}
+
+.stat-label {
+    font-weight: 600;
+    color: var(--dark);
 }
 
 .stat-number {
@@ -973,14 +1023,9 @@ nav{
 .philosophy-gallery {
     gap: 16px;
 }
-/* Small-desktop/tablet-landscape: 3 columns reads better than the 2-col
-   default (which leaves the 5th photo orphaned alone on its own row). */
-@media (min-width: 768px) and (max-width: 991px) {
-    .philosophy-gallery { grid-template-columns: repeat(3, 1fr); }
-}
-
-/* Horizontal swipeable strip on mobile instead of a stacked/2-col grid */
-@media (max-width: 767px) {
+/* Horizontal swipeable strip on mobile and tablet/iPad widths, instead of a
+   stacked/grid layout */
+@media (max-width: 991px) {
     .philosophy-gallery {
         display: flex;
         overflow-x: auto;
@@ -1009,12 +1054,7 @@ nav{
     background-size: cover;
     background-position: center;
     box-shadow: var(--shadow-sm);
-    transition: var(--transition);
     overflow: hidden;
-}
-.philosophy-photo:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
 }
 .philosophy-photo::after {
     content: '';
@@ -1505,7 +1545,6 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 
 /* MEDIA QUERIES FOR SMALLER DEVICES */
 @media(max-width:767px){
-    body { padding-bottom: 75px; }
     section { padding: 70px 0; }
     .section-title { font-size: 1.85rem; }
     .hero h1 { font-size: 2rem; }
@@ -1520,6 +1559,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 
 /* Two-row nav on phones: logo + actions on top, links on their own row below — bigger and easier to read/tap than cramming everything on one line */
 @media (max-width: 767px) {
+    :root { --nav-h: 200px; } /* nav is taller here since it wraps to two rows */
     .hamburger { display: none; }
     .nav-inner {
         flex-wrap: wrap;
@@ -1621,11 +1661,11 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
     <div class="hero-content">
         <img src="logo.webp" alt="Baan OuadChum Logo" class="hero-logo" width="594" height="600" fetchpriority="high">
 
-        <span class="subtitle" style="color: #e2d1ba; margin-bottom: 0;" data-key="hero-sub">Welcome to Baan Ouadchum Coastal Treehouse & Community Space, Pathio Chumphon</span>
-        <h1 data-key="hero-title">Relax, Learn, and Grow with the Community</h1>
-        <p data-key="hero-desc">A premium treehouse resort perfectly blending sustainable tourism with local community livelihoods and collaboration.</p>
+        <span class="subtitle" style="color: #e2d1ba; margin-bottom: 0;" data-key="hero-sub">ยินดีต้อนรับสู่บ้านอวดชุม บ้านต้นไม้ริมชายฝั่งและพื้นที่ชุมชน ปะทิว ชุมพร</span>
+        <h1 data-key="hero-title">พักผ่อน เรียนรู้ และเติบโตไปพร้อมชุมชน</h1>
+        <p data-key="hero-desc">อิ่มอร่อยกับคาเฟ่และร้านอาหารท้องถิ่น เพลิดเพลินไปกับเวิร์กช็อปสุดสนุกร่วมกับชุมชน พร้อมอุดหนุนของฝากจากภูมิปัญญาท้องถิ่น ในพื้นที่ที่ขับเคลื่อนการพัฒนาชุมชน</p>
 
-        <button class="btn" style="background: var(--accent); color: var(--dark); font-weight:600; margin-top: 10px;" data-key="hero-btn" onclick="document.getElementById('stay').scrollIntoView({behavior:'smooth'});">Book Room</button>
+        <button class="btn" style="background: var(--accent); color: var(--dark); font-weight:600; margin-top: 10px;" data-key="hero-btn" onclick="document.getElementById('stay').scrollIntoView({behavior:'smooth'});">จองห้องพัก</button>
     </div>
 </div>
 </section>
@@ -1639,12 +1679,15 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
             <p style="font-size:1rem; color: #444; margin-bottom: 15px;" data-key="about-desc1">'Business to Help' means establishing a business to empower communities that already have their own resources and government support, ensuring they utilize them with maximum efficiency.</p>
             <p style="font-size:1rem; color: #666;" data-key="about-desc2">OuadChum team focuses on collaborating with universities and state funding agencies, which possess extensive community networks and research. We want OuadChum to bridge this knowledge with real-world practice, using Chumphon as our pilot area.</p>
         </div>
-        <div class="highlight-box" style="border-top: 4px solid #909fa0; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.02); padding: 30px; border-radius: 12px;">
-            <p style="font-size: 1.1rem; font-weight: 500; color: #909fa0; margin-bottom: 20px; line-height: 1.6;" data-key="about-hab-title">Our core framework is Holistic Area Based Community Development (HAB), striving to build a sustainable model at the sub-district level.</p>
-            <div style="border-top: 1px solid rgba(0,0,0,0.06); padding-top: 20px;">
-                <div class="stat-item" style="display:flex; align-items:center; gap: 10px; white-space: nowrap;">
-                    <div class="stat-number" style="color: #bdaa8a; font-size: 2.5rem; font-weight: 700; line-height:1;">5</div>
-                    <div class="stat-label" style="font-weight:600; color: #333;" data-key="stat-hab-sub">Core Dimensions of Development</div>
+        <div class="highlight-box">
+            <div class="highlight-icon">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
+            </div>
+            <p class="highlight-text" data-key="about-hab-title">Our core framework is Holistic Area Based Community Development (HAB), striving to build a sustainable model at the sub-district level.</p>
+            <div class="highlight-border">
+                <div class="stat-item">
+                    <div class="stat-badge">5</div>
+                    <div class="stat-label" data-key="stat-hab-sub">Core Dimensions of Development</div>
                 </div>
             </div>
         </div>
@@ -2680,10 +2723,7 @@ function moveSlide(roomId, direction, event) {
 </div>
 
 <div class="footer-map-wrapper" id="mapFacade">
-    <button type="button" class="map-facade-btn" onclick="loadMapEmbed()">
-        <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
-        <span data-key="map-facade-btn">Load interactive map</span>
-    </button>
+    <iframe src="https://maps.google.com/maps?q=Baan+Ouadchum+Treehouse,+89+8+%E0%B8%A1.6+Chum+Kho,+Pathio+District,+Chumphon+86160&output=embed" width="100%" height="320" style="border:0;" loading="lazy" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" title="Google Maps location of Baan OuadChum Coastal Treehouse"></iframe>
 </div>
 
 <p data-key="footer-copy" style="margin-top: 30px;">© 2026 Baan OuadChum Coastal Treehouse. All Rights Reserved.</p>
@@ -3184,14 +3224,6 @@ function closeBookingDrawer() {
     unlockBodyScroll();
 }
 
-// Footer map is loaded on demand only - the live embed pulls a large amount
-// of Google Maps JS, and the footer already has direct links to Google Maps.
-function loadMapEmbed() {
-    const wrap = document.getElementById("mapFacade");
-    if (!wrap) return;
-    wrap.innerHTML = `<iframe src="https://maps.google.com/maps?q=Baan+Ouadchum+Treehouse,+89+8+%E0%B8%A1.6+Chum+Kho,+Pathio+District,+Chumphon+86160&output=embed" width="100%" height="320" style="border:0;" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" title="Google Maps location of Baan OuadChum Coastal Treehouse"></iframe>`;
-}
-
 // NAVIGATION MENU CONTROLLERS
 function toggleMenu() {
     document.getElementById("navMenuWrapper").classList.toggle("active");
@@ -3308,12 +3340,21 @@ function updateHeroSlide() {
                 slide.pause();
             }
         }
+        if (isActive && slide.hasAttribute("data-youtube-id")) {
+            loadYoutubeBackground(slide);
+        }
     });
 }
 
-function loadYoutubeBackground() {
-    const slide = document.querySelector(".hero-slide[data-youtube-id]");
+// Loads the actual YouTube iframe (and its ~1MB of player JS) only once this
+// slide is reached in rotation, instead of unconditionally shortly after page
+// load - keeps the heavy third-party embed out of the initial page weight.
+let youtubeLoaded = false;
+function loadYoutubeBackground(slide) {
+    if (youtubeLoaded) return;
+    slide = slide || document.querySelector(".hero-slide[data-youtube-id]");
     if (!slide) return;
+    youtubeLoaded = true;
     const id = slide.getAttribute("data-youtube-id");
     const src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&showinfo=0&modestbranding=1&playsinline=1&rel=0&iv_load_policy=3&cc_load_policy=0`;
     slide.classList.add("hero-iframe-wrap");
@@ -3371,10 +3412,6 @@ document.addEventListener("DOMContentLoaded", () => {
     startHeroTimer();
     setupHeroSwipe();
     renderRoomCarousels();
-
-    window.addEventListener("load", () => {
-        setTimeout(loadYoutubeBackground, 1500);
-    });
 
     let lastScrollY = window.scrollY;
     window.addEventListener('scroll', () => {

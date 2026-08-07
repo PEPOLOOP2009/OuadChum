@@ -40,6 +40,7 @@
     --shadow-md: 0 15px 35px rgba(35,43,40,0.06);
     --shadow-lg: 0 25px 50px rgba(35,43,40,0.12);
     --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --nav-h: 140px;
 }
 
 *{
@@ -52,6 +53,9 @@
 html{
     scroll-behavior:smooth;
     overflow-x: hidden;
+    /* Keeps anchor jumps (e.g. to #contact) from landing with the fixed nav
+       bar covering the top of the target section. */
+    scroll-padding-top: var(--nav-h);
 }
 
 body{
@@ -988,6 +992,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 }
 
 @media (max-width: 767px) {
+    :root { --nav-h: 200px; } /* nav is taller here since it wraps to two rows */
     .hamburger { display: none; }
     .nav-inner {
         flex-wrap: wrap;
@@ -1166,6 +1171,27 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
             </div>
         </a>
 
+        <div class="card news-card" data-category="vision" style="--news-accent:#3E723B;">
+            <div class="img-wrapper">
+                <img class="card-img" src="Background/IMG_9533.webp" alt="">
+                <span class="news-card-badge" data-key="news6-source">Guang Ming Daily</span>
+            </div>
+            <div class="card-body">
+                <h3 data-key="news6-title">"The Sea Breeze Flows Freely Through This Treehouse" — Baan OuadChum, Chumphon</h3>
+                <p class="news-desc" style="color: #666; font-size: 0.95rem;" data-key="news6-desc">A feature from Malaysia's Guang Ming Daily (光明日报) on Baan OuadChum's coastal treehouses. The full article is behind the publisher's paywall - this card links to the original and offers a translated excerpt as a PDF.</p>
+                <div style="display:flex; gap:18px; flex-wrap:wrap; margin-top:auto; padding-top:12px;">
+                    <a class="news-card-link" style="padding-top:0; margin-top:0;" href="https://guangming.com.my/好吃好玩-海风可以自由穿过这座树屋-泰国" target="_blank" rel="noopener noreferrer">
+                        <span data-key="news-read-more">อ่านต่อ</span>
+                        <span class="news-card-arrow"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8"/></svg></span>
+                    </a>
+                    <a class="news-card-link" style="padding-top:0; margin-top:0;" href="Article.pdf" download="Baan-OuadChum-Guangming-Daily-Excerpt.pdf">
+                        <span data-key="news6-pdf-btn">ดาวน์โหลด PDF</span>
+                        <span class="news-card-arrow"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v13.5m0 0l-4.5-4.5M12 16.5l4.5-4.5M4.5 19.5h15"/></svg></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 </section>
@@ -1214,10 +1240,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 </div>
 
 <div class="footer-map-wrapper" id="mapFacade">
-    <button type="button" class="map-facade-btn" onclick="loadMapEmbed()">
-        <svg width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
-        <span data-key="map-facade-btn">Load interactive map</span>
-    </button>
+    <iframe src="https://maps.google.com/maps?q=Baan+Ouadchum+Treehouse,+89+8+%E0%B8%A1.6+Chum+Kho,+Pathio+District,+Chumphon+86160&output=embed" width="100%" height="320" style="border:0;" loading="lazy" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" title="Google Maps location of Baan OuadChum Coastal Treehouse"></iframe>
 </div>
 
 <p data-key="footer-copy" style="margin-top: 30px;">© 2026 Baan OuadChum Coastal Treehouse. All Rights Reserved.</p>
@@ -1311,6 +1334,7 @@ const langData = {
         "news3-source": "Coffee Traveller", "news3-title": "Baan OuadChum Treehouse", "news3-desc": "Baan OuadChum Treehouse is a forest cafe in Chumphon with a signature timber design rooted in community development and sustainable coexistence with nature.",
         "news4-source": "Prachachat Business", "news4-title": "'OuadChum' Treehouse: A Community Bond with a Business Family", "news4-desc": "The Baan OuadChum Treehouse project is a community hub linking the private sector, universities, and the community in Chumphon, developing local products and sustainable tourism.",
         "news5-source": "dsign something", "news5-title": "Baan OuadChum: A Treehouse That Grows With Recycled Steel, Reclaimed Wood, and Stainless Shafts", "news5-desc": "A coastal community center project in Chumphon blending modern architecture with nature, designed to grow alongside its large trees and local surroundings sustainably.",
+        "news6-source": "Guang Ming Daily", "news6-title": "\"The Sea Breeze Flows Freely Through This Treehouse\" — Baan OuadChum, Chumphon", "news6-desc": "A feature from Malaysia's Guang Ming Daily (光明日报) on Baan OuadChum's coastal treehouses. The full article is behind the publisher's paywall - this card links to the original and offers a translated excerpt as a PDF.", "news6-pdf-btn": "Download PDF",
         "news-read-more": "Read article",
 
         "footer-sub": "Pathio, Chumphon, Thailand<br>Cafe, Restaurant, 10-Room Treehouse-Style Accommodation<br><br>Open Daily 8:00 AM - 8:00 PM",
@@ -1341,6 +1365,7 @@ const langData = {
         "news3-source": "Coffee Traveller", "news3-title": "บ้านต้นไม้อวดชุม", "news3-desc": "\"บ้านต้นไม้อวดชุม\" ร้านกาแฟกลางป่าในชุมพร ออกแบบด้วยสถาปัตยกรรมไม้เอกลักษณ์ ยึดหลักการพัฒนาชุมชนและอยู่ร่วมกับธรรมชาติอย่างยั่งยืน",
         "news4-source": "ประชาชาติธุรกิจ", "news4-title": "'อวดชุม' บ้านต้นไม้ สายใยชุมชนกับตระกูลเจ้าสัว", "news4-desc": "โครงการ \"บ้านต้นไม้อวดชุม\" ศูนย์กลางชุมชนที่เชื่อมโยงภาคเอกชน มหาวิทยาลัย และชุมชนในจังหวัดชุมพร มุ่งพัฒนาผลิตภัณฑ์ท้องถิ่นและการท่องเที่ยวอย่างยั่งยืน",
         "news5-source": "dsign something", "news5-title": "บ้านอวดชุม บ้านต้นไม้ที่เติบโตไปพร้อมกับโครงสร้างเหล็กฉากรีไซเคิล ไม้เก่า และเพลาสแตนเลส", "news5-desc": "โครงการศูนย์ชุมชนริมทะเลในจังหวัดชุมพรที่ผสมผสานสถาปัตยกรรมสมัยใหม่กับธรรมชาติ ออกแบบให้เติบโตไปพร้อมกับต้นไม้ใหญ่และสภาพแวดล้อมท้องถิ่นอย่างยั่งยืน",
+        "news6-source": "Guang Ming Daily 光明日报", "news6-title": "สายลมทะเลพัดผ่านบ้านต้นไม้หลังนี้ได้อย่างอิสระ — Baan OuadChum จ.ชุมพร", "news6-desc": "บทความจากสื่อมาเลเซีย Guang Ming Daily (光明日报) พาไปสัมผัสบรรยากาศบ้านต้นไม้อวดชุมริมทะเลปะทิว ชุมพร บทความฉบับเต็มอยู่หลังระบบสมาชิกของสำนักข่าว การ์ดนี้มีลิงก์ไปยังต้นฉบับ พร้อมไฟล์ PDF เนื้อหาบางส่วนที่แปลไว้ให้", "news6-pdf-btn": "ดาวน์โหลด PDF",
         "news-read-more": "อ่านต่อ",
 
         "footer-sub": "ปะทิว ชุมพร ประเทศไทย<br>คาเฟ่ ร้านอาหาร ที่พักสไตล์บ้านต้นไม้ 10 ห้อง<br><br>เปิดทุกวัน 8:00-20:00",
@@ -1473,13 +1498,6 @@ function closeBookingDrawer() {
     unlockBodyScroll();
 }
 
-// Footer map is loaded on demand only - the live embed pulls a large amount
-// of Google Maps JS, and the footer already has direct links to Google Maps.
-function loadMapEmbed() {
-    const wrap = document.getElementById("mapFacade");
-    if (!wrap) return;
-    wrap.innerHTML = `<iframe src="https://maps.google.com/maps?q=Baan+Ouadchum+Treehouse,+89+8+%E0%B8%A1.6+Chum+Kho,+Pathio+District,+Chumphon+86160&output=embed" width="100%" height="320" style="border:0;" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" title="Google Maps location of Baan OuadChum Coastal Treehouse"></iframe>`;
-}
 
 function toggleMenu() {
     document.getElementById("navMenuWrapper").classList.toggle("active");
