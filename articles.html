@@ -397,6 +397,31 @@ nav{
     color: #fff;
     box-shadow: 0 6px 16px -4px color-mix(in srgb, var(--news-accent, var(--primary-dark)) 55%, transparent);
 }
+.news-card-pdf-fab {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--primary-dark);
+    text-decoration: none;
+    box-shadow: 0 6px 16px -4px rgba(0,0,0,0.25);
+    transition: transform 0.25s ease;
+}
+.news-card-pdf-fab:hover {
+    transform: translateY(-2px);
+}
 .news-card .card-body {
     position: relative;
     padding-top: 26px;
@@ -635,12 +660,14 @@ nav{
 }
 .footer-map-wrapper {
     max-width: 900px;
+    min-height: 320px;
     margin: 30px auto 0 auto;
     border-radius: 14px;
     overflow: hidden;
     box-shadow: var(--shadow-md);
     line-height: 0;
     border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.06);
 }
 .map-facade-btn {
     width: 100%;
@@ -1171,25 +1198,25 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
             </div>
         </a>
 
-        <div class="card news-card" data-category="vision" style="--news-accent:#3E723B;">
-            <div class="img-wrapper">
-                <img class="card-img" src="Background/IMG_9533.webp" alt="">
-                <span class="news-card-badge" data-key="news6-source">Guang Ming Daily</span>
-            </div>
-            <div class="card-body">
-                <h3 data-key="news6-title">"The Sea Breeze Flows Freely Through This Treehouse" — Baan OuadChum, Chumphon</h3>
-                <p class="news-desc" style="color: #666; font-size: 0.95rem;" data-key="news6-desc">A feature from Malaysia's Guang Ming Daily (光明日报) on Baan OuadChum's coastal treehouses. The full article is behind the publisher's paywall - this card links to the original and offers a translated excerpt as a PDF.</p>
-                <div style="display:flex; gap:18px; flex-wrap:wrap; margin-top:auto; padding-top:12px;">
-                    <a class="news-card-link" style="padding-top:0; margin-top:0;" href="https://guangming.com.my/好吃好玩-海风可以自由穿过这座树屋-泰国" target="_blank" rel="noopener noreferrer">
+        <div class="card news-card" data-category="vision" style="--news-accent:#3E723B; position:relative;">
+            <a href="https://guangming.com.my/好吃好玩-海风可以自由穿过这座树屋-泰国" target="_blank" rel="noopener noreferrer" style="display:contents; color:inherit; text-decoration:none;">
+                <div class="img-wrapper">
+                    <img class="card-img" src="Background/IMG_9533.webp" alt="">
+                    <span class="news-card-badge" data-key="news6-source">Guang Ming Daily</span>
+                </div>
+                <div class="card-body">
+                    <h3 data-key="news6-title">"The Sea Breeze Flows Freely Through This Treehouse" — Baan OuadChum, Chumphon</h3>
+                    <p class="news-desc" style="color: #666; font-size: 0.95rem;" data-key="news6-desc">A feature from Malaysia's Guang Ming Daily (光明日报) on Baan OuadChum's coastal treehouses. The full article is behind the publisher's paywall - this card links to the original and offers a translated excerpt as a PDF.</p>
+                    <span class="news-card-link">
                         <span data-key="news-read-more">อ่านต่อ</span>
                         <span class="news-card-arrow"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8"/></svg></span>
-                    </a>
-                    <a class="news-card-link" style="padding-top:0; margin-top:0;" href="Article.pdf" download="Baan-OuadChum-Guangming-Daily-Excerpt.pdf">
-                        <span data-key="news6-pdf-btn">ดาวน์โหลด PDF</span>
-                        <span class="news-card-arrow"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v13.5m0 0l-4.5-4.5M12 16.5l4.5-4.5M4.5 19.5h15"/></svg></span>
-                    </a>
+                    </span>
                 </div>
-            </div>
+            </a>
+            <a class="news-card-pdf-fab" href="Article.pdf" download="Baan-OuadChum-Guangming-Daily-Excerpt.pdf" title="Download PDF excerpt">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v13.5m0 0l-4.5-4.5M12 16.5l4.5-4.5M4.5 19.5h15"/></svg>
+                <span data-key="news6-pdf-btn">PDF</span>
+            </a>
         </div>
 
     </div>
@@ -1239,9 +1266,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
     </a>
 </div>
 
-<div class="footer-map-wrapper" id="mapFacade">
-    <iframe src="https://maps.google.com/maps?q=Baan+Ouadchum+Treehouse,+89+8+%E0%B8%A1.6+Chum+Kho,+Pathio+District,+Chumphon+86160&output=embed" width="100%" height="320" style="border:0;" loading="lazy" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" title="Google Maps location of Baan OuadChum Coastal Treehouse"></iframe>
-</div>
+<div class="footer-map-wrapper" id="mapFacade"></div>
 
 <p data-key="footer-copy" style="margin-top: 30px;">© 2026 Baan OuadChum Coastal Treehouse. All Rights Reserved.</p>
 </div>
@@ -1511,8 +1536,36 @@ function closeMenu() {
     document.getElementById("navBackdrop").classList.remove("active");
 }
 
+// The embedded Google Maps iframe pulls in the full Maps JS API (400+ KiB of
+// main.js/places.js/controls.js etc. inside its own frame), not just a plain
+// image - loading="lazy" on the iframe itself proved unreliable for content
+// this heavy. An IntersectionObserver only swaps the real iframe in once the
+// map is actually about to scroll into view, so it never competes with
+// initial-load resources, regardless of page length.
+function initMapLoader() {
+    const wrap = document.getElementById("mapFacade");
+    if (!wrap) return;
+    const load = () => {
+        wrap.innerHTML = `<iframe src="https://maps.google.com/maps?q=Baan+Ouadchum+Treehouse,+89+8+%E0%B8%A1.6+Chum+Kho,+Pathio+District,+Chumphon+86160&output=embed" width="100%" height="320" style="border:0;" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" title="Google Maps location of Baan OuadChum Coastal Treehouse"></iframe>`;
+    };
+    if ("IntersectionObserver" in window) {
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    load();
+                    io.disconnect();
+                }
+            });
+        }, { rootMargin: "400px" });
+        io.observe(wrap);
+    } else {
+        load();
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     switchLanguage("th");
+    initMapLoader();
 
     let lastScrollY = window.scrollY;
     window.addEventListener('scroll', () => {

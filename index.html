@@ -400,25 +400,6 @@ nav{
     border: 0;
 }
 
-/* YouTube flashes a title/channel card for the first couple of seconds on
-   every embed's initial play - not something controls=0 can suppress. Cover
-   it with the hero's own dark tone and fade it away once the card is gone,
-   so visitors only ever see clean looping video. */
-.hero-iframe-wrap::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    background: var(--dark);
-    opacity: 1;
-    pointer-events: none;
-    animation: heroVideoReveal 0.9s ease 2.6s forwards;
-}
-
-@keyframes heroVideoReveal {
-    to { opacity: 0; }
-}
-
 .hero-overlay {
     position: absolute;
     inset: 0;
@@ -1088,12 +1069,14 @@ nav{
 }
 .footer-map-wrapper {
     max-width: 900px;
+    min-height: 320px;
     margin: 30px auto 0 auto;
     border-radius: 14px;
     overflow: hidden;
     box-shadow: var(--shadow-md);
     line-height: 0;
     border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.06);
 }
 .map-facade-btn {
     width: 100%;
@@ -2722,9 +2705,7 @@ function moveSlide(roomId, direction, event) {
     </a>
 </div>
 
-<div class="footer-map-wrapper" id="mapFacade">
-    <iframe src="https://maps.google.com/maps?q=Baan+Ouadchum+Treehouse,+89+8+%E0%B8%A1.6+Chum+Kho,+Pathio+District,+Chumphon+86160&output=embed" width="100%" height="320" style="border:0;" loading="lazy" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" title="Google Maps location of Baan OuadChum Coastal Treehouse"></iframe>
-</div>
+<div class="footer-map-wrapper" id="mapFacade"></div>
 
 <p data-key="footer-copy" style="margin-top: 30px;">© 2026 Baan OuadChum Coastal Treehouse. All Rights Reserved.</p>
 </div>
@@ -3347,8 +3328,8 @@ function updateHeroSlide() {
 }
 
 // Loads the actual YouTube iframe (and its ~1MB of player JS) only once this
-// slide is reached in rotation, instead of unconditionally shortly after page
-// load - keeps the heavy third-party embed out of the initial page weight.
+// slide is reached in rotation - fires immediately so the video starts as
+// soon as the page opens.
 let youtubeLoaded = false;
 function loadYoutubeBackground(slide) {
     if (youtubeLoaded) return;
@@ -3405,6 +3386,33 @@ function setupHeroSwipe() {
 }
 
 // RUN AT LOAD
+// The embedded Google Maps iframe pulls in the full Maps JS API (400+ KiB of
+// main.js/places.js/controls.js etc. inside its own frame), not just a plain
+// image - loading="lazy" on the iframe itself proved unreliable for content
+// this heavy. An IntersectionObserver only swaps the real iframe in once the
+// map is actually about to scroll into view, so it never competes with the
+// hero/LCP resources on initial load, regardless of page length.
+function initMapLoader() {
+    const wrap = document.getElementById("mapFacade");
+    if (!wrap) return;
+    const load = () => {
+        wrap.innerHTML = `<iframe src="https://maps.google.com/maps?q=Baan+Ouadchum+Treehouse,+89+8+%E0%B8%A1.6+Chum+Kho,+Pathio+District,+Chumphon+86160&output=embed" width="100%" height="320" style="border:0;" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" title="Google Maps location of Baan OuadChum Coastal Treehouse"></iframe>`;
+    };
+    if ("IntersectionObserver" in window) {
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    load();
+                    io.disconnect();
+                }
+            });
+        }, { rootMargin: "400px" });
+        io.observe(wrap);
+    } else {
+        load();
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     switchLanguage("th");
 
@@ -3412,6 +3420,7 @@ document.addEventListener("DOMContentLoaded", () => {
     startHeroTimer();
     setupHeroSwipe();
     renderRoomCarousels();
+    initMapLoader();
 
     let lastScrollY = window.scrollY;
     window.addEventListener('scroll', () => {
