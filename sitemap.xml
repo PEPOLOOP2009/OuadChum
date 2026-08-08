@@ -115,16 +115,6 @@
     </image:image>
   </url>
   <url>
-    <loc>https://ouadchum.com/menu.html</loc>
-    <lastmod>2026-08-08T04:53:25+07:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image><image:loc>https://ouadchum.com/Background/IMG_7813.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Background/IMG_7814.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Background/IMG_8826.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Background/IMG_9531.webp</image:loc></image:image>
-  </url>
-  <url>
     <loc>https://ouadchum.com/articles.html</loc>
     <lastmod>2026-08-08T04:53:25+07:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -135,25 +125,6 @@
     <image:image>
       <image:loc>https://ouadchum.com/Philosophy/DSC07894.webp</image:loc>
       <image:title>Baan OuadChum Philosophy: Health</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://ouadchum.com/project.html</loc>
-    <lastmod>2026-08-08T04:53:25+07:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-    <image:image><image:loc>https://ouadchum.com/Philosophy/DSC07821.webp</image:loc></image:image>
-    <image:image>
-      <image:loc>https://ouadchum.com/Philosophy/DSC07894.webp</image:loc>
-      <image:title>Baan OuadChum Philosophy: Health</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://ouadchum.com/Philosophy/DSC07962.webp</image:loc>
-      <image:title>Baan OuadChum Philosophy: Environment</image:title>
-    </image:image>
-    <image:image>
-      <image:loc>https://ouadchum.com/Philosophy/FOT07625.webp</image:loc>
-      <image:title>Baan OuadChum Philosophy: Society</image:title>
     </image:image>
   </url>
   <url>
