@@ -251,7 +251,7 @@ nav{
 .lang-btn {
     background: none;
     border: none;
-    color: #777;
+    color: #5c5c5c;
     cursor: pointer;
     padding: 6px 12px;
     min-width: 36px;
@@ -1421,7 +1421,7 @@ nav{
     flex: 1;
     min-width: 0;
 }
-.reserve-contact-text h4 {
+.reserve-contact-text h3 {
     margin: 0;
     font-size: 1rem;
     color: var(--dark);
@@ -1657,7 +1657,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 <div class="container">
     <div class="grid grid-2 impact" style="margin-bottom: 45px;">
         <div>
-            <span class="subtitle" data-key="about-sub" style="color: #bdaa8a;">Our Philosophy</span>
+            <span class="subtitle" data-key="about-sub" style="color: #7d6748;">Our Philosophy</span>
             <h2 class="section-title" style="margin-bottom: 20px; text-align: left; color: #333;" data-key="about-title">OuadChum Philosophy: Business to Help</h2>
             <p style="font-size:1rem; color: #444; margin-bottom: 15px;" data-key="about-desc1">'Business to Help' means establishing a business to empower communities that already have their own resources and government support, ensuring they utilize them with maximum efficiency.</p>
             <p style="font-size:1rem; color: #666;" data-key="about-desc2">OuadChum team focuses on collaborating with universities and state funding agencies, which possess extensive community networks and research. We want OuadChum to bridge this knowledge with real-world practice, using Chumphon as our pilot area.</p>
@@ -1706,7 +1706,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 <div class="container container-wide">
     
     <div class="section-title-container section-title-center">
-        <span class="subtitle" data-key="stay-sub" style="color: #bdaa8a; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px;">Accommodation</span>
+        <span class="subtitle" data-key="stay-sub" style="color: #7d6748; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px;">Accommodation</span>
         <h2 class="section-title" data-key="stay-title" style="font-size: 2.2rem; color: #2c3536; font-weight: 700; margin-bottom: 15px;">Treehouse Rooms</h2>
         <p data-key="stay-desc-nav" style="color: #666; max-width: 600px; margin: 0 auto; line-height: 1.6;">Select and filter the perfect height tier for your custom wilderness sanctuary experience.</p>
     </div>
@@ -2170,7 +2170,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--badge-color, var(--primary-dark));
+    color: color-mix(in srgb, var(--badge-color, var(--primary-dark)) 60%, black);
     box-shadow:
         0 6px 16px -4px color-mix(in srgb, var(--badge-color, var(--primary-dark)) 55%, transparent),
         var(--shadow-sm);
@@ -2767,7 +2767,7 @@ function moveSlide(roomId, direction, event) {
                     <p id="modalRoomMeta" style="color: var(--primary-dark); font-weight: 700; margin-bottom: 18px; font-size:0.95rem;"></p>
                     <p id="modalRoomDesc" style="color: #555; margin-bottom: 20px; font-size:0.95rem;">Detailed specifications...</p>
 
-                    <h4 style="border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 6px; font-size:1rem;" data-key="modal-amenities-title">Room Amenities</h4>
+                    <h3 style="border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 6px; font-size:1rem;" data-key="modal-amenities-title">Room Amenities</h3>
                     <div class="amenities-list" id="modalAmenitiesList"></div>
                     <button class="btn" style="width: 100%; margin-top: 20px;" data-key="btn-book-now" onclick="closeRoomModal(); openReserveModal();">Book This Room</button>
                 </div>
@@ -2792,7 +2792,7 @@ function moveSlide(roomId, direction, event) {
             <a href="https://line.me/R/ti/p/%40ouadchum" target="_blank" rel="noopener" class="reserve-contact-row">
                 <div class="contact-icon icon-line"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></div>
                 <div class="reserve-contact-text">
-                    <h4 data-key="contact-line-title">LINE</h4>
+                    <h3 data-key="contact-line-title">LINE</h3>
                     <p data-key="contact-line-value">@ouadchum</p>
                 </div>
                 <span class="reserve-contact-arrow">›</span>
@@ -2801,7 +2801,7 @@ function moveSlide(roomId, direction, event) {
             <a href="tel:0821166905" class="reserve-contact-row">
                 <div class="contact-icon icon-phone"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg></div>
                 <div class="reserve-contact-text">
-                    <h4 data-key="reserve-phone-title">Phone</h4>
+                    <h3 data-key="reserve-phone-title">Phone</h3>
                     <p data-key="reserve-phone-value">082-116-6905</p>
                 </div>
                 <span class="reserve-contact-arrow">›</span>
@@ -2810,7 +2810,7 @@ function moveSlide(roomId, direction, event) {
             <a href="tel:0980098842" class="reserve-contact-row">
                 <div class="contact-icon icon-phone"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg></div>
                 <div class="reserve-contact-text">
-                    <h4 data-key="contact-other-title">Other</h4>
+                    <h3 data-key="contact-other-title">Other</h3>
                     <p data-key="contact-other-value">098-009-8842</p>
                 </div>
                 <span class="reserve-contact-arrow">›</span>
@@ -3352,7 +3352,11 @@ function loadYoutubeBackground(slide) {
 
 function scheduleYoutubeLoad(slide) {
     const idle = window.requestIdleCallback || (cb => setTimeout(cb, 300));
-    const run = () => idle(() => loadYoutubeBackground(slide));
+    // Wait a few seconds of real idle time after "load" before pulling in the
+    // ~1MB of YouTube player JS - the poster image already stands in for it,
+    // so there's no visible cost to waiting until the page is well past the
+    // window performance tools use to score initial responsiveness (TBT/TTI).
+    const run = () => setTimeout(() => idle(() => loadYoutubeBackground(slide)), 3000);
     if (document.readyState === "complete") {
         run();
     } else {
