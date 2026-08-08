@@ -868,7 +868,7 @@ nav{
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.6px;
-    color: #999;
+    color: #6b6b6b;
 }
 .amenity-filter-divider {
     height: 1px;
@@ -3444,7 +3444,11 @@ document.addEventListener("DOMContentLoaded", () => {
     renderRoomCarousels();
     initMapLoader();
 
-    let lastScrollY = window.scrollY;
+    // Starts at 0 rather than reading window.scrollY here - the page always loads
+    // scrolled to the top, and reading scrollY this early would force the browser
+    // to synchronously flush the layout that switchLanguage()'s DOM rewrite just
+    // invalidated. The scroll handler below keeps this in sync from then on.
+    let lastScrollY = 0;
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('navbar');
         if (window.scrollY > 30) {
