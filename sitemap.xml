@@ -115,6 +115,16 @@
     </image:image>
   </url>
   <url>
+    <loc>https://ouadchum.com/menu.html</loc>
+    <lastmod>2026-08-08T04:53:25+07:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_7813.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_7814.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_8826.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_9531.webp</image:loc></image:image>
+  </url>
+  <url>
     <loc>https://ouadchum.com/articles.html</loc>
     <lastmod>2026-08-08T04:53:25+07:00</lastmod>
     <changefreq>weekly</changefreq>
