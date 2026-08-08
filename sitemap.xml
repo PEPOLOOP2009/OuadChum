@@ -1,39 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://ouadchum.com/</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image><image:loc>https://ouadchum.com/logo.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/background.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/DSC00072.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/DSC00096.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/DSC00171.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/DSC00173.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/DSC00250.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/DSC09957.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/FOT07636.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/fotong%20(437).webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_2692.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_2964.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_2965.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_7813.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_7814.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_8826.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_9531.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_9533.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Philosophy/DSC07894.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Philosophy/DSC07962.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Philosophy/FOT07625.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/5%20Core%20Dimention/Education.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/5%20Core%20Dimention/Occupation.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/001/DSCF3212-card.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/201/IMG_3946-card.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/202/IMG_3987-card.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/203/IMG_4077-card.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/204/IMG_3960-card.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/301/IMG_3967-card.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/302/IMG_4007-card.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/401/IMG_4013-card.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/403/IMG_3978-card.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/404/IMG_3985-card.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://ouadchum.com/workshop.html</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image><image:loc>https://ouadchum.com/Workshop/1.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Workshop/2.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Workshop/3.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Workshop/4.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Workshop/5.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://ouadchum.com/menu.html</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_7813.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_7814.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_8826.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_9531.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://ouadchum.com/articles.html</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image><image:loc>https://ouadchum.com/Background/DSC00171.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_2692.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_9533.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Philosophy/DSC07894.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://ouadchum.com/project.html</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <image:image><image:loc>https://ouadchum.com/Philosophy/DSC07821.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Philosophy/DSC07894.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Philosophy/DSC07962.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Philosophy/FOT07625.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://ouadchum.com/news.html</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
+    <image:image><image:loc>https://ouadchum.com/Background/DSC00171.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Background/IMG_2692.webp</image:loc></image:image>
+    <image:image><image:loc>https://ouadchum.com/Philosophy/DSC07894.webp</image:loc></image:image>
   </url>
 </urlset>
