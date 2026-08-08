@@ -3,10 +3,13 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://ouadchum.com/</loc>
-    <lastmod>2026-08-08</lastmod>
+    <lastmod>2026-08-08T10:31:46+07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <image:image><image:loc>https://ouadchum.com/logo.webp</image:loc></image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/logo.webp</image:loc>
+      <image:title>Baan OuadChum Coastal Treehouse logo</image:title>
+    </image:image>
     <image:image><image:loc>https://ouadchum.com/Background/background.webp</image:loc></image:image>
     <image:image><image:loc>https://ouadchum.com/Background/DSC00072.webp</image:loc></image:image>
     <image:image><image:loc>https://ouadchum.com/Background/DSC00096.webp</image:loc></image:image>
@@ -24,36 +27,96 @@
     <image:image><image:loc>https://ouadchum.com/Background/IMG_8826.webp</image:loc></image:image>
     <image:image><image:loc>https://ouadchum.com/Background/IMG_9531.webp</image:loc></image:image>
     <image:image><image:loc>https://ouadchum.com/Background/IMG_9533.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Philosophy/DSC07894.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Philosophy/DSC07962.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Philosophy/FOT07625.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/5%20Core%20Dimention/Education.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/5%20Core%20Dimention/Occupation.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/001/DSCF3212-card.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/201/IMG_3946-card.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/202/IMG_3987-card.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/203/IMG_4077-card.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/204/IMG_3960-card.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/301/IMG_3967-card.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/302/IMG_4007-card.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/401/IMG_4013-card.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/403/IMG_3978-card.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Tree%20house%20room/404/IMG_3985-card.webp</image:loc></image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Philosophy/DSC07894.webp</image:loc>
+      <image:title>Baan OuadChum Philosophy: Health</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Philosophy/DSC07962.webp</image:loc>
+      <image:title>Baan OuadChum Philosophy: Environment</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Philosophy/FOT07625.webp</image:loc>
+      <image:title>Baan OuadChum Philosophy: Society</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/5%20Core%20Dimention/Education.webp</image:loc>
+      <image:title>Baan OuadChum 5 Core Dimensions: Education</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/5%20Core%20Dimention/Occupation.webp</image:loc>
+      <image:title>Baan OuadChum 5 Core Dimensions: Occupation</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Tree%20house%20room/001/DSCF3212-card.webp</image:loc>
+      <image:title>Baan OuadChum Room VIP1 - Beachfront treetop suite with balcony bathtub</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Tree%20house%20room/201/IMG_3946-card.webp</image:loc>
+      <image:title>Baan OuadChum Room 201 - Treehouse standard (Panoramic view)</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Tree%20house%20room/202/IMG_3987-card.webp</image:loc>
+      <image:title>Baan OuadChum Room 202 - Treehouse standard (Ocean view)</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Tree%20house%20room/203/IMG_4077-card.webp</image:loc>
+      <image:title>Baan OuadChum Room 203 - Pet friendly treehouse standard (Lake view)</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Tree%20house%20room/204/IMG_3960-card.webp</image:loc>
+      <image:title>Baan OuadChum Room 204 - Treehouse standard (Ocean view)</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Tree%20house%20room/301/IMG_3967-card.webp</image:loc>
+      <image:title>Baan OuadChum Room 301 - Treehouse superior (Panoramic view)</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Tree%20house%20room/302/IMG_4007-card.webp</image:loc>
+      <image:title>Baan OuadChum Room 302 - Treehouse superior with balcony bathtub (Ocean view)</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Tree%20house%20room/401/IMG_4013-card.webp</image:loc>
+      <image:title>Baan OuadChum Room 401 - Treetop superior (Panoramic view)</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Tree%20house%20room/403/IMG_3978-card.webp</image:loc>
+      <image:title>Baan OuadChum Room 403 - Treetop superior (Lake view)</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Tree%20house%20room/404/IMG_3985-card.webp</image:loc>
+      <image:title>Baan OuadChum Room 404 - Treetop superior (Ocean view)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://ouadchum.com/workshop.html</loc>
-    <lastmod>2026-08-08</lastmod>
+    <lastmod>2026-08-08T04:53:25+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <image:image><image:loc>https://ouadchum.com/Workshop/1.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Workshop/2.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Workshop/3.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Workshop/4.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Workshop/5.webp</image:loc></image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Workshop/1.webp</image:loc>
+      <image:title>เวิร์คช็อปเก็บน้ำผึ้งแบบอนุรัก - Baan OuadChum</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Workshop/2.webp</image:loc>
+      <image:title>เวิร์คช็อปทำน้ำตาลจาก - Baan OuadChum</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Workshop/3.webp</image:loc>
+      <image:title>เวิร์คช็อปทำกะปิเคยขัดน้ำแบบโบราณ - Baan OuadChum</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Workshop/4.webp</image:loc>
+      <image:title>เวิร์คช็อปทำช็อกโกแลตจากเมล็ดโกโก้ - Baan OuadChum</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Workshop/5.webp</image:loc>
+      <image:title>เวิร์คช็อปทำน้ำหอมจากสมุนไพรสวนป่าเล้งเหลา - Baan OuadChum</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://ouadchum.com/menu.html</loc>
-    <lastmod>2026-08-08</lastmod>
+    <lastmod>2026-08-08T04:53:25+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://ouadchum.com/Background/IMG_7813.webp</image:loc></image:image>
@@ -63,31 +126,46 @@
   </url>
   <url>
     <loc>https://ouadchum.com/articles.html</loc>
-    <lastmod>2026-08-08</lastmod>
+    <lastmod>2026-08-08T04:53:25+07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <image:image><image:loc>https://ouadchum.com/Background/DSC00171.webp</image:loc></image:image>
     <image:image><image:loc>https://ouadchum.com/Background/IMG_2692.webp</image:loc></image:image>
     <image:image><image:loc>https://ouadchum.com/Background/IMG_9533.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Philosophy/DSC07894.webp</image:loc></image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Philosophy/DSC07894.webp</image:loc>
+      <image:title>Baan OuadChum Philosophy: Health</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://ouadchum.com/project.html</loc>
-    <lastmod>2026-08-08</lastmod>
+    <lastmod>2026-08-08T04:53:25+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <image:image><image:loc>https://ouadchum.com/Philosophy/DSC07821.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Philosophy/DSC07894.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Philosophy/DSC07962.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Philosophy/FOT07625.webp</image:loc></image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Philosophy/DSC07894.webp</image:loc>
+      <image:title>Baan OuadChum Philosophy: Health</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Philosophy/DSC07962.webp</image:loc>
+      <image:title>Baan OuadChum Philosophy: Environment</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Philosophy/FOT07625.webp</image:loc>
+      <image:title>Baan OuadChum Philosophy: Society</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://ouadchum.com/news.html</loc>
-    <lastmod>2026-08-08</lastmod>
+    <lastmod>2026-08-08T04:53:25+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <image:image><image:loc>https://ouadchum.com/Background/DSC00171.webp</image:loc></image:image>
     <image:image><image:loc>https://ouadchum.com/Background/IMG_2692.webp</image:loc></image:image>
-    <image:image><image:loc>https://ouadchum.com/Philosophy/DSC07894.webp</image:loc></image:image>
+    <image:image>
+      <image:loc>https://ouadchum.com/Philosophy/DSC07894.webp</image:loc>
+      <image:title>Baan OuadChum Philosophy: Health</image:title>
+    </image:image>
   </url>
 </urlset>
