@@ -21,10 +21,10 @@
 <meta name="twitter:description" content="บ้านต้นไม้ริมทะเลเพื่อการพัฒนาชุมชน และเชื่อมโยงภูมิปัญญาท้องถิ่นสู่การท่องเที่ยว ปะทิว ชุมพร">
 <meta name="twitter:image" content="https://ouadchum.com/Background/IMG_2692.webp">
 
-<link rel="icon" href="/logo.webp" type="image/webp">
-<link rel="apple-touch-icon" href="/logo.webp">
+<link rel="icon" href="logo.webp" type="image/webp">
+<link rel="apple-touch-icon" href="logo.webp">
 
-<link rel="preload" as="image" href="/Background/background.webp" imagesrcset="/Background/background-mobile.webp 800w, /Background/background.webp 1600w" imagesizes="100vw" fetchpriority="high">
+<link rel="preload" as="image" href="Background/background.webp" imagesrcset="Background/background-mobile.webp 800w, Background/background.webp 1600w" imagesizes="100vw" fetchpriority="high">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -105,6 +105,9 @@ body{
     padding-bottom: 0;
     overflow-x: hidden;
     width: 100%;
+    /* New block formatting context so .hero's negative margin-top (below)
+       shifts only .hero, not collapse upward into body's own position. */
+    display: flow-root;
 }
 
 body.modal-locked {
@@ -133,6 +136,14 @@ h1,h2,h3,h4,h5{
 section{
     padding:100px 0;
 }
+/* #stay already carries its own top padding via .section-muted (80px), so
+   stacked on top of #about's full 100px bottom padding the gap between the
+   5 Core Dimensions photo strip and the Accommodation heading was ballooning
+   to 180px - tighten just this boundary instead of the global section
+   spacing (which every other section on the page also relies on). */
+#about {
+    padding-bottom: 50px;
+}
 
 /* NAVIGATION */
 nav{
@@ -148,7 +159,7 @@ nav{
 }
 
 /* Auto-hide the whole nav on mobile when scrolling down, reveal on scroll up */
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     nav.nav-hidden {
         transform: translateY(-100%);
     }
@@ -220,10 +231,11 @@ nav{
 .nav-links a:hover::after { width: 100%; }
 .nav-links a:hover{ color:var(--primary); }
 
-/* Small-desktop / tablet-landscape (iPad landscape, small laptops): keep the
-   single-row desktop nav but tighten it up so the logo, links, and actions
-   never overflow or wrap before there's real room for them. */
-@media (min-width: 768px) and (max-width: 1100px) {
+/* Small-desktop (above iPad width, small laptops): keep the single-row
+   desktop nav but tighten it up so the logo, links, and actions never
+   overflow or wrap before there's real room for them. iPad widths now use
+   the two-row mobile nav instead (see the 1024px mobile breakpoints). */
+@media (min-width: 1025px) and (max-width: 1100px) {
     .nav-menu-wrapper { margin-left: 18px; }
     .nav-links { gap: 24px; }
     .nav-links a { font-size: 0.82rem; letter-spacing: 0.3px; }
@@ -344,6 +356,11 @@ nav{
     text-align:center;
     padding-top: 100px;
     padding-bottom: 50px;
+    /* Shifts the whole hero frame up so the page's natural top (scrollY 0)
+       already sits at the frame that used to require scrolling down to
+       51.33333206176758px to reach - removes that top strip from the
+       document entirely instead of scroll-locking it away in JS. */
+    margin-top: -51.33333206176758px;
 }
 
 .hero-slides {
@@ -443,7 +460,7 @@ nav{
 .hero-arrow.prev { left: 20px; }
 .hero-arrow.next { right: 20px; }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     .hero-arrow { width: 38px; height: 38px; font-size: 0.9rem; }
     .hero-arrow.prev { left: 10px; }
     .hero-arrow.next { right: 10px; }
@@ -472,17 +489,24 @@ nav{
     font-size: clamp(2rem, 1.35rem + 2.6vw, 3rem);
     font-weight: 500;
     line-height: 1.25;
-    max-width: 800px;
+    max-width: 1100px;
     margin: 0 auto;
 }
 
 .hero p{
     font-size: clamp(1rem, 0.9rem + 0.4vw, 1.15rem);
-    max-width:650px;
+    max-width: 1100px;
     margin: 0 auto;
     font-weight: 300;
     opacity: 0.95;
     line-height: 1.6;
+    white-space: nowrap;
+}
+@media (max-width: 1150px) {
+    .hero p {
+        white-space: normal;
+        max-width: 650px;
+    }
 }
 
 /* RESPONSIVE GRIDS */
@@ -499,11 +523,11 @@ nav{
     .grid-2 { grid-template-columns: 1fr; }
 }
 
-@media(min-width: 768px) {
+@media(min-width: 1025px) {
     .grid-3 { grid-template-columns: repeat(2, 1fr); }
     .grid-4 { grid-template-columns: repeat(2, 1fr); }
 }
-@media(min-width: 992px) {
+@media(min-width: 1025px) {
     .grid-3 { grid-template-columns: repeat(3, 1fr); }
     .grid-4 { grid-template-columns: repeat(4, 1fr); }
     .grid-5 { grid-template-columns: repeat(5, 1fr); }
@@ -558,9 +582,18 @@ nav{
     margin-bottom: 20px;
     line-height: 1.6;
 }
-.highlight-border {
-    border-top: 1px solid rgba(0,0,0,0.06);
-    padding-top: 20px;
+/* The "5 Core Dimensions" stat now leads the highlight-box (bigger badge,
+   divider below it) instead of trailing as a small footnote - gives the
+   card a clear visual anchor now that it no longer has a top icon. */
+.highlight-box .stat-item {
+    padding-bottom: 20px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.highlight-box .stat-badge {
+    width: 68px;
+    height: 68px;
+    font-size: 2rem;
 }
 .label-strong {
     font-weight: 600;
@@ -690,7 +723,7 @@ nav{
     gap: 10px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     .filter-box {
         display: block;
         width: 100%;
@@ -762,7 +795,7 @@ nav{
     flex-direction: column;
     gap: 20px;
 }
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     .rooms-layout {
         flex-direction: column;
         align-items: stretch;
@@ -897,6 +930,21 @@ nav{
     border-color: var(--primary);
     color: var(--white);
 }
+/* A chip goes disabled when picking it - on top of whatever filters are
+   already active - would leave zero rooms visible, so guests never click
+   their way into an empty result. Native [disabled] so it's also unreachable
+   by keyboard tab and can't fire its click handler. */
+.amenity-chip:disabled {
+    opacity: 0.4;
+    filter: grayscale(1);
+    cursor: not-allowed;
+    color: #999;
+    border-color: rgba(0, 0, 0, 0.08);
+}
+.amenity-chip:disabled:hover {
+    border-color: rgba(0, 0, 0, 0.08);
+    color: #999;
+}
 .amenity-chip-clear {
     border-color: rgba(200, 60, 60, 0.3);
     color: #b23b3b;
@@ -1006,7 +1054,7 @@ nav{
 }
 /* Horizontal swipeable strip on mobile and tablet/iPad widths, instead of a
    stacked/grid layout */
-@media (max-width: 991px) {
+@media (max-width: 1024px) {
     .philosophy-gallery {
         display: flex;
         overflow-x: auto;
@@ -1055,17 +1103,47 @@ nav{
     text-shadow: 0 1px 4px rgba(0,0,0,0.4);
 }
 
-/* Contact section (lives inside the footer) */
+/* Contact section (lives inside the footer) - all 7 boxes stay on one row
+   on every screen size: each card shrinks equally (flex + min-width:0)
+   to fit the available width instead of wrapping or overflowing the frame.
+   The media query below shrinks icon/text sizing further on narrow phones
+   so the shrunk cards stay legible instead of squeezing their content. */
 .footer-contact-grid {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
     margin: 0 auto;
     max-width: 980px;
-    gap: 20px;
+    gap: 10px;
 }
 .footer-contact-grid .contact-card {
-    flex: 0 1 160px;
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 20px 8px;
+}
+.footer-contact-grid .contact-card h4,
+.footer-contact-grid .contact-card p {
+    overflow-wrap: anywhere;
+}
+@media (max-width: 1024px) {
+    .footer-contact-grid {
+        gap: 6px;
+    }
+    .footer-contact-grid .contact-card {
+        padding: 12px 4px;
+    }
+    .footer-contact-grid .contact-icon {
+        width: 34px;
+        height: 34px;
+        margin: 0 auto 8px auto;
+    }
+    .footer-contact-grid .contact-card h4 {
+        font-size: 0.68rem;
+        margin-bottom: 3px;
+    }
+    .footer-contact-grid .contact-card p {
+        font-size: 0.58rem;
+    }
 }
 .footer-map-wrapper {
     max-width: 900px;
@@ -1174,7 +1252,7 @@ nav{
 .bg-dark-green .card.expanded .card-body { padding: 64px; }
 .bg-dark-green .card + .card { box-shadow: none; }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     .bg-dark-green .grid {
         grid-auto-flow: column;
         grid-auto-columns: 85%;
@@ -1448,6 +1526,130 @@ nav{
     overflow: hidden;
     min-height: 240px;
 }
+/* Room photo carousel uses the normal card-sized .img-wrapper height (230px) -
+   click the photo to zoom into the lightbox view below instead of enlarging
+   the thumbnail itself. */
+.room-modal-carousel .img-wrapper {
+    cursor: zoom-in;
+}
+
+/* Lightbox: full-size photo viewer opened from the carousel above.
+   Same show/hide idiom as .modal (opacity + pointer-events, not
+   display:none) so it fades in/out consistently with the rest of the site. */
+.lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    padding: 20px;
+}
+.lightbox-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.lightbox-image-wrap {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    transform: scale(0.94);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.lightbox-overlay.active .lightbox-image-wrap {
+    transform: scale(1);
+}
+.lightbox-image-wrap img {
+    display: block;
+    max-width: 90vw;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    opacity: 1;
+    transition: opacity 0.15s ease;
+}
+.lightbox-image-wrap img.loading {
+    opacity: 0;
+}
+.lightbox-image-wrap.loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 3px solid rgba(255, 255, 255, 0.25);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: lightbox-spin 0.8s linear infinite;
+}
+@keyframes lightbox-spin {
+    to { transform: rotate(360deg); }
+}
+.lightbox-close,
+.lightbox-arrow {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    transition: background 0.2s ease;
+}
+.lightbox-close:hover,
+.lightbox-arrow:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+.lightbox-close {
+    top: 20px;
+    right: 24px;
+    width: 42px;
+    height: 42px;
+    font-size: 1.6rem;
+    line-height: 1;
+}
+.lightbox-arrow {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    font-size: 1.1rem;
+}
+.lightbox-arrow:hover {
+    transform: translateY(-50%);
+}
+.lightbox-prev { left: 16px; }
+.lightbox-next { right: 16px; }
+@media (max-width: 600px) {
+    .lightbox-close {
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        font-size: 1.3rem;
+    }
+    .lightbox-arrow {
+        width: 38px;
+        height: 38px;
+    }
+    .lightbox-prev { left: 6px; }
+    .lightbox-next { right: 6px; }
+}
 .room-modal-side-photo {
     width: 100%;
     height: 100%;
@@ -1457,7 +1659,7 @@ nav{
 .room-modal-tabs {
     display: none;
 }
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     .room-modal-tabs {
         display: flex;
         gap: 8px;
@@ -1527,7 +1729,7 @@ footer h3 { font-size: 1.6rem; margin-bottom: 10px; }
 footer p { opacity: 0.85; font-size: 0.9rem; }
 
 /* MEDIA QUERIES FOR SMALLER DEVICES */
-@media(max-width:767px){
+@media(max-width:1024px){
     section { padding: 70px 0; }
     .section-title { font-size: 1.85rem; }
     .hero h1 { font-size: 2rem; }
@@ -1541,7 +1743,7 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
 }
 
 /* Two-row nav on phones: logo + actions on top, links on their own row below — bigger and easier to read/tap than cramming everything on one line */
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     :root { --nav-h: 200px; } /* nav is taller here since it wraps to two rows */
     .hamburger { display: none; }
     .nav-inner {
@@ -1606,7 +1808,7 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
 <nav id="navbar">
 <div class="container nav-inner">
 <a href="#" class="logo" onclick="event.preventDefault(); window.scrollTo({top:0, behavior:'smooth'});">
-    <img src="/logo.webp" alt="Baan OuadChum Logo" class="logo-icon" width="594" height="600">
+    <img src="logo.webp" alt="Baan OuadChum Logo" class="logo-icon" width="594" height="600">
     <span class="logo-word">Baan OuadChum</span>
 </a>
 
@@ -1614,10 +1816,10 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
 <div class="nav-menu-wrapper" id="navMenuWrapper">
     <div class="nav-links">
         <a href="#" data-key="menu-about" onclick="event.preventDefault(); closeMenu(); window.scrollTo({top:0, behavior:'smooth'});">หน้าแรก</a>
-        <a href="#stay" data-key="menu-stay" onclick="closeMenu()">ห้องพัก</a>
+        <a href="#stayTitle" data-key="menu-stay" onclick="closeMenu()">ห้องพัก</a>
         <a href="workshop.html" data-key="menu-workshop" onclick="closeMenu()">เวิร์คช็อป</a>
         <a href="menu.html" data-key="menu-menu" onclick="closeMenu()">เมนู</a>
-        <a href="articles.html" data-key="menu-articles" onclick="closeMenu()">บทความ</a>
+        <a href="articles.html" data-key="menu-articles" onclick="closeMenu()">สื่อ</a>
     </div>
 </div>
 
@@ -1642,10 +1844,9 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
 <button class="hero-arrow next" onclick="heroNext()" aria-label="Next background">&#10095;</button>
 <div class="container">
     <div class="hero-content">
-        <img src="/logo.webp" alt="Baan OuadChum Logo" class="hero-logo" width="594" height="600" fetchpriority="high">
+        <img src="logo.webp" alt="Baan OuadChum Logo" class="hero-logo" width="594" height="600" fetchpriority="high">
 
-        <span class="subtitle" style="color: #e2d1ba; margin-bottom: 0;" data-key="hero-sub">ยินดีต้อนรับสู่บ้านอวดชุม บ้านต้นไม้ริมชายฝั่งและพื้นที่ชุมชน ปะทิว ชุมพร</span>
-        <h1 data-key="hero-title">บ้านต้นไม้ริมทะเลเพื่อการพัฒนาชุมชน และเชื่อมโยงภูมิปัญญาท้องถิ่นสู่การท่องเที่ยว ปะทิว ชุมพร</h1>
+        <h1 data-key="hero-title">เว็บหลักของ บ้านต้นไม้อวดชุม อ.ปะทิว<br>พักผ่อนบนบ้านต้นไม้ริมทะเล พร้อมเรียนรู้แนวคิดการพัฒนาเชิงพื้นที่</h1>
         <p data-key="hero-desc">อิ่มอร่อยกับคาเฟ่และร้านอาหารท้องถิ่น เพลิดเพลินไปกับเวิร์กช็อปสุดสนุกร่วมกับชุมชน พร้อมอุดหนุนของฝากจากภูมิปัญญาท้องถิ่น ในพื้นที่ที่ขับเคลื่อนการพัฒนาชุมชน</p>
 
         <button class="btn" style="background: var(--accent); color: var(--dark); font-weight:600; margin-top: 10px;" data-key="hero-btn" onclick="document.getElementById('stay').scrollIntoView({behavior:'smooth'});">จองห้องพัก</button>
@@ -1659,42 +1860,37 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
         <div>
             <span class="subtitle" data-key="about-sub" style="color: #7d6748;">Our Philosophy</span>
             <h2 class="section-title" style="margin-bottom: 20px; text-align: left; color: #333;" data-key="about-title">OuadChum Philosophy: Business to Help</h2>
-            <p style="font-size:1rem; color: #444; margin-bottom: 15px;" data-key="about-desc1">'Business to Help' means establishing a business to empower communities that already have their own resources and government support, ensuring they utilize them with maximum efficiency.</p>
-            <p style="font-size:1rem; color: #666;" data-key="about-desc2">OuadChum team focuses on collaborating with universities and state funding agencies, which possess extensive community networks and research. We want OuadChum to bridge this knowledge with real-world practice, using Chumphon as our pilot area.</p>
+            <p style="font-size:1rem; color: #444; margin-bottom: 15px;" data-key="about-desc1">Business to Help means building a business that helps communities make the most of the resources and support they already have.</p>
+            <p style="font-size:1rem; color: #666;" data-key="about-desc2">We work with universities and state agencies to turn their research and community networks into real, on-the-ground practice - starting right here in Chumphon.</p>
         </div>
         <div class="highlight-box">
-            <div class="highlight-icon">
-                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
+            <div class="stat-item">
+                <div class="stat-badge">5</div>
+                <div class="stat-label" data-key="stat-hab-sub">Core Dimensions of Development</div>
             </div>
             <p class="highlight-text" data-key="about-hab-title">Our core framework is Holistic Area Based Community Development (HAB), striving to build a sustainable model at the sub-district level.</p>
-            <div class="highlight-border">
-                <div class="stat-item">
-                    <div class="stat-badge">5</div>
-                    <div class="stat-label" data-key="stat-hab-sub">Core Dimensions of Development</div>
-                </div>
-            </div>
         </div>
     </div>
     <div class="dimensions-container">
         <div class="grid grid-5 philosophy-gallery">
             <div class="philosophy-photo">
-                <img src="/5 Core Dimention/Occupation.webp" alt="Occupation">
+                <img src="5 Core Dimention/Occupation.webp" alt="Occupation">
                 <span class="philosophy-photo-label" data-key="dim-1">Occupation</span>
             </div>
             <div class="philosophy-photo">
-                <img src="/5 Core Dimention/Education.webp" alt="Education">
+                <img src="5 Core Dimention/Education.webp" alt="Education">
                 <span class="philosophy-photo-label" data-key="dim-5">Education</span>
             </div>
             <div class="philosophy-photo">
-                <img src="/Philosophy/FOT07625.webp" alt="Society" loading="lazy">
+                <img src="Philosophy/FOT07625.webp" alt="Society" loading="lazy">
                 <span class="philosophy-photo-label" data-key="dim-3">Society</span>
             </div>
             <div class="philosophy-photo">
-                <img src="/Philosophy/DSC07962.webp" alt="Environment" loading="lazy">
+                <img src="Philosophy/DSC07962.webp" alt="Environment" loading="lazy">
                 <span class="philosophy-photo-label" data-key="dim-4">Environment</span>
             </div>
             <div class="philosophy-photo">
-                <img src="/Philosophy/DSC07894.webp" alt="Health" loading="lazy">
+                <img src="Philosophy/DSC07894.webp" alt="Health" loading="lazy">
                 <span class="philosophy-photo-label" data-key="dim-2">Health</span>
             </div>
         </div>
@@ -1707,11 +1903,11 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
     
     <div class="section-title-container section-title-center">
         <span class="subtitle" data-key="stay-sub" style="color: #7d6748; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px;">Accommodation</span>
-        <h2 class="section-title" data-key="stay-title" style="font-size: 2.2rem; color: #2c3536; font-weight: 700; margin-bottom: 15px;">Treehouse Rooms</h2>
+        <h2 class="section-title" id="stayTitle" data-key="stay-title" style="font-size: 2.2rem; color: #2c3536; font-weight: 700; margin-bottom: 15px;">Treehouse Rooms</h2>
         <p data-key="stay-desc-nav" style="color: #666; max-width: 600px; margin: 0 auto; line-height: 1.6;">Select and filter the perfect height tier for your custom wilderness sanctuary experience.</p>
     </div>
 
-    <div class="filter-wrapper filter-center">
+    <div class="filter-wrapper filter-center" id="stayFilters">
         <div class="filter-container filter-box">
             <button class="filter-btn filter-btn-all active" onclick="filterRooms('all', this)" data-key="filter-all">All Rooms</button>
             <button class="filter-btn filter-btn-vip" onclick="filterRooms('low', this)" data-key="filter-low">Treehouse 1-VIP1</button>
@@ -2047,9 +2243,16 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
 /* Always a single column on mobile, regardless of how many cards match the
    current filter - avoids odd-numbered results (e.g. 3 Floor-4 rooms)
    leaving one card alone next to an empty gap in a 2-column row. */
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     #roomsGrid {
         grid-template-columns: 1fr;
+    }
+}
+/* iPad specifically gets 2 columns instead of 1 - there's enough width for
+   two smaller cards side by side instead of one large full-width card. */
+@media (min-width: 768px) and (max-width: 1024px) {
+    #roomsGrid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -2059,6 +2262,8 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     border: 1px solid #eaeaea;
+    display: flex;
+    flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .room-card:hover {
@@ -2076,7 +2281,7 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
 .room-card.solo-featured {
     grid-column: 1 / -1; /* ให้ยืดกว้างกินพื้นที่ทุกคอลัมน์ */
 }
-@media (min-width: 768px) {
+@media (min-width: 1025px) {
     .room-card.featured-room,
     .room-card.solo-featured {
         display: flex;
@@ -2202,7 +2407,7 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
 .carousel-arrow:hover { background: #ffffff; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
 
 /* Touch devices have no :hover, so keep arrows visible below desktop widths */
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     .carousel-arrow { opacity: 1; }
 }
 .carousel-arrow.prev { left: 10px; }
@@ -2253,11 +2458,12 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
     align-items: center;
     border-top: 1px solid #f5f5f5;
     padding-top: 15px;
+    margin-top: auto;
 }
-.btn-outline {
+.btn-sm.btn-outline {
     background: transparent; border: 1px solid #909fa0; color: #5f6d6e; padding: 8px 18px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
 }
-.btn-outline:hover { background: #909fa0; color: #fff; }
+.btn-sm.btn-outline:hover { background: #909fa0; color: #fff; }
 
 .filter-btn {
     background: transparent; border: none; padding: 8px 22px; font-size: 0.9rem; font-weight: 600; color: #666; border-radius: 25px; cursor: pointer; transition: all 0.2s;
@@ -2282,65 +2488,65 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
 <script>
 const roomImages = {
     '001': [
-        "/Tree house room/001/DSCF3212.JPG",
-        "/Tree house room/001/fotong (355).JPG",
-        "/Tree house room/001/fotong (419).JPG",
-        "/Tree house room/001/IMG_2370.JPG",
-        "/Tree house room/001/IMG_3910.jpg"
+        "Tree house room/001/DSCF3212.JPG",
+        "Tree house room/001/fotong (355).JPG",
+        "Tree house room/001/fotong (419).JPG",
+        "Tree house room/001/IMG_2370.JPG",
+        "Tree house room/001/IMG_3910.jpg"
     ],
     '201': [
-        "/Tree house room/201/IMG_3946.JPG",
-        "/Tree house room/201/IMG_3947.JPG",
-        "/Tree house room/201/IMG_3948.JPG",
-        "/Tree house room/201/IMG_3957.jpg"
+        "Tree house room/201/IMG_3946.JPG",
+        "Tree house room/201/IMG_3947.JPG",
+        "Tree house room/201/IMG_3948.JPG",
+        "Tree house room/201/IMG_3957.jpg"
     ],
     '202': [
-        "/Tree house room/202/IMG_3987.jpg"
+        "Tree house room/202/IMG_3987.jpg"
     ],
     '203': [
-        "/Tree house room/203/IMG_4077.jpg",
-        "/Tree house room/203/IMG_4078.jpg",
-        "/Tree house room/203/IMG_4079.jpg",
-        "/Tree house room/203/IMG_3956.jpg"
+        "Tree house room/203/IMG_4077.jpg",
+        "Tree house room/203/IMG_4078.jpg",
+        "Tree house room/203/IMG_4079.jpg",
+        "Tree house room/203/IMG_3956.jpg"
     ],
     '204': [
-        "/Tree house room/204/IMG_3960.JPG",
-        "/Tree house room/204/IMG_3962.JPG",
-        "/Tree house room/204/IMG_3963.JPG",
-        "/Tree house room/204/IMG_3958.jpg"
+        "Tree house room/204/IMG_3960.JPG",
+        "Tree house room/204/IMG_3962.JPG",
+        "Tree house room/204/IMG_3963.JPG",
+        "Tree house room/204/IMG_3958.jpg"
     ],
     '301': [
-        "/Tree house room/301/IMG_3967.JPG",
-        "/Tree house room/301/IMG_3968.JPG",
-        "/Tree house room/301/IMG_3969.JPG",
-        "/Tree house room/301/IMG_3966.jpg"
+        "Tree house room/301/IMG_3967.JPG",
+        "Tree house room/301/IMG_3968.JPG",
+        "Tree house room/301/IMG_3969.JPG",
+        "Tree house room/301/IMG_3966.jpg"
     ],
     '302': [
-        "/Tree house room/302/IMG_4007.jpg",
-        "/Tree house room/302/IMG_4008.jpg",
-        "/Tree house room/302/IMG_4009.jpg",
-        "/Tree house room/302/IMG_4010.jpg",
-        "/Tree house room/302/IMG_3970.jpg"
+        "Tree house room/302/IMG_4007.jpg",
+        "Tree house room/302/IMG_4008.jpg",
+        "Tree house room/302/IMG_4009.jpg",
+        "Tree house room/302/IMG_4010.jpg",
+        "Tree house room/302/IMG_3970.jpg"
     ],
     '401': [
-        "/Tree house room/401/IMG_4013.jpg",
-        "/Tree house room/401/IMG_4011.jpg",
-        "/Tree house room/401/IMG_4012.jpg",
-        "/Tree house room/401/IMG_4068.jpg",
-        "/Tree house room/401/IMG_4069.jpg",
-        "/Tree house room/401/IMG_3972.jpg"
+        "Tree house room/401/IMG_4013.jpg",
+        "Tree house room/401/IMG_4011.jpg",
+        "Tree house room/401/IMG_4012.jpg",
+        "Tree house room/401/IMG_4068.jpg",
+        "Tree house room/401/IMG_4069.jpg",
+        "Tree house room/401/IMG_3972.jpg"
     ],
     '403': [
-        "/Tree house room/403/IMG_3978.JPG",
-        "/Tree house room/403/IMG_3979.JPG",
-        "/Tree house room/403/IMG_3981.JPG",
-        "/Tree house room/403/IMG_3976.jpg"
+        "Tree house room/403/IMG_3978.JPG",
+        "Tree house room/403/IMG_3979.JPG",
+        "Tree house room/403/IMG_3981.JPG",
+        "Tree house room/403/IMG_3976.jpg"
     ],
     '404': [
-        "/Tree house room/404/IMG_3985.JPG",
-        "/Tree house room/404/IMG_3983.JPG",
-        "/Tree house room/404/IMG_3986.JPG",
-        "/Tree house room/404/IMG_3977.jpg"
+        "Tree house room/404/IMG_3985.JPG",
+        "Tree house room/404/IMG_3983.JPG",
+        "Tree house room/404/IMG_3986.JPG",
+        "Tree house room/404/IMG_3977.jpg"
     ]
 };
 
@@ -2348,19 +2554,19 @@ const roomImages = {
 const roomExtraData = {
     '001': {
         th: {
-            size: "40.00", guests: "2-4 ท่าน",
-            desc: "ห้องพักบ้านต้นไม้ริมทะเล วิวพระอาทิตย์ขึ้นจากขอบเส้นขอบฟ้า พร้อมอ่างแช่น้ำริมระเบียง มีวิวจากมุมสูงแบบเปิดกว้างแบบ 360 องศา สู่ความเงียบสงบของท้องทะเลชุมพร",
+            size: "40", guests: "2-4 ท่าน",
+            desc: "ห้องพักบ้านต้นไม้ริมทะเล วิวพระอาทิตย์ขึ้นจากขอบเส้นขอบฟ้า พร้อมอ่างแช่น้ำริมระเบียง ชมวิวจากมุมสูง เปิดกว้างแบบ 360 องศา สู่ความเงียบสงบของท้องทะเลชุมพร",
             amenities: [
                 { icon: "❄️", text: "แอร์" },
                 { icon: "🧊", text: "ตู้เย็น" },
                 { icon: "🚿", text: "ห้องน้ำแบบฝักบัว แยกโซนเปียกแห้ง" },
                 { icon: "🛁", text: "อ่างแช่น้ำริมระเบียง" },
                 { icon: "🧴", text: "สบู่ ยาสระผม ออร์แกนิคพรีเมี่ยม" },
-                { icon: "💨", text: "ไดเป่าผม" }
+                { icon: "💨", text: "ไดร์เป่าผม" }
             ]
         },
         en: {
-            size: "40.00", guests: "2-4 Guests",
+            size: "40", guests: "2-4 Guests",
             desc: "A beachfront treehouse suite with sunrise views over the horizon, a private balcony bathtub, and sweeping 360-degree elevated views across the tranquil Chumphon sea.",
             amenities: [
                 { icon: "❄️", text: "Air Conditioning" },
@@ -2374,18 +2580,18 @@ const roomExtraData = {
     },
     '201': {
         th: {
-            size: "30.00", guests: "2-4 ท่าน",
+            size: "30", guests: "2-4 ท่าน",
             desc: "สัมผัสประสบการณ์พักผ่อนในบ้านต้นไม้ดีไซน์พิเศษ ที่โอบล้อมต้นเคี่ยมโบราณให้เติบโตผ่านกลางห้องพักอย่างกลมกลืน ล้อมด้วยกระจกใสรอบทิศทางถึง 3 ด้าน ที่เห็นวิวเขา วิวบ่อน้ำจากบนเตียงนอน ระเบียงส่วนตัวสำหรับสูดอากาศบริสุทธิ์ยามเช้า หรือนั่งฟังเสียงธรรมชาติยามค่ำคืน",
             amenities: [
                 { icon: "❄️", text: "แอร์" },
                 { icon: "🧊", text: "ตู้เย็น" },
                 { icon: "🚿", text: "ห้องน้ำแบบฝักบัว แยกโซนเปียกแห้ง" },
                 { icon: "🧴", text: "สบู่ ยาสระผม ออร์แกนิคพรีเมี่ยม" },
-                { icon: "💨", text: "ไดเป่าผม" }
+                { icon: "💨", text: "ไดร์เป่าผม" }
             ]
         },
         en: {
-            size: "30.00", guests: "2-4 Guests",
+            size: "30", guests: "2-4 Guests",
             desc: "Experience a specially designed treehouse embracing an ancient Kiam tree that grows right through the center of the room, wrapped in floor-to-ceiling glass on 3 sides with mountain and pond views right from the bed. A private balcony invites fresh morning air or the sound of nature at night.",
             amenities: [
                 { icon: "❄️", text: "Air Conditioning" },
@@ -2398,18 +2604,18 @@ const roomExtraData = {
     },
     '202': {
         th: {
-            size: "25.00", guests: "2-3 ท่าน",
+            size: "25", guests: "2-3 ท่าน",
             desc: "สัมผัสประสบการณ์พักผ่อนในบ้านต้นไม้ดีไซน์พิเศษ ที่โอบล้อมต้นเคี่ยมโบราณให้เติบโตผ่านกลางห้องพักอย่างกลมกลืน ระเบียงส่วนตัวสำหรับสูดอากาศบริสุทธิ์ยามเช้า หรือนั่งฟังเสียงธรรมชาติยามค่ำคืน",
             amenities: [
                 { icon: "❄️", text: "แอร์" },
                 { icon: "🧊", text: "ตู้เย็น" },
                 { icon: "🚿", text: "ห้องน้ำแบบฝักบัว แยกโซนเปียกแห้ง" },
                 { icon: "🧴", text: "สบู่ ยาสระผม ออร์แกนิคพรีเมี่ยม" },
-                { icon: "💨", text: "ไดเป่าผม" }
+                { icon: "💨", text: "ไดร์เป่าผม" }
             ]
         },
         en: {
-            size: "25.00", guests: "2-3 Guests",
+            size: "25", guests: "2-3 Guests",
             desc: "Experience a specially designed treehouse embracing an ancient Kiam tree that grows right through the center of the room, with a private balcony for fresh morning air or the sound of nature at night.",
             amenities: [
                 { icon: "❄️", text: "Air Conditioning" },
@@ -2422,18 +2628,18 @@ const roomExtraData = {
     },
     '203': {
         th: {
-            size: "23.00", guests: "2 ท่าน",
+            size: "23", guests: "2 ท่าน",
             desc: "สัมผัสประสบการณ์พักผ่อนในบ้านต้นไม้ดีไซน์พิเศษ ที่โอบล้อมต้นเคี่ยมโบราณให้เติบโตผ่านกลางห้องพักอย่างกลมกลืน ระเบียงส่วนตัวสำหรับสูดอากาศบริสุทธิ์ยามเช้า หรือนั่งฟังเสียงธรรมชาติยามค่ำคืน",
             amenities: [
                 { icon: "❄️", text: "แอร์" },
                 { icon: "🚿", text: "ห้องน้ำแบบฝักบัว แยกโซนเปียกแห้ง" },
                 { icon: "🧴", text: "สบู่ ยาสระผม ออร์แกนิคพรีเมี่ยม" },
                 { icon: "🧊", text: "ตู้เย็น" },
-                { icon: "💨", text: "ไดเป่าผม" }
+                { icon: "💨", text: "ไดร์เป่าผม" }
             ]
         },
         en: {
-            size: "23.00", guests: "2 Guests",
+            size: "23", guests: "2 Guests",
             desc: "Experience a specially designed treehouse embracing an ancient Kiam tree that grows right through the center of the room, with a private balcony for fresh morning air or the sound of nature at night.",
             amenities: [
                 { icon: "❄️", text: "Air Conditioning" },
@@ -2446,18 +2652,18 @@ const roomExtraData = {
     },
     '204': {
         th: {
-            size: "32.00", guests: "2-3 ท่าน",
+            size: "32", guests: "2-3 ท่าน",
             desc: "สัมผัสประสบการณ์พักผ่อนในบ้านต้นไม้ดีไซน์พิเศษ ที่โอบล้อมต้นเคี่ยมโบราณให้เติบโตผ่านกลางห้องพักอย่างกลมกลืน มีอ่างแช่น้ำ และระเบียงส่วนตัวสำหรับสูดอากาศบริสุทธิ์ยามเช้า หรือนั่งฟังเสียงธรรมชาติยามค่ำคืน",
             amenities: [
                 { icon: "❄️", text: "แอร์" },
                 { icon: "🧊", text: "ตู้เย็น" },
                 { icon: "🛁", text: "ห้องน้ำแบบอ่างแช่ แยกโซนเปียกแห้ง" },
                 { icon: "🧴", text: "สบู่ ยาสระผม ออร์แกนิคพรีเมี่ยม" },
-                { icon: "💨", text: "ไดเป่าผม" }
+                { icon: "💨", text: "ไดร์เป่าผม" }
             ]
         },
         en: {
-            size: "32.00", guests: "2-3 Guests",
+            size: "32", guests: "2-3 Guests",
             desc: "Experience a specially designed treehouse embracing an ancient Kiam tree that grows right through the center of the room, with a bathtub and private balcony for fresh morning air or the sound of nature at night.",
             amenities: [
                 { icon: "❄️", text: "Air Conditioning" },
@@ -2470,18 +2676,18 @@ const roomExtraData = {
     },
     '301': {
         th: {
-            size: "26.00", guests: "2-3 ท่าน",
+            size: "26", guests: "2-3 ท่าน",
             desc: "สัมผัสประสบการณ์พักผ่อนในบ้านต้นไม้ดีไซน์พิเศษ ที่โอบล้อมต้นเคี่ยมโบราณให้เติบโตผ่านกลางห้องพักอย่างกลมกลืน ล้อมด้วยกระจกใสรอบทิศทางถึง 3 ด้าน ที่เห็นวิวเขา วิวบ่อน้ำจากบนเตียงนอน ระเบียงส่วนตัวสำหรับสูดอากาศบริสุทธิ์ยามเช้า หรือนั่งฟังเสียงธรรมชาติยามค่ำคืน",
             amenities: [
                 { icon: "❄️", text: "แอร์" },
                 { icon: "🧊", text: "ตู้เย็น" },
                 { icon: "🚿", text: "ห้องน้ำแบบฝักบัว แยกโซนเปียกแห้ง" },
                 { icon: "🧴", text: "สบู่ ยาสระผม ออร์แกนิคพรีเมี่ยม" },
-                { icon: "💨", text: "ไดเป่าผม" }
+                { icon: "💨", text: "ไดร์เป่าผม" }
             ]
         },
         en: {
-            size: "26.00", guests: "2-3 Guests",
+            size: "26", guests: "2-3 Guests",
             desc: "Experience a specially designed treehouse embracing an ancient Kiam tree that grows right through the center of the room, wrapped in floor-to-ceiling glass on 3 sides with mountain and pond views right from the bed. A private balcony invites fresh morning air or the sound of nature at night.",
             amenities: [
                 { icon: "❄️", text: "Air Conditioning" },
@@ -2494,18 +2700,18 @@ const roomExtraData = {
     },
     '302': {
         th: {
-            size: "27.00", guests: "2-3 ท่าน",
+            size: "27", guests: "2-3 ท่าน",
             desc: "สัมผัสประสบการณ์พักผ่อนในบ้านต้นไม้ดีไซน์พิเศษ ที่โอบล้อมต้นเคี่ยมโบราณให้เติบโตผ่านกลางห้องพักอย่างกลมกลืน มีอ่างแช่น้ำบนระเบียงส่วนตัว เหมาะสำหรับการพักผ่อน สูดอากาศบริสุทธิ์ยามเช้า หรือนั่งฟังเสียงธรรมชาติยามค่ำคืน",
             amenities: [
                 { icon: "❄️", text: "แอร์" },
                 { icon: "🧊", text: "ตู้เย็น" },
                 { icon: "🛁", text: "ห้องน้ำแบบอ่างแช่ แยกโซนเปียกแห้ง" },
                 { icon: "🧴", text: "สบู่ ยาสระผม ออร์แกนิคพรีเมี่ยม" },
-                { icon: "💨", text: "ไดเป่าผม" }
+                { icon: "💨", text: "ไดร์เป่าผม" }
             ]
         },
         en: {
-            size: "27.00", guests: "2-3 Guests",
+            size: "27", guests: "2-3 Guests",
             desc: "Experience a specially designed treehouse embracing an ancient Kiam tree that grows right through the center of the room, with a private balcony bathtub perfect for unwinding — fresh morning air or the sound of nature at night.",
             amenities: [
                 { icon: "❄️", text: "Air Conditioning" },
@@ -2518,18 +2724,18 @@ const roomExtraData = {
     },
     '401': {
         th: {
-            size: "27.00", guests: "2-4 ท่าน",
+            size: "27", guests: "2-4 ท่าน",
             desc: "สัมผัสประสบการณ์พักผ่อนในบ้านต้นไม้ดีไซน์พิเศษ ที่โอบล้อมต้นเคี่ยมโบราณให้เติบโตผ่านกลางห้องพักอย่างกลมกลืน มีอ่างแช่น้ำ และระเบียงส่วนตัวสำหรับสูดอากาศบริสุทธิ์ยามเช้า หรือนั่งฟังเสียงธรรมชาติยามค่ำคืน",
             amenities: [
                 { icon: "❄️", text: "แอร์" },
                 { icon: "🧊", text: "ตู้เย็น" },
                 { icon: "🛁", text: "ห้องน้ำแบบอ่างแช่ แยกโซนเปียกแห้ง" },
                 { icon: "🧴", text: "สบู่ ยาสระผม ออร์แกนิคพรีเมี่ยม" },
-                { icon: "💨", text: "ไดเป่าผม" }
+                { icon: "💨", text: "ไดร์เป่าผม" }
             ]
         },
         en: {
-            size: "27.00", guests: "2-4 Guests",
+            size: "27", guests: "2-4 Guests",
             desc: "Experience a specially designed treehouse embracing an ancient Kiam tree that grows right through the center of the room, with a bathtub and private balcony for fresh morning air or the sound of nature at night.",
             amenities: [
                 { icon: "❄️", text: "Air Conditioning" },
@@ -2542,18 +2748,18 @@ const roomExtraData = {
     },
     '403': {
         th: {
-            size: "25.00", guests: "2-3 ท่าน",
+            size: "25", guests: "2-3 ท่าน",
             desc: "สัมผัสประสบการณ์พักผ่อนในบ้านต้นไม้ดีไซน์พิเศษ ที่โอบล้อมต้นเคี่ยมโบราณให้เติบโตผ่านกลางห้องพักอย่างกลมกลืน มีอ่างแช่น้ำ และระเบียงส่วนตัวสำหรับสูดอากาศบริสุทธิ์ยามเช้า หรือนั่งฟังเสียงธรรมชาติยามค่ำคืน",
             amenities: [
                 { icon: "❄️", text: "แอร์" },
                 { icon: "🧊", text: "ตู้เย็น" },
                 { icon: "🛁", text: "ห้องน้ำแบบอ่างแช่ แยกโซนเปียกแห้ง" },
                 { icon: "🧴", text: "สบู่ ยาสระผม ออร์แกนิคพรีเมี่ยม" },
-                { icon: "💨", text: "ไดเป่าผม" }
+                { icon: "💨", text: "ไดร์เป่าผม" }
             ]
         },
         en: {
-            size: "25.00", guests: "2-3 Guests",
+            size: "25", guests: "2-3 Guests",
             desc: "Experience a specially designed treehouse embracing an ancient Kiam tree that grows right through the center of the room, with a bathtub and private balcony for fresh morning air or the sound of nature at night.",
             amenities: [
                 { icon: "❄️", text: "Air Conditioning" },
@@ -2566,18 +2772,18 @@ const roomExtraData = {
     },
     '404': {
         th: {
-            size: "27.00", guests: "2-4 ท่าน",
+            size: "27", guests: "2-4 ท่าน",
             desc: "สัมผัสประสบการณ์พักผ่อนในบ้านต้นไม้ดีไซน์พิเศษ ที่โอบล้อมต้นเคี่ยมโบราณให้เติบโตผ่านกลางห้องพักอย่างกลมกลืน มีอ่างแช่น้ำ และระเบียงส่วนตัวสำหรับสูดอากาศบริสุทธิ์ยามเช้า หรือนั่งฟังเสียงธรรมชาติยามค่ำคืน",
             amenities: [
                 { icon: "❄️", text: "แอร์" },
                 { icon: "🧊", text: "ตู้เย็น" },
                 { icon: "🛁", text: "ห้องน้ำแบบอ่างแช่ แยกโซนเปียกแห้ง" },
                 { icon: "🧴", text: "สบู่ ยาสระผม ออร์แกนิคพรีเมี่ยม" },
-                { icon: "💨", text: "ไดเป่าผม" }
+                { icon: "💨", text: "ไดร์เป่าผม" }
             ]
         },
         en: {
-            size: "27.00", guests: "2-4 Guests",
+            size: "27", guests: "2-4 Guests",
             desc: "Experience a specially designed treehouse embracing an ancient Kiam tree that grows right through the center of the room, with a bathtub and private balcony for fresh morning air or the sound of nature at night.",
             amenities: [
                 { icon: "❄️", text: "Air Conditioning" },
@@ -2593,25 +2799,36 @@ const roomExtraData = {
 // Floor-plan drawings mixed into the photo folders — mostly-white line art that needs
 // to be shown in full (contain) rather than cropped/stretched like the real photos (cover)
 const floorPlanImages = new Set([
-    "/Tree house room/201/IMG_3957.jpg",
-    "/Tree house room/203/IMG_3956.jpg",
-    "/Tree house room/301/IMG_3966.jpg"
+    "Tree house room/201/IMG_3957.jpg",
+    "Tree house room/203/IMG_3956.jpg",
+    "Tree house room/301/IMG_3966.jpg"
 ]);
 
-function renderCarousel(track, dotsContainer, images, roomId, isCard) {
+function renderCarousel(track, dotsContainer, images, roomId, isCard, startIndex) {
     if (!track || !dotsContainer || !images || images.length === 0) return;
+    // #track-modal is one singleton element reused for every room's modal, so
+    // its "current room" has to be read live (not captured in a closure below)
+    // - otherwise clicking to zoom would always reopen whichever room's modal
+    // happened to attach the click listener first.
+    track.dataset.roomId = roomId;
+    startIndex = Math.max(0, Math.min(images.length - 1, startIndex || 0));
     const slideWidth = 100 / images.length;
     track.style.width = `${images.length * 100}%`;
     const roomDesc = (langData[currentLang] && langData[currentLang][`room${roomId}-desc`]) || `Treehouse Room ${roomId}`;
     const altBase = `Baan OuadChum ${roomDesc}`.replace(/"/g, '&quot;');
     const suffix = isCard ? '-card.webp' : '.webp';
     track.innerHTML = images.map((src, i) => `<div class="slide${floorPlanImages.has(src) ? ' slide-floorplan' : ''}" style="width:${slideWidth}%"><img src="${src.replace(/\.(jpe?g|png)$/i, suffix)}" alt="${altBase} - photo ${i + 1}" loading="lazy"></div>`).join('');
-    dotsContainer.innerHTML = images.map((_, i) => `<span class="dot${i === 0 ? ' active' : ''}"></span>`).join('');
-    track.setAttribute('data-current-index', '0');
-    track.style.transform = 'translateX(0)';
+    dotsContainer.innerHTML = images.map((_, i) => `<span class="dot${i === startIndex ? ' active' : ''}"></span>`).join('');
+    track.setAttribute('data-current-index', String(startIndex));
+    track.style.transform = `translateX(-${startIndex * slideWidth}%)`;
+    updateCarouselArrows(track);
 
     if (roomId && !track.dataset.swipeAttached) {
         track.dataset.swipeAttached = 'true';
+        // Identify the room-detail modal's own carousel by its actual DOM id,
+        // not by roomId - openRoomModal() passes the real room number (e.g.
+        // "001") into this same track every time, never the literal "modal".
+        const isModalTrack = track.id === 'track-modal';
         let touchStartX = 0;
         let didSwipe = false;
         track.addEventListener('touchstart', e => {
@@ -2622,16 +2839,18 @@ function renderCarousel(track, dotsContainer, images, roomId, isCard) {
             const deltaX = e.changedTouches[0].screenX - touchStartX;
             if (Math.abs(deltaX) > 30) {
                 didSwipe = true;
-                moveSlide(roomId, deltaX < 0 ? 1 : -1, { stopPropagation() {} });
+                moveSlide(isModalTrack ? 'modal' : track.dataset.roomId, deltaX < 0 ? 1 : -1, { stopPropagation() {} });
             }
         }, { passive: true });
-        if (roomId !== 'modal') {
-            track.style.cursor = 'pointer';
-            track.addEventListener('click', () => {
-                if (didSwipe) { didSwipe = false; return; }
-                openRoomModal(roomId);
-            });
-        }
+        track.style.cursor = isModalTrack ? 'zoom-in' : 'pointer';
+        track.addEventListener('click', () => {
+            if (didSwipe) { didSwipe = false; return; }
+            if (isModalTrack) {
+                openLightbox(track.dataset.roomId, parseInt(track.getAttribute('data-current-index'), 10) || 0);
+            } else {
+                openRoomModal(track.dataset.roomId);
+            }
+        });
     }
 }
 
@@ -2658,6 +2877,22 @@ function moveSlide(roomId, direction, event) {
 
     for (let i = 0; i < dots.length; i++) dots[i].classList.remove('active');
     if (dots[nextIndex]) dots[nextIndex].classList.add('active');
+
+    updateCarouselArrows(track);
+}
+
+// Hides (not just disables) the prev/next arrow on a room-card or modal
+// carousel once there's no more image in that direction - same edge
+// behavior as the room-detail lightbox, and no wraparound either.
+function updateCarouselArrows(track) {
+    const wrapper = track.closest('.img-wrapper');
+    if (!wrapper) return;
+    const prevBtn = wrapper.querySelector('.carousel-arrow.prev');
+    const nextBtn = wrapper.querySelector('.carousel-arrow.next');
+    const totalSlides = track.children.length;
+    const currentIndex = parseInt(track.getAttribute('data-current-index'), 10) || 0;
+    if (prevBtn) prevBtn.style.display = currentIndex > 0 ? "flex" : "none";
+    if (nextBtn) nextBtn.style.display = currentIndex < totalSlides - 1 ? "flex" : "none";
 }
 
 </script>
@@ -2773,9 +3008,18 @@ function moveSlide(roomId, direction, event) {
                 </div>
             </div>
             <div class="room-modal-right room-modal-gallery">
-                <img id="modalSidePhoto" src="/Book room/201.webp" alt="Book your stay" class="room-modal-side-photo">
+                <img id="modalSidePhoto" src="Book room/201.webp" alt="Book your stay" class="room-modal-side-photo">
             </div>
         </div>
+    </div>
+</div>
+
+<div class="lightbox-overlay" id="lightboxOverlay" onclick="handleLightboxBackdropClick(event)">
+    <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">&times;</button>
+    <button class="lightbox-arrow lightbox-prev" onclick="moveLightbox(-1, event)" aria-label="Previous photo">&#10094;</button>
+    <button class="lightbox-arrow lightbox-next" onclick="moveLightbox(1, event)" aria-label="Next photo">&#10095;</button>
+    <div class="lightbox-image-wrap">
+        <img id="lightboxImage" src="" alt="">
     </div>
 </div>
 
@@ -2783,7 +3027,7 @@ function moveSlide(roomId, direction, event) {
     <div class="modal-content reserve-modal-content">
         <button class="close-modal" onclick="closeReserveModal()">&times;</button>
         <div class="reserve-modal-banner">
-            <div class="reserve-modal-banner-icon"><img src="/logo.webp" alt="Baan OuadChum Logo"></div>
+            <div class="reserve-modal-banner-icon"><img src="logo.webp" alt="Baan OuadChum Logo"></div>
             <h2 data-key="reserve-modal-title">Reserve Your Stay</h2>
             <p data-key="reserve-modal-desc">Contact us directly via LINE or phone to check availability and book.</p>
         </div>
@@ -2825,13 +3069,12 @@ const langData = {
     en: {
         "menu-about": "Home", "menu-stay": "Stay", "menu-workshop": "Workshop", "menu-menu": "Menu", "menu-articles": "Articles", "menu-shop": "Contact",
         "btn-reserve": "Reserve",
-        "hero-sub": "Welcome to Baan Ouadchum Coastal Treehouse & Community Space, Pathio Chumphon",
-        "hero-title": "Baan OuadChum Treehouse — A Business for Local Community Development, Chumphon, Thailand", 
+        "hero-title": "The official website of Baan OuadChum:<br>Relax in a coastal treehouse while learning about area development concepts.", 
         "hero-desc": "A premium treehouse resort perfectly blending sustainable tourism with local community livelihoods and collaboration.", 
         "hero-btn": "Book Room",
         "about-sub": "Our Philosophy", "about-title": "OuadChum Philosophy: Business to Help", 
-        "about-desc1": "'Business to Help' means establishing a business to empower communities that already have their own resources and government support, ensuring they utilize them with maximum efficiency.",
-        "about-desc2": "OuadChum team focuses on collaborating with universities and state funding agencies, which possess extensive community networks and research. We want OuadChum to bridge this knowledge with real-world practice, using Chumphon as our pilot area.",
+        "about-desc1": "Business to Help means building a business that helps communities make the most of the resources and support they already have.",
+        "about-desc2": "We work with universities and state agencies to turn their research and community networks into real, on-the-ground practice - starting right here in Chumphon.",
         "about-hab-title": "Our core framework is Holistic Area Based Community Development (HAB), striving to build a sustainable model at the sub-district level.",
         "stat-hab-sub": "Core Dimensions of Development",
         "dim-1": "Occupation", "dim-2": "Health", "dim-3": "Society", "dim-4": "Environment", "dim-5": "Education",
@@ -2847,7 +3090,7 @@ const langData = {
         "filter-clear": "Clear Filters ✕",
         "btn-details": "View Details", "currency": "THB",
         
-        "room001-title": "Room VIP<span class=\"num-font\">1</span>", "room001-desc": "Beachfront treetop suite with balcony bathtub",
+        "room001-title": "VIP <span class=\"num-font\">1</span>", "room001-desc": "Beachfront treetop suite with balcony bathtub",
         "room201-title": "Room <span class=\"num-font\">201</span>", "room201-desc": "Treehouse standard (Panoramic view)",
         "room202-title": "Room <span class=\"num-font\">202</span>", "room202-desc": "Treehouse standard (Ocean view)",
         "room203-title": "Room <span class=\"num-font\">203</span>", "room203-desc": "Pet friendly treehouse standard (Lake view)",
@@ -2890,14 +3133,14 @@ const langData = {
         "footer-title": "Baan OuadChum Coastal Treehouse"
     },
     th: {
-        "menu-about": "หน้าแรก", "menu-stay": "ห้องพัก", "menu-workshop": "เวิร์คช็อป", "menu-menu": "เมนู", "menu-articles": "บทความ", "menu-shop": "ติดต่อ",
+        "menu-about": "หน้าแรก", "menu-stay": "ห้องพัก", "menu-workshop": "เวิร์คช็อป", "menu-menu": "เมนู", "menu-articles": "สื่อ", "menu-shop": "ติดต่อ",
         "btn-reserve": "ติดต่อ",
-        "hero-sub": "ยินดีต้อนรับสู่บ้านอวดชุม บ้านต้นไม้ริมชายฝั่งและพื้นที่ชุมชน ปะทิว ชุมพร", "hero-title": "บ้านต้นไม้ริมทะเลเพื่อการพัฒนาชุมชน และเชื่อมโยงภูมิปัญญาท้องถิ่นสู่การท่องเที่ยว ปะทิว ชุมพร", "hero-desc": "อิ่มอร่อยกับคาเฟ่และร้านอาหารท้องถิ่น เพลิดเพลินไปกับเวิร์กช็อปสุดสนุกร่วมกับชุมชน พร้อมอุดหนุนของฝากจากภูมิปัญญาท้องถิ่น ในพื้นที่ที่ขับเคลื่อนการพัฒนาชุมชน", "hero-btn": "จองห้องพัก",
+        "hero-title": "เว็บหลักของ บ้านต้นไม้อวดชุม อ.ปะทิว<br>พักผ่อนบนบ้านต้นไม้ริมทะเล พร้อมเรียนรู้แนวคิดการพัฒนาเชิงพื้นที่", "hero-desc": "อิ่มอร่อยกับคาเฟ่และร้านอาหารท้องถิ่น เพลิดเพลินไปกับเวิร์กช็อปสุดสนุกร่วมกับชุมชน พร้อมอุดหนุนของฝากจากภูมิปัญญาท้องถิ่น ในพื้นที่ที่ขับเคลื่อนการพัฒนาชุมชน", "hero-btn": "จองห้องพัก",
         "about-sub": "ปรัชญาของเรา", "about-title": "ปรัชญาของอวดชุม : ธุรกิจ เพื่อช่วย", 
-        "about-desc1": "‘ธุรกิจ เพื่อช่วย’ คือ การสร้างธุรกิจ เพื่อช่วยชุมชนที่มีทรัพยากรของตนเองอยู่แล้ว และทรัพยากรที่ได้รับจากรัฐ ให้ใช้ประโยชน์อย่างมีประสิทธิภาพ",
-        "about-desc2": "ทีมอวดชุมเน้นการทำงานกับมหาวิทยาลัย และหน่วยงานให้ทุนของภาครัฐ ซึ่งมีเครือข่ายกับชุมชน และงานวิจัยมากมาย เราจึงอยากให้อวดชุมเป็นจุดเชื่อมความรู้เหล่านี้กับหน้างานจริงโดยใช้ชุมพรเป็นพื้นที่นำร่อง",
+        "about-desc1": "ธุรกิจ เพื่อช่วย คือการสร้างธุรกิจที่ช่วยให้ชุมชนใช้ทรัพยากรที่มีอยู่แล้ว ทั้งของตนเองและจากภาครัฐ ให้เกิดประโยชน์สูงสุด",
+        "about-desc2": "เราทำงานร่วมกับมหาวิทยาลัยและหน่วยงานภาครัฐ เพื่อนำงานวิจัยและเครือข่ายชุมชนมาสู่การปฏิบัติจริง โดยเริ่มต้นที่ชุมพร",
         "about-hab-title": "แนวคิดของอวดชุมคือ การพัฒนาชุมชนแบบองค์รวม โดยพยายามสร้างต้นแบบในระดับตำบล",
-        "stat-hab-sub": "ครอบคลุมมิติการพัฒนาหลักระดับตำบล",
+        "stat-hab-sub": "มิติการพัฒนาระดับตำบล",
         "dim-1": "มิติอาชีพ", "dim-2": "มิติสุขภาพ", "dim-3": "มิติสังคม", "dim-4": "มิติสิ่งแวดล้อม", "dim-5": "มิติการศึกษา",
         
         "stay-sub": "ที่พักอาศัย", "stay-title": "ห้องพักบ้านต้นไม้", "stay-desc-nav": "สัมผัสประสบการณ์การพักผ่อนเหนือจินตนาการบนบ้านต้นไม้ ซึ่งมีให้คุณเลือกผ่อนคลายถึง 2 โซน (บ้านต้นไม้ 1 และ บ้านต้นไม้ 2) โดยแต่ละห้องได้รับการออกแบบอย่างมีเอกลักษณ์ โดดเด่น และลงตัวไปตามโคร้งสร้างธรรมชาติของต้นไม้",
@@ -2911,7 +3154,7 @@ const langData = {
         "filter-clear": "ล้างตัวกรอง ✕",
         "btn-details": "ดูรายละเอียด", "currency": "บาท",
         
-        "room001-title": "ห้อง Vip<span class=\"num-font\">1</span>", "room001-desc": "ห้องสวีทบนต้นไม้ริมชายหาด พร้อมอ่างอาบน้ำระเบียง",
+        "room001-title": "VIP <span class=\"num-font\">1</span>", "room001-desc": "ห้องสวีทบนต้นไม้ริมชายหาด พร้อมอ่างอาบน้ำริมระเบียง",
         "room201-title": "ห้อง <span class=\"num-font\">201</span>", "room201-desc": "บ้านต้นไม้มาตรฐาน (วิวพาโนรามา)",
         "room202-title": "ห้อง <span class=\"num-font\">202</span>", "room202-desc": "บ้านต้นไม้มาตรฐาน (วิวทะเล)",
         "room203-title": "ห้อง <span class=\"num-font\">203</span>", "room203-desc": "บ้านต้นไม้มาตรฐาน รองรับสัตว์เลี้ยง (วิวทะเลสาบ)",
@@ -3150,6 +3393,46 @@ function applyRoomFilters() {
             }
         }, 250);
     });
+
+    updateAmenityChipAvailability();
+}
+
+// A not-yet-selected chip would only ever narrow the result set further, so
+// it's checked in isolation: current tier + every other active category as-is,
+// plus this one candidate value added to its own category. If that combination
+// matches zero rooms, clicking it right now can only ever lead to an empty
+// grid, so the chip goes disabled instead of letting the guest click into a
+// dead end. Already-active chips are left alone so they can still be toggled off.
+function wouldAmenityChipMatchAnyRoom(type, value) {
+    const cards = document.querySelectorAll(".room-card");
+    for (const card of cards) {
+        if (currentTierLevel !== "all" && card.getAttribute("data-level") !== currentTierLevel) continue;
+
+        let matchesAll = true;
+        for (const filterType in activeAmenityFilters) {
+            const cardValue = card.getAttribute(`data-${filterType}`);
+            const activeSet = activeAmenityFilters[filterType];
+            const matches = filterType === type
+                ? (activeSet.has(cardValue) || cardValue === value)
+                : (activeSet.size === 0 || activeSet.has(cardValue));
+            if (!matches) {
+                matchesAll = false;
+                break;
+            }
+        }
+        if (matchesAll) return true;
+    }
+    return false;
+}
+
+function updateAmenityChipAvailability() {
+    document.querySelectorAll(".amenity-chip[data-filter-type]").forEach(chip => {
+        if (chip.classList.contains("active")) {
+            chip.disabled = false;
+            return;
+        }
+        chip.disabled = !wouldAmenityChipMatchAnyRoom(chip.dataset.filterType, chip.dataset.filterValue);
+    });
 }
 
 // Prevent the page behind a popup/drawer from scrolling on mobile while it's open
@@ -3190,7 +3473,11 @@ function openRoomModal(roomId) {
         amenitiesEl.innerHTML = "";
     }
 
-    renderCarousel(document.getElementById("track-modal"), document.getElementById("dots-modal"), roomImages[roomId] || [], roomId);
+    // Open on whichever photo the guest was already looking at on the card's
+    // own preview carousel, instead of always resetting back to photo 1.
+    const cardTrack = document.getElementById(`track-${roomId}`);
+    const cardIndex = cardTrack ? parseInt(cardTrack.getAttribute('data-current-index'), 10) || 0 : 0;
+    renderCarousel(document.getElementById("track-modal"), document.getElementById("dots-modal"), roomImages[roomId] || [], roomId, false, cardIndex);
 
     const roomModalEl = document.getElementById("roomModal");
     roomModalEl.setAttribute("data-tab", "details");
@@ -3212,6 +3499,71 @@ function closeRoomModal() {
     unlockBodyScroll();
 }
 
+// LIGHTBOX - full-size photo viewer opened from the modal's own carousel.
+// Navigation only ever happens from a user click/keypress - no auto-slide.
+let lightboxImages = [];
+let lightboxIndex = 0;
+
+function openLightbox(roomId, index) {
+    lightboxImages = (roomImages[roomId] || []).map(src => src.replace(/\.(jpe?g|png)$/i, '.webp'));
+    lightboxIndex = index;
+    if (lightboxImages.length === 0) return;
+
+    const overlay = document.getElementById("lightboxOverlay");
+    showLightboxImage();
+    overlay.classList.add("active");
+    lockBodyScroll();
+    document.addEventListener("keydown", handleLightboxKeydown);
+}
+
+function showLightboxImage() {
+    const wrap = document.querySelector(".lightbox-image-wrap");
+    const img = document.getElementById("lightboxImage");
+    wrap.classList.add("loading");
+    img.classList.add("loading");
+    img.src = lightboxImages[lightboxIndex];
+    img.alt = `Baan OuadChum - photo ${lightboxIndex + 1}`;
+    updateLightboxArrows();
+}
+
+// Arrows are fully hidden (not just disabled) past either edge, and there's
+// no wraparound - moving past the last photo or before the first is a no-op,
+// both from the on-screen arrows and from the keyboard.
+function updateLightboxArrows() {
+    document.querySelector(".lightbox-prev").style.display = lightboxIndex > 0 ? "flex" : "none";
+    document.querySelector(".lightbox-next").style.display = lightboxIndex < lightboxImages.length - 1 ? "flex" : "none";
+}
+
+function moveLightbox(direction, event) {
+    if (event) event.stopPropagation();
+    const nextIndex = lightboxIndex + direction;
+    if (nextIndex < 0 || nextIndex >= lightboxImages.length) return;
+    lightboxIndex = nextIndex;
+    showLightboxImage();
+}
+
+function closeLightbox() {
+    document.getElementById("lightboxOverlay").classList.remove("active");
+    document.removeEventListener("keydown", handleLightboxKeydown);
+    unlockBodyScroll();
+}
+
+function handleLightboxBackdropClick(event) {
+    if (event.target.id === "lightboxOverlay") closeLightbox();
+}
+
+function handleLightboxKeydown(event) {
+    if (event.key === "Escape") closeLightbox();
+    else if (event.key === "ArrowLeft") moveLightbox(-1);
+    else if (event.key === "ArrowRight") moveLightbox(1);
+}
+
+document.getElementById("lightboxImage").addEventListener("load", function () {
+    this.classList.remove("loading");
+    const wrap = document.querySelector(".lightbox-image-wrap");
+    if (wrap) wrap.classList.remove("loading");
+});
+
 function openLineContact() {
     window.open('https://line.me/R/ti/p/%40ouadchum', '_blank');
 }
@@ -3219,7 +3571,7 @@ function openLineContact() {
 function openReserveModal() {
     document.getElementById("reserveModal").classList.add("active");
     lockBodyScroll();
-    document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
+    window.scrollTo({ top: window.innerWidth <= 1024 ? 7720 : 4835.33349609375, behavior: "smooth" });
 }
 function closeReserveModal() {
     document.getElementById("reserveModal").classList.remove("active");
@@ -3255,23 +3607,23 @@ function closeMenu() {
 // HERO BACKGROUND SLIDER
 const heroMedia = [
     { type: "youtube", id: "O-NpuUy0SsM" },
-    { type: "image", src: "/Background/background.jpg" },
-    { type: "image", src: "/Background/DSC00072.JPG" },
-    { type: "image", src: "/Background/DSC00096.JPG" },
-    { type: "image", src: "/Background/DSC00171.JPG" },
-    { type: "image", src: "/Background/DSC00173.JPG" },
-    { type: "image", src: "/Background/DSC00250.JPG" },
-    { type: "image", src: "/Background/DSC09957.JPG" },
-    { type: "image", src: "/Background/FOT07636.jpg" },
-    { type: "image", src: "/Background/fotong (437).JPG" },
-    { type: "image", src: "/Background/IMG_2692.JPG" },
-    { type: "image", src: "/Background/IMG_2964.JPG" },
-    { type: "image", src: "/Background/IMG_2965.JPG" },
-    { type: "image", src: "/Background/IMG_7813.JPG" },
-    { type: "image", src: "/Background/IMG_7814.JPG" },
-    { type: "image", src: "/Background/IMG_8826.JPG" },
-    { type: "image", src: "/Background/IMG_9531.JPG" },
-    { type: "image", src: "/Background/IMG_9533.JPG" }
+    { type: "image", src: "Background/background.jpg" },
+    { type: "image", src: "Background/DSC00072.JPG" },
+    { type: "image", src: "Background/DSC00096.JPG" },
+    { type: "image", src: "Background/DSC00171.JPG" },
+    { type: "image", src: "Background/DSC00173.JPG" },
+    { type: "image", src: "Background/DSC00250.JPG" },
+    { type: "image", src: "Background/DSC09957.JPG" },
+    { type: "image", src: "Background/FOT07636.jpg" },
+    { type: "image", src: "Background/fotong (437).JPG" },
+    { type: "image", src: "Background/IMG_2692.JPG" },
+    { type: "image", src: "Background/IMG_2964.JPG" },
+    { type: "image", src: "Background/IMG_2965.JPG" },
+    { type: "image", src: "Background/IMG_7813.JPG" },
+    { type: "image", src: "Background/IMG_7814.JPG" },
+    { type: "image", src: "Background/IMG_8826.JPG" },
+    { type: "image", src: "Background/IMG_9531.JPG" },
+    { type: "image", src: "Background/IMG_9533.JPG" }
 ];
 let heroIndex = 0;
 let heroTimer = null;
@@ -3289,7 +3641,7 @@ function heroSlideMarkup(m) {
         return `<video class="hero-slide" muted autoplay loop playsinline preload="auto"><source src="${m.src}" type="video/mp4"></video>`;
     }
     if (m.type === "youtube") {
-        return `<div class="hero-slide" data-youtube-id="${m.id}"><img src="/Background/background.webp" srcset="/Background/background-mobile.webp 800w, /Background/background.webp 1600w" sizes="100vw" alt=""></div>`;
+        return `<div class="hero-slide" data-youtube-id="${m.id}"><img src="Background/background.webp" srcset="Background/background-mobile.webp 800w, Background/background.webp 1600w" sizes="100vw" alt=""></div>`;
     }
     const base = m.src.replace(/\.(jpe?g|png)$/i, '');
     return `<div class="hero-slide"><img src="${base}.webp" srcset="${base}-mobile.webp 800w, ${base}.webp 1600w" sizes="100vw" alt="" loading="lazy"></div>`;
@@ -3473,12 +3825,12 @@ document.addEventListener("DOMContentLoaded", () => {
     startHeroTimer();
     setupHeroSwipe();
     renderRoomCarousels();
+    updateAmenityChipAvailability();
     initMapLoader();
 
-    // Starts at 0 rather than reading window.scrollY here - the page always loads
-    // scrolled to the top, and reading scrollY this early would force the browser
-    // to synchronously flush the layout that switchLanguage()'s DOM rewrite just
-    // invalidated. The scroll handler below keeps this in sync from then on.
+    // Starts at 0 - the hero itself is shifted up in CSS (see .hero
+    // margin-top) so the correct starting frame is already what's at the
+    // very top of the page. Nothing left to force/clamp in JS here.
     let lastScrollY = 0;
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('navbar');
@@ -3490,8 +3842,8 @@ document.addEventListener("DOMContentLoaded", () => {
             nav.style.background = "rgba(255, 255, 255, 0.9)";
         }
 
-        // On mobile, hide the whole nav while scrolling down; reveal it again when scrolling up
-        if (window.innerWidth <= 767 && window.scrollY > 80 && window.scrollY > lastScrollY) {
+        // On mobile/iPad, hide the whole nav while scrolling down; reveal it again when scrolling up
+        if (window.innerWidth <= 1024 && window.scrollY > 80 && window.scrollY > lastScrollY) {
             nav.classList.add('nav-hidden');
         } else {
             nav.classList.remove('nav-hidden');

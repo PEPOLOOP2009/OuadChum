@@ -19,8 +19,8 @@
 <meta name="twitter:title" content="โครงการ | บ้านต้นไม้อวดชุม">
 <meta name="twitter:description" content="เรียนรู้เกี่ยวกับโครงการชุมชนและความยั่งยืนของบ้านต้นไม้อวดชุม ปะทิว ชุมพร">
 <meta name="twitter:image" content="https://ouadchum.com/Philosophy/DSC07894.webp">
-<link rel="icon" href="/logo.webp" type="image/webp">
-<link rel="apple-touch-icon" href="/logo.webp">
+<link rel="icon" href="logo.webp" type="image/webp">
+<link rel="apple-touch-icon" href="logo.webp">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -110,7 +110,7 @@ nav{
     transition: var(--transition);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     nav.nav-hidden {
         transform: translateY(-100%);
     }
@@ -182,7 +182,7 @@ nav{
 .nav-links a:hover::after { width: 100%; }
 .nav-links a:hover{ color:var(--primary); }
 
-@media (min-width: 768px) and (max-width: 1100px) {
+@media (min-width: 1025px) and (max-width: 1100px) {
     .nav-menu-wrapper { margin-left: 18px; }
     .nav-links { gap: 24px; }
     .nav-links a { font-size: 0.82rem; letter-spacing: 0.3px; }
@@ -303,11 +303,11 @@ nav{
     .grid-2 { grid-template-columns: 1fr; }
 }
 
-@media(min-width: 768px) {
+@media(min-width: 1025px) {
     .grid-3 { grid-template-columns: repeat(2, 1fr); }
     .grid-4 { grid-template-columns: repeat(2, 1fr); }
 }
-@media(min-width: 992px) {
+@media(min-width: 1025px) {
     .grid-3 { grid-template-columns: repeat(3, 1fr); }
     .grid-4 { grid-template-columns: repeat(4, 1fr); }
     .grid-5 { grid-template-columns: repeat(5, 1fr); }
@@ -366,6 +366,8 @@ nav{
     color: inherit;
     border: none;
     border-radius: 18px;
+    display: flex;
+    flex-direction: column;
     transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s ease;
 }
 .news-card:hover {
@@ -553,7 +555,7 @@ nav{
     gap: 14px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     .news-hero {
         height: 420px;
         border-radius: 14px;
@@ -608,17 +610,47 @@ nav{
     margin-bottom: 10px;
 }
 
-/* Contact section (lives inside the footer) */
+/* Contact section (lives inside the footer) - all 7 boxes stay on one row
+   on every screen size: each card shrinks equally (flex + min-width:0)
+   to fit the available width instead of wrapping or overflowing the frame.
+   The media query below shrinks icon/text sizing further on narrow phones
+   so the shrunk cards stay legible instead of squeezing their content. */
 .footer-contact-grid {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
     margin: 0 auto;
     max-width: 980px;
-    gap: 20px;
+    gap: 10px;
 }
 .footer-contact-grid .contact-card {
-    flex: 0 1 160px;
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 20px 8px;
+}
+.footer-contact-grid .contact-card h4,
+.footer-contact-grid .contact-card p {
+    overflow-wrap: anywhere;
+}
+@media (max-width: 1024px) {
+    .footer-contact-grid {
+        gap: 6px;
+    }
+    .footer-contact-grid .contact-card {
+        padding: 12px 4px;
+    }
+    .footer-contact-grid .contact-icon {
+        width: 34px;
+        height: 34px;
+        margin: 0 auto 8px auto;
+    }
+    .footer-contact-grid .contact-card h4 {
+        font-size: 0.68rem;
+        margin-bottom: 3px;
+    }
+    .footer-contact-grid .contact-card p {
+        font-size: 0.58rem;
+    }
 }
 .footer-map-wrapper {
     max-width: 900px;
@@ -967,7 +999,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 }
 
 /* MEDIA QUERIES FOR SMALLER DEVICES */
-@media(max-width:767px){
+@media(max-width:1024px){
     body { padding-bottom: 75px; }
     section { padding: 70px 0; }
     .section-title { font-size: 1.85rem; }
@@ -978,7 +1010,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
     .booking-bar { padding: 10px 0; }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     :root { --nav-h: 200px; } /* nav is taller here since it wraps to two rows */
     .hamburger { display: none; }
     .nav-inner {
@@ -1043,17 +1075,17 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 <nav id="navbar">
 <div class="container nav-inner">
 <a href="index.html" class="logo">
-    <img src="/logo.webp" alt="Baan OuadChum Logo" class="logo-icon" width="594" height="600">
+    <img src="logo.webp" alt="Baan OuadChum Logo" class="logo-icon" width="594" height="600">
     <span class="logo-word">Baan OuadChum</span>
 </a>
 
 <div class="nav-menu-wrapper" id="navMenuWrapper">
     <div class="nav-links">
         <a href="index.html" data-key="menu-about" onclick="closeMenu()">หน้าแรก</a>
-        <a href="index.html#stay" data-key="menu-stay" onclick="closeMenu()">ห้องพัก</a>
+        <a href="index.html#stayTitle" data-key="menu-stay" onclick="closeMenu()">ห้องพัก</a>
         <a href="workshop.html" data-key="menu-workshop" onclick="closeMenu()">เวิร์คช็อป</a>
         <a href="menu.html" data-key="menu-menu" onclick="closeMenu()">เมนู</a>
-        <a href="articles.html" data-key="menu-articles" onclick="closeMenu()">บทความ</a>
+        <a href="articles.html" data-key="menu-articles" onclick="closeMenu()">สื่อ</a>
     </div>
 </div>
 
@@ -1079,7 +1111,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
     </div>
 
     <div class="news-hero" style="--news-accent:#3E723B;">
-        <img class="news-hero-img" src="/Philosophy/DSC07894.webp" alt="">
+        <img class="news-hero-img" src="Philosophy/DSC07894.webp" alt="">
         <div class="news-hero-overlay">
             <span class="news-hero-source" data-key="hero-badge">เร็วๆ นี้</span>
             <h3 class="news-hero-title" data-key="hero-title">โครงการกำลังจะมาเร็วๆ นี้</h3>
@@ -1090,7 +1122,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
     <div class="news-grid">
         <div class="card news-card" style="--news-accent:#b3946b;">
             <div class="img-wrapper">
-                <img class="card-img" src="/Philosophy/DSC07821.webp" alt="">
+                <img class="card-img" src="Philosophy/DSC07821.webp" alt="">
                 <span class="news-card-badge" data-key="card-badge">เร็วๆ นี้</span>
             </div>
             <div class="card-body">
@@ -1101,7 +1133,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 
         <div class="card news-card" style="--news-accent:#909fa0;">
             <div class="img-wrapper">
-                <img class="card-img" src="/Philosophy/DSC07962.webp" alt="">
+                <img class="card-img" src="Philosophy/DSC07962.webp" alt="">
                 <span class="news-card-badge" data-key="card-badge">เร็วๆ นี้</span>
             </div>
             <div class="card-body">
@@ -1112,7 +1144,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 
         <div class="card news-card" style="--news-accent:#3E723B;">
             <div class="img-wrapper">
-                <img class="card-img" src="/Philosophy/FOT07625.webp" alt="">
+                <img class="card-img" src="Philosophy/FOT07625.webp" alt="">
                 <span class="news-card-badge" data-key="card-badge">เร็วๆ นี้</span>
             </div>
             <div class="card-body">
@@ -1211,7 +1243,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
     <div class="modal-content reserve-modal-content">
         <button class="close-modal" onclick="closeReserveModal()">&times;</button>
         <div class="reserve-modal-banner">
-            <div class="reserve-modal-banner-icon"><img src="/logo.webp" alt="Baan OuadChum Logo"></div>
+            <div class="reserve-modal-banner-icon"><img src="logo.webp" alt="Baan OuadChum Logo"></div>
             <h2 data-key="reserve-modal-title">Reserve Your Stay</h2>
             <p data-key="reserve-modal-desc">Contact us directly via LINE or phone to check availability and book.</p>
         </div>
@@ -1251,8 +1283,13 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 // Translation Database
 const langData = {
     en: {
-        "menu-about": "Home", "menu-stay": "Stay", "menu-articles": "Articles", "menu-shop": "Contact",
+        "menu-about": "Home", "menu-stay": "Stay", "menu-workshop": "Workshop", "menu-menu": "Menu", "menu-articles": "Articles", "menu-shop": "Contact",
         "btn-reserve": "Reserve",
+        "page-sub": "Our Community Projects", "page-title": "Projects",
+        "hero-badge": "Coming Soon", "hero-title": "Our Projects Are Coming Soon", "hero-desc": "We're preparing project details and community updates from Baan OuadChum for you.",
+        "card-badge": "Coming Soon",
+        "card1-title": "New Project Coming Soon", "card2-title": "New Project Coming Soon", "card3-title": "New Project Coming Soon",
+        "card-desc": "Check back here soon for our latest projects.",
         "news-sub": "In the Press", "news-title": "News & Media Coverage",
         "news1-source": "The Cloud", "news1-title": "Baan OuadChum: A Treehouse by the Sea in Pathio, Chumphon", "news1-desc": "A travel feature from The Cloud introducing Baan OuadChum's treehouses and coastal community space in Pathio, Chumphon.",
         "news2-source": "Haadthip", "news2-title": "OuadChum: From Empty Land to a Community Partnership Showcasing Chumphon's Local Wisdom", "news2-desc": "OuadChum is a community hub formed by the private sector, universities, and the community to develop local resources and bring Chumphon's local wisdom to market.",
@@ -1280,8 +1317,13 @@ const langData = {
         "footer-title": "Baan OuadChum Coastal Treehouse"
     },
     th: {
-        "menu-about": "หน้าแรก", "menu-stay": "ห้องพัก", "menu-articles": "บทความ", "menu-shop": "ติดต่อ",
+        "menu-about": "หน้าแรก", "menu-stay": "ห้องพัก", "menu-workshop": "เวิร์คช็อป", "menu-menu": "เมนู", "menu-articles": "สื่อ", "menu-shop": "ติดต่อ",
         "btn-reserve": "ติดต่อ",
+        "page-sub": "โครงการชุมชนของเรา", "page-title": "โครงการ",
+        "hero-badge": "เร็วๆ นี้", "hero-title": "โครงการกำลังจะมาเร็วๆ นี้", "hero-desc": "เรากำลังเตรียมข้อมูลโครงการและความเคลื่อนไหวของชุมชนอวดชุมมาฝากคุณ",
+        "card-badge": "เร็วๆ นี้",
+        "card1-title": "โครงการใหม่กำลังจะมา", "card2-title": "โครงการใหม่กำลังจะมา", "card3-title": "โครงการใหม่กำลังจะมา",
+        "card-desc": "ติดตามโครงการของเราได้ที่นี่เร็วๆ นี้",
         "news-sub": "สื่อพูดถึงเรา", "news-title": "ข่าวสารและรีวิวจากสื่อ",
         "news1-source": "The Cloud", "news1-title": "บ้านอวดชุม บ้านต้นไม้ริมทะเลปะทิว ชุมพร", "news1-desc": "บทความท่องเที่ยวจาก The Cloud ที่พาไปรู้จักบ้านต้นไม้และพื้นที่ชุมชนอวดชุม ริมทะเลอำเภอปะทิว จังหวัดชุมพร",
         "news2-source": "หาดทิพย์", "news2-title": "อวดชุม จากผืนดินว่างเปล่า สู่การจับมือชาวบ้านอวดภูมิปัญญาเมืองชุมพร", "news2-desc": "\"อวดชุม\" ศูนย์กลางชุมชนที่เกิดจากการรวมตัวของภาคเอกชน มหาวิทยาลัย และชุมชน เพื่อพัฒนาทรัพยากรท้องถิ่นและส่งเสริมภูมิปัญญาในจังหวัดชุมพรให้เป็นที่รู้จักในตลาด",
@@ -1399,7 +1441,7 @@ function openLineContact() {
 function openReserveModal() {
     document.getElementById("reserveModal").classList.add("active");
     lockBodyScroll();
-    document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
+    window.scrollTo({ top: window.innerWidth <= 1024 ? 7720 : 4835.33349609375, behavior: "smooth" });
 }
 function closeReserveModal() {
     document.getElementById("reserveModal").classList.remove("active");
@@ -1474,7 +1516,7 @@ document.addEventListener("DOMContentLoaded", () => {
             nav.style.background = "rgba(255, 255, 255, 0.9)";
         }
 
-        if (window.innerWidth <= 767 && window.scrollY > 80 && window.scrollY > lastScrollY) {
+        if (window.innerWidth <= 1024 && window.scrollY > 80 && window.scrollY > lastScrollY) {
             nav.classList.add('nav-hidden');
         } else {
             nav.classList.remove('nav-hidden');

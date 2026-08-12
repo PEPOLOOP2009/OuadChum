@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>บทความ | บ้านต้นไม้อวดชุม</title>
+<title>สื่อ | บ้านต้นไม้อวดชุม</title>
 <meta name="description" content="เรื่องราว ข่าวสาร และบทความออกแบบเกี่ยวกับบ้านต้นไม้อวดชุม รีสอร์ทบ้านต้นไม้เพื่อความยั่งยืนและศูนย์รวมชุมชน ปะทิว ชุมพร">
 <link rel="canonical" href="https://ouadchum.com/articles.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Baan OuadChum Coastal Treehouse">
-<meta property="og:title" content="บทความ | บ้านต้นไม้อวดชุม">
+<meta property="og:title" content="สื่อ | บ้านต้นไม้อวดชุม">
 <meta property="og:description" content="เรื่องราว ข่าวสาร และบทความออกแบบเกี่ยวกับบ้านต้นไม้อวดชุม รีสอร์ทบ้านต้นไม้เพื่อความยั่งยืนและศูนย์รวมชุมชน ปะทิว ชุมพร">
 <meta property="og:url" content="https://ouadchum.com/articles.html">
-<meta property="og:image" content="https://ouadchum.com/Background/IMG_2692.webp">
+<meta property="og:image" content="https://ouadchum.com/Press/news1-readthecloud.webp">
 <meta property="og:locale" content="th_TH">
 <meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="บทความ | บ้านต้นไม้อวดชุม">
+<meta name="twitter:title" content="สื่อ | บ้านต้นไม้อวดชุม">
 <meta name="twitter:description" content="เรื่องราว ข่าวสาร และบทความออกแบบเกี่ยวกับบ้านต้นไม้อวดชุม รีสอร์ทบ้านต้นไม้เพื่อความยั่งยืนและศูนย์รวมชุมชน ปะทิว ชุมพร">
-<meta name="twitter:image" content="https://ouadchum.com/Background/IMG_2692.webp">
-<link rel="icon" href="/logo.webp" type="image/webp">
-<link rel="apple-touch-icon" href="/logo.webp">
+<meta name="twitter:image" content="https://ouadchum.com/Press/news1-readthecloud.webp">
+<link rel="icon" href="logo.webp" type="image/webp">
+<link rel="apple-touch-icon" href="logo.webp">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -109,7 +109,7 @@ nav{
     transition: var(--transition);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     nav.nav-hidden {
         transform: translateY(-100%);
     }
@@ -181,7 +181,7 @@ nav{
 .nav-links a:hover::after { width: 100%; }
 .nav-links a:hover{ color:var(--primary); }
 
-@media (min-width: 768px) and (max-width: 1100px) {
+@media (min-width: 1025px) and (max-width: 1100px) {
     .nav-menu-wrapper { margin-left: 18px; }
     .nav-links { gap: 24px; }
     .nav-links a { font-size: 0.82rem; letter-spacing: 0.3px; }
@@ -302,11 +302,11 @@ nav{
     .grid-2 { grid-template-columns: 1fr; }
 }
 
-@media(min-width: 768px) {
+@media(min-width: 1025px) {
     .grid-3 { grid-template-columns: repeat(2, 1fr); }
     .grid-4 { grid-template-columns: repeat(2, 1fr); }
 }
-@media(min-width: 992px) {
+@media(min-width: 1025px) {
     .grid-3 { grid-template-columns: repeat(3, 1fr); }
     .grid-4 { grid-template-columns: repeat(4, 1fr); }
     .grid-5 { grid-template-columns: repeat(5, 1fr); }
@@ -365,6 +365,8 @@ nav{
     color: inherit;
     border: none;
     border-radius: 18px;
+    display: flex;
+    flex-direction: column;
     transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s ease;
 }
 .news-card:hover {
@@ -399,30 +401,56 @@ nav{
     color: #fff;
     box-shadow: 0 6px 16px -4px color-mix(in srgb, var(--news-accent, var(--primary-dark)) 55%, transparent);
 }
-.news-card-pdf-fab {
+.news-card-play-icon {
     position: absolute;
-    top: 14px;
-    right: 14px;
-    z-index: 3;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+.news-card-play-icon svg {
+    width: 56px;
+    height: 56px;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.35));
+    transition: transform 0.3s ease;
+}
+.news-card:hover .news-card-play-icon svg {
+    transform: scale(1.1);
+}
+/* News card with both an external "read article" link and a PDF download -
+   both sit in one row at the bottom of the card, level with each other,
+   instead of the PDF button floating over the photo like it used to. */
+.news-card-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 25px 25px;
+    margin-top: -10px;
+}
+.news-card-actions .news-card-link {
+    margin-top: 0;
+    padding-top: 0;
+}
+.news-card-pdf-btn {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    padding: 6px 12px;
+    gap: 6px;
+    flex-shrink: 0;
+    padding: 7px 14px;
     border-radius: 20px;
-    font-size: 0.7rem;
+    border: 1.5px solid var(--news-accent, var(--primary));
+    color: var(--news-accent, var(--primary-dark));
+    font-size: 0.78rem;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    color: var(--primary-dark);
     text-decoration: none;
-    box-shadow: 0 6px 16px -4px rgba(0,0,0,0.25);
-    transition: transform 0.25s ease;
+    transition: background 0.25s ease, color 0.25s ease;
 }
-.news-card-pdf-fab:hover {
-    transform: translateY(-2px);
+.news-card-pdf-btn:hover {
+    background: var(--news-accent, var(--primary));
+    color: #fff;
 }
 .news-card .card-body {
     position: relative;
@@ -579,7 +607,7 @@ nav{
     gap: 14px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     .news-hero {
         height: 420px;
         border-radius: 14px;
@@ -648,17 +676,47 @@ nav{
 .filter-btn:hover { border-color: var(--primary); color: var(--primary-dark); }
 .filter-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: var(--shadow-sm); }
 
-/* Contact section (lives inside the footer) */
+/* Contact section (lives inside the footer) - all 7 boxes stay on one row
+   on every screen size: each card shrinks equally (flex + min-width:0)
+   to fit the available width instead of wrapping or overflowing the frame.
+   The media query below shrinks icon/text sizing further on narrow phones
+   so the shrunk cards stay legible instead of squeezing their content. */
 .footer-contact-grid {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
     margin: 0 auto;
     max-width: 980px;
-    gap: 20px;
+    gap: 10px;
 }
 .footer-contact-grid .contact-card {
-    flex: 0 1 160px;
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 20px 8px;
+}
+.footer-contact-grid .contact-card h4,
+.footer-contact-grid .contact-card p {
+    overflow-wrap: anywhere;
+}
+@media (max-width: 1024px) {
+    .footer-contact-grid {
+        gap: 6px;
+    }
+    .footer-contact-grid .contact-card {
+        padding: 12px 4px;
+    }
+    .footer-contact-grid .contact-icon {
+        width: 34px;
+        height: 34px;
+        margin: 0 auto 8px auto;
+    }
+    .footer-contact-grid .contact-card h4 {
+        font-size: 0.68rem;
+        margin-bottom: 3px;
+    }
+    .footer-contact-grid .contact-card p {
+        font-size: 0.58rem;
+    }
 }
 .footer-map-wrapper {
     max-width: 900px;
@@ -1003,15 +1061,15 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 /* News page section: sits directly under the fixed nav (no hero above it),
    so it needs its own clearance instead of relying on a hero for spacing. */
 .news-page-section {
-    padding-top: 160px;
+    padding-top: 120px;
 }
 
 /* MEDIA QUERIES FOR SMALLER DEVICES */
-@media(max-width:767px){
+@media(max-width:1024px){
     body { padding-bottom: 75px; }
     section { padding: 70px 0; }
     .section-title { font-size: 1.85rem; }
-    .news-page-section { padding-top: 150px; }
+    .news-page-section { padding-top: 110px; }
 
     .booking-fields { display: none; }
     .mobile-book-trigger { display: block; }
@@ -1020,7 +1078,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
     .news-card h3 { color: var(--news-accent, var(--primary-dark)); }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     :root { --nav-h: 200px; } /* nav is taller here since it wraps to two rows */
     .hamburger { display: none; }
     .nav-inner {
@@ -1085,17 +1143,17 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 <nav id="navbar">
 <div class="container nav-inner">
 <a href="index.html" class="logo">
-    <img src="/logo.webp" alt="Baan OuadChum Logo" class="logo-icon" width="594" height="600">
+    <img src="logo.webp" alt="Baan OuadChum Logo" class="logo-icon" width="594" height="600">
     <span class="logo-word">Baan OuadChum</span>
 </a>
 
 <div class="nav-menu-wrapper" id="navMenuWrapper">
     <div class="nav-links">
         <a href="index.html" data-key="menu-about" onclick="closeMenu()">หน้าแรก</a>
-        <a href="index.html#stay" data-key="menu-stay" onclick="closeMenu()">ห้องพัก</a>
+        <a href="index.html#stayTitle" data-key="menu-stay" onclick="closeMenu()">ห้องพัก</a>
         <a href="workshop.html" data-key="menu-workshop" onclick="closeMenu()">เวิร์คช็อป</a>
         <a href="menu.html" data-key="menu-menu" onclick="closeMenu()">เมนู</a>
-        <a href="articles.html" data-key="menu-articles" onclick="closeMenu()">บทความ</a>
+        <a href="articles.html" data-key="menu-articles" onclick="event.preventDefault(); closeMenu(); window.scrollTo({top:0, behavior:'smooth'});">สื่อ</a>
     </div>
 </div>
 
@@ -1124,10 +1182,11 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
         <button class="filter-btn active" data-filter="all" onclick="filterArticles('all', this)" data-key="filter-all">ทั้งหมด</button>
         <button class="filter-btn" data-filter="vision" onclick="filterArticles('vision', this)" data-key="filter-vision">แรงบันดาลใจ</button>
         <button class="filter-btn" data-filter="design" onclick="filterArticles('design', this)" data-key="filter-design">งานออกแบบ</button>
+        <button class="filter-btn" data-filter="video" onclick="filterArticles('video', this)" data-key="filter-video">วิดีโอ</button>
     </div>
 
     <a class="news-hero" id="articleHero" style="--news-accent:#3E723B;" href="https://readthecloud.com/travel/share-location/baan-ouad-chum/" target="_blank" rel="noopener noreferrer">
-        <img class="news-hero-img" src="/Background/IMG_2692.webp" alt="">
+        <img class="news-hero-img" src="Press/news1-readthecloud.webp" alt="">
         <span class="news-card-badge" data-key="news1-source">The Cloud</span>
         <div class="news-hero-overlay">
             <h3 class="news-hero-title" data-key="news1-title">บ้านอวดชุม บ้านต้นไม้ริมทะเลปะทิว ชุมพร</h3>
@@ -1172,7 +1231,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 
         <a class="card news-card" data-category="vision" style="--news-accent:#3E723B;" href="https://today.line.me/th/v3/article/RB6P6Qm" target="_blank" rel="noopener noreferrer">
             <div class="img-wrapper">
-                <img class="card-img" src="/Philosophy/DSC07894.webp" alt="">
+                <img class="card-img" src="Press/news4-line-today.webp" alt="">
                 <span class="news-card-badge" data-key="news4-source">ประชาชาติธุรกิจ</span>
             </div>
             <div class="card-body">
@@ -1187,7 +1246,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 
         <a class="card news-card" data-category="design" data-hero-item="design" style="--news-accent:#3E723B;" href="https://dsignsomething.com/2025/07/30/house-5/" target="_blank" rel="noopener noreferrer">
             <div class="img-wrapper">
-                <img class="card-img" src="/Background/DSC00171.webp" alt="">
+                <img class="card-img" src="Press/news5-dsignsomething.webp" alt="">
                 <span class="news-card-badge" data-key="news5-source">dsign something</span>
             </div>
             <div class="card-body">
@@ -1200,26 +1259,124 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
             </div>
         </a>
 
-        <div class="card news-card" data-category="vision" style="--news-accent:#3E723B; position:relative;">
+        <div class="card news-card" data-category="vision" style="--news-accent:#3E723B;">
             <a href="https://guangming.com.my/好吃好玩-海风可以自由穿过这座树屋-泰国" target="_blank" rel="noopener noreferrer" style="display:contents; color:inherit; text-decoration:none;">
                 <div class="img-wrapper">
-                    <img class="card-img" src="/Background/IMG_9533.webp" alt="">
+                    <img class="card-img" src="Background/IMG_9533.webp" alt="">
                     <span class="news-card-badge" data-key="news6-source">Guang Ming Daily</span>
                 </div>
                 <div class="card-body">
                     <h3 data-key="news6-title">"The Sea Breeze Flows Freely Through This Treehouse" — Baan OuadChum, Chumphon</h3>
                     <p class="news-desc" style="color: #666; font-size: 0.95rem;" data-key="news6-desc">A feature from Malaysia's Guang Ming Daily (光明日报) on Baan OuadChum's coastal treehouses. The full article is behind the publisher's paywall - this card links to the original and offers a translated excerpt as a PDF.</p>
-                    <span class="news-card-link">
-                        <span data-key="news-read-more">อ่านต่อ</span>
-                        <span class="news-card-arrow"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8"/></svg></span>
-                    </span>
                 </div>
             </a>
-            <a class="news-card-pdf-fab" href="Article.pdf" download="Baan-OuadChum-Guangming-Daily-Excerpt.pdf" title="Download PDF excerpt">
-                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v13.5m0 0l-4.5-4.5M12 16.5l4.5-4.5M4.5 19.5h15"/></svg>
-                <span data-key="news6-pdf-btn">PDF</span>
-            </a>
+            <div class="news-card-actions">
+                <a class="news-card-link" href="https://guangming.com.my/好吃好玩-海风可以自由穿过这座树屋-泰国" target="_blank" rel="noopener noreferrer">
+                    <span data-key="news-read-more">อ่านต่อ</span>
+                    <span class="news-card-arrow"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8"/></svg></span>
+                </a>
+                <a class="news-card-pdf-btn" href="Article.pdf" download="Baan-OuadChum-Guangming-Daily-Excerpt.pdf" title="Download PDF excerpt">
+                    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v13.5m0 0l-4.5-4.5M12 16.5l4.5-4.5M4.5 19.5h15"/></svg>
+                    <span data-key="news6-pdf-btn">PDF</span>
+                </a>
+            </div>
         </div>
+
+        <a class="card news-card" data-category="video" data-hero-item="video" style="--news-accent:#3E723B;" href="https://fb.watch/ITE-FF_ReN/?fs=e" target="_blank" rel="noopener noreferrer">
+            <div class="img-wrapper">
+                <img class="card-img" src="Press/video1-facebook.webp" alt="">
+                <span class="news-card-badge" data-key="video1-source">Facebook</span>
+                <span class="news-card-play-icon"><svg viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="rgba(255,255,255,0.9)"/><path d="M23 18l14 10-14 10V18z" fill="#3E723B"/></svg></span>
+            </div>
+            <div class="card-body">
+                <h3 data-key="video1-title">อัปเดตชุมพร 2025 เมืองเล็กที่เที่ยวเยอะ</h3>
+                <p class="news-desc" style="color: #666; font-size: 0.95rem;" data-key="video1-desc">รีวิวที่เที่ยวชุมพรปี 2025 พาชมของกิน ที่พักบ้านต้นไม้ และกิจกรรมน่าสนใจในจังหวัด</p>
+                <span class="news-card-link">
+                    <span data-key="news-watch-video">ดูวิดีโอ</span>
+                    <span class="news-card-arrow"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8"/></svg></span>
+                </span>
+            </div>
+        </a>
+
+        <a class="card news-card" data-category="video" style="--news-accent:#3E723B;" href="https://fb.watch/ITEW-cjle-/?fs=e" target="_blank" rel="noopener noreferrer">
+            <div class="img-wrapper">
+                <img class="card-img" src="Press/video2-facebook.webp" alt="">
+                <span class="news-card-badge" data-key="video2-source">Facebook</span>
+                <span class="news-card-play-icon"><svg viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="rgba(255,255,255,0.9)"/><path d="M23 18l14 10-14 10V18z" fill="#3E723B"/></svg></span>
+            </div>
+            <div class="card-body">
+                <h3 data-key="video2-title">สถาปัตยกรรมบ้านต้นไม้อวดชุม โดย POAR</h3>
+                <p class="news-desc" style="color: #666; font-size: 0.95rem;" data-key="video2-desc">คลิปพาชมแนวคิดการออกแบบบ้านต้นไม้อวดชุม ที่ให้ต้นไม้ใหญ่เป็นเสาหลักของโครงสร้าง โดยทีมสถาปนิก POAR</p>
+                <span class="news-card-link">
+                    <span data-key="news-watch-video">ดูวิดีโอ</span>
+                    <span class="news-card-arrow"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8"/></svg></span>
+                </span>
+            </div>
+        </a>
+
+        <a class="card news-card" data-category="video" style="--news-accent:#3E723B;" href="https://www.facebook.com/share/v/1DyVLLSxAg/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">
+            <div class="img-wrapper">
+                <img class="card-img" src="Background/DSC00072.webp" alt="">
+                <span class="news-card-badge" data-key="video3-source">Facebook</span>
+                <span class="news-card-play-icon"><svg viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="rgba(255,255,255,0.9)"/><path d="M23 18l14 10-14 10V18z" fill="#3E723B"/></svg></span>
+            </div>
+            <div class="card-body">
+                <h3 data-key="video3-title">คลิปวิดีโอจากเฟซบุ๊ก</h3>
+                <p class="news-desc" style="color: #666; font-size: 0.95rem;" data-key="video3-desc">คลิปวิดีโอที่เกี่ยวข้องกับบ้านต้นไม้อวดชุม รับชมเพิ่มเติมได้ที่ Facebook</p>
+                <span class="news-card-link">
+                    <span data-key="news-watch-video">ดูวิดีโอ</span>
+                    <span class="news-card-arrow"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8"/></svg></span>
+                </span>
+            </div>
+        </a>
+
+        <a class="card news-card" data-category="video" style="--news-accent:#3E723B;" href="https://youtu.be/p1qrPfqTmys" target="_blank" rel="noopener noreferrer">
+            <div class="img-wrapper">
+                <img class="card-img" src="https://img.youtube.com/vi/p1qrPfqTmys/hqdefault.jpg" alt="">
+                <span class="news-card-badge" data-key="video4-source">YouTube</span>
+                <span class="news-card-play-icon"><svg viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="rgba(255,255,255,0.9)"/><path d="M23 18l14 10-14 10V18z" fill="#3E723B"/></svg></span>
+            </div>
+            <div class="card-body">
+                <h3 data-key="video4-title">ชุมพรมุมใหม่ ที่คุณยังจะไม่เคยเห็น | มะกอก On Tour ล่องใต้หรอยเแรง Ep.2</h3>
+                <p class="news-desc" style="color: #666; font-size: 0.95rem;" data-key="video4-desc">ตอนหนึ่งของซีรีส์ท่องเที่ยว มะกอก On Tour พาสำรวจมุมใหม่ๆ ของจังหวัดชุมพร</p>
+                <span class="news-card-link">
+                    <span data-key="news-watch-video">ดูวิดีโอ</span>
+                    <span class="news-card-arrow"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8"/></svg></span>
+                </span>
+            </div>
+        </a>
+
+        <a class="card news-card" data-category="video" style="--news-accent:#3E723B;" href="https://youtu.be/_T3iYnS30xk" target="_blank" rel="noopener noreferrer">
+            <div class="img-wrapper">
+                <img class="card-img" src="https://img.youtube.com/vi/_T3iYnS30xk/hqdefault.jpg" alt="">
+                <span class="news-card-badge" data-key="video5-source">YouTube</span>
+                <span class="news-card-play-icon"><svg viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="rgba(255,255,255,0.9)"/><path d="M23 18l14 10-14 10V18z" fill="#3E723B"/></svg></span>
+            </div>
+            <div class="card-body">
+                <h3 data-key="video5-title">อวดรวย อวดหรู หรือจะสู้ อวดชุม!! | Jumbo เคลียร์ Bug EP.20</h3>
+                <p class="news-desc" style="color: #666; font-size: 0.95rem;" data-key="video5-desc">ตอนหนึ่งของพอดแคสต์ Everyday Podcast ที่พูดคุยถึงบ้านต้นไม้อวดชุม</p>
+                <span class="news-card-link">
+                    <span data-key="news-watch-video">ดูวิดีโอ</span>
+                    <span class="news-card-arrow"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8"/></svg></span>
+                </span>
+            </div>
+        </a>
+
+        <a class="card news-card" data-category="video" style="--news-accent:#3E723B;" href="https://youtu.be/vQn8dHoJxXU" target="_blank" rel="noopener noreferrer">
+            <div class="img-wrapper">
+                <img class="card-img" src="https://img.youtube.com/vi/vQn8dHoJxXU/hqdefault.jpg" alt="">
+                <span class="news-card-badge" data-key="video6-source">YouTube</span>
+                <span class="news-card-play-icon"><svg viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="rgba(255,255,255,0.9)"/><path d="M23 18l14 10-14 10V18z" fill="#3E723B"/></svg></span>
+            </div>
+            <div class="card-body">
+                <h3 data-key="video6-title">ณัฐนรี แต้งไพศิฐพงษ์ | คิดบวก</h3>
+                <p class="news-desc" style="color: #666; font-size: 0.95rem;" data-key="video6-desc">บทสัมภาษณ์จากรายการ ช่วยคิดช่วยทำ พูดคุยถึงแนวคิดเบื้องหลังบ้านต้นไม้อวดชุม</p>
+                <span class="news-card-link">
+                    <span data-key="news-watch-video">ดูวิดีโอ</span>
+                    <span class="news-card-arrow"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8"/></svg></span>
+                </span>
+            </div>
+        </a>
 
     </div>
 </div>
@@ -1312,7 +1469,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
     <div class="modal-content reserve-modal-content">
         <button class="close-modal" onclick="closeReserveModal()">&times;</button>
         <div class="reserve-modal-banner">
-            <div class="reserve-modal-banner-icon"><img src="/logo.webp" alt="Baan OuadChum Logo"></div>
+            <div class="reserve-modal-banner-icon"><img src="logo.webp" alt="Baan OuadChum Logo"></div>
             <h2 data-key="reserve-modal-title">Reserve Your Stay</h2>
             <p data-key="reserve-modal-desc">Contact us directly via LINE or phone to check availability and book.</p>
         </div>
@@ -1354,15 +1511,21 @@ const langData = {
     en: {
         "menu-about": "Home", "menu-stay": "Stay", "menu-workshop": "Workshop", "menu-menu": "Menu", "menu-articles": "Articles", "menu-shop": "Contact",
         "btn-reserve": "Reserve",
-        "news-sub": "Stories & Inspiration", "news-title": "Articles About Baan OuadChum",
-        "filter-all": "All", "filter-design": "Design", "filter-vision": "Inspiration",
+        "news-sub": "Stories & Inspiration", "news-title": "Media About Baan OuadChum",
+        "filter-all": "All", "filter-design": "Design", "filter-vision": "Inspiration", "filter-video": "Video",
         "news1-source": "The Cloud", "news1-title": "Baan OuadChum: A Treehouse by the Sea in Pathio, Chumphon", "news1-desc": "A travel feature from The Cloud introducing Baan OuadChum's treehouses and coastal community space in Pathio, Chumphon.",
         "news2-source": "Haadthip", "news2-title": "OuadChum: From Empty Land to a Community Partnership Showcasing Chumphon's Local Wisdom", "news2-desc": "OuadChum is a community hub formed by the private sector, universities, and the community to develop local resources and bring Chumphon's local wisdom to market.",
         "news3-source": "Coffee Traveller", "news3-title": "Baan OuadChum Treehouse", "news3-desc": "Baan OuadChum Treehouse is a forest cafe in Chumphon with a signature timber design rooted in community development and sustainable coexistence with nature.",
         "news4-source": "Prachachat Business", "news4-title": "'OuadChum' Treehouse: A Community Bond with a Business Family", "news4-desc": "The Baan OuadChum Treehouse project is a community hub linking the private sector, universities, and the community in Chumphon, developing local products and sustainable tourism.",
         "news5-source": "dsign something", "news5-title": "Baan OuadChum: A Treehouse That Grows With Recycled Steel, Reclaimed Wood, and Stainless Shafts", "news5-desc": "A coastal community center project in Chumphon blending modern architecture with nature, designed to grow alongside its large trees and local surroundings sustainably.",
         "news6-source": "Guang Ming Daily", "news6-title": "\"The Sea Breeze Flows Freely Through This Treehouse\" — Baan OuadChum, Chumphon", "news6-desc": "A feature from Malaysia's Guang Ming Daily (光明日报) on Baan OuadChum's coastal treehouses. The full article is behind the publisher's paywall - this card links to the original and offers a translated excerpt as a PDF.", "news6-pdf-btn": "Download PDF",
-        "news-read-more": "Read article",
+        "video1-source": "Facebook", "video1-title": "Chumphon Update 2025: A Small Town With Plenty to Explore", "video1-desc": "A 2025 travel review of Chumphon covering food, treehouse stays, and things to do in the province.",
+        "video2-source": "Facebook", "video2-title": "Baan OuadChum Treehouse Architecture by POAR", "video2-desc": "A look at the design concept behind Baan OuadChum, where a living tree serves as the structure's main pillar - by architecture firm POAR.",
+        "video3-source": "Facebook", "video3-title": "Video clip from Facebook", "video3-desc": "A video clip related to Baan OuadChum — watch more on Facebook.",
+        "video4-source": "YouTube", "video4-title": "A New Side of Chumphon You Haven't Seen | Magok On Tour Ep.2", "video4-desc": "An episode of the \"Magok On Tour\" travel series exploring new corners of Chumphon.",
+        "video5-source": "YouTube", "video5-title": "Showing Off Wealth, Showing Off Luxury — or Baan OuadChum Wins? | Jumbo Clears Bugs EP.20", "video5-desc": "An episode of the Everyday Podcast featuring a conversation about Baan OuadChum.",
+        "video6-source": "YouTube", "video6-title": "Natnaree Taengpaisitphong | Think Positive", "video6-desc": "An interview segment from the \"Chuay Kid Chuay Tham\" show discussing the ideas behind Baan OuadChum.",
+        "news-read-more": "Read article", "news-watch-video": "Watch video",
 
         "footer-sub": "Pathio, Chumphon, Thailand<br>Cafe, Restaurant, 10-Room Treehouse-Style Accommodation<br><br>Open Daily 8:00 AM - 8:00 PM",
         "footer-copy": "© 2026 Baan OuadChum Coastal Treehouse. All Rights Reserved.",
@@ -1383,17 +1546,23 @@ const langData = {
         "footer-title": "Baan OuadChum Coastal Treehouse"
     },
     th: {
-        "menu-about": "หน้าแรก", "menu-stay": "ห้องพัก", "menu-workshop": "เวิร์คช็อป", "menu-menu": "เมนู", "menu-articles": "บทความ", "menu-shop": "ติดต่อ",
+        "menu-about": "หน้าแรก", "menu-stay": "ห้องพัก", "menu-workshop": "เวิร์คช็อป", "menu-menu": "เมนู", "menu-articles": "สื่อ", "menu-shop": "ติดต่อ",
         "btn-reserve": "ติดต่อ",
-        "news-sub": "เรื่องราวและแรงบันดาลใจ", "news-title": "บทความเกี่ยวกับบ้านอวดชุม",
-        "filter-all": "ทั้งหมด", "filter-design": "งานออกแบบ", "filter-vision": "แรงบันดาลใจ",
+        "news-sub": "เรื่องราวและแรงบันดาลใจ", "news-title": "สื่อเกี่ยวกับบ้านอวดชุม",
+        "filter-all": "ทั้งหมด", "filter-design": "งานออกแบบ", "filter-vision": "แรงบันดาลใจ", "filter-video": "วิดีโอ",
         "news1-source": "The Cloud", "news1-title": "บ้านอวดชุม บ้านต้นไม้ริมทะเลปะทิว ชุมพร", "news1-desc": "บทความท่องเที่ยวจาก The Cloud ที่พาไปรู้จักบ้านต้นไม้และพื้นที่ชุมชนอวดชุม ริมทะเลอำเภอปะทิว จังหวัดชุมพร",
         "news2-source": "หาดทิพย์", "news2-title": "อวดชุม จากผืนดินว่างเปล่า สู่การจับมือชาวบ้านอวดภูมิปัญญาเมืองชุมพร", "news2-desc": "\"อวดชุม\" ศูนย์กลางชุมชนที่เกิดจากการรวมตัวของภาคเอกชน มหาวิทยาลัย และชุมชน เพื่อพัฒนาทรัพยากรท้องถิ่นและส่งเสริมภูมิปัญญาในจังหวัดชุมพรให้เป็นที่รู้จักในตลาด",
         "news3-source": "Coffee Traveller", "news3-title": "บ้านต้นไม้อวดชุม", "news3-desc": "\"บ้านต้นไม้อวดชุม\" ร้านกาแฟกลางป่าในชุมพร ออกแบบด้วยสถาปัตยกรรมไม้เอกลักษณ์ ยึดหลักการพัฒนาชุมชนและอยู่ร่วมกับธรรมชาติอย่างยั่งยืน",
         "news4-source": "ประชาชาติธุรกิจ", "news4-title": "'อวดชุม' บ้านต้นไม้ สายใยชุมชนกับตระกูลเจ้าสัว", "news4-desc": "โครงการ \"บ้านต้นไม้อวดชุม\" ศูนย์กลางชุมชนที่เชื่อมโยงภาคเอกชน มหาวิทยาลัย และชุมชนในจังหวัดชุมพร มุ่งพัฒนาผลิตภัณฑ์ท้องถิ่นและการท่องเที่ยวอย่างยั่งยืน",
         "news5-source": "dsign something", "news5-title": "บ้านอวดชุม บ้านต้นไม้ที่เติบโตไปพร้อมกับโครงสร้างเหล็กฉากรีไซเคิล ไม้เก่า และเพลาสแตนเลส", "news5-desc": "โครงการศูนย์ชุมชนริมทะเลในจังหวัดชุมพรที่ผสมผสานสถาปัตยกรรมสมัยใหม่กับธรรมชาติ ออกแบบให้เติบโตไปพร้อมกับต้นไม้ใหญ่และสภาพแวดล้อมท้องถิ่นอย่างยั่งยืน",
         "news6-source": "Guang Ming Daily 光明日报", "news6-title": "สายลมทะเลพัดผ่านบ้านต้นไม้หลังนี้ได้อย่างอิสระ — Baan OuadChum จ.ชุมพร", "news6-desc": "บทความจากสื่อมาเลเซีย Guang Ming Daily (光明日报) พาไปสัมผัสบรรยากาศบ้านต้นไม้อวดชุมริมทะเลปะทิว ชุมพร บทความฉบับเต็มอยู่หลังระบบสมาชิกของสำนักข่าว การ์ดนี้มีลิงก์ไปยังต้นฉบับ พร้อมไฟล์ PDF เนื้อหาบางส่วนที่แปลไว้ให้", "news6-pdf-btn": "ดาวน์โหลด PDF",
-        "news-read-more": "อ่านต่อ",
+        "video1-source": "Facebook", "video1-title": "อัปเดตชุมพร 2025 เมืองเล็กที่เที่ยวเยอะ", "video1-desc": "รีวิวที่เที่ยวชุมพรปี 2025 พาชมของกิน ที่พักบ้านต้นไม้ และกิจกรรมน่าสนใจในจังหวัด",
+        "video2-source": "Facebook", "video2-title": "สถาปัตยกรรมบ้านต้นไม้อวดชุม โดย POAR", "video2-desc": "คลิปพาชมแนวคิดการออกแบบบ้านต้นไม้อวดชุม ที่ให้ต้นไม้ใหญ่เป็นเสาหลักของโครงสร้าง โดยทีมสถาปนิก POAR",
+        "video3-source": "Facebook", "video3-title": "คลิปวิดีโอจากเฟซบุ๊ก", "video3-desc": "คลิปวิดีโอที่เกี่ยวข้องกับบ้านต้นไม้อวดชุม รับชมเพิ่มเติมได้ที่ Facebook",
+        "video4-source": "YouTube", "video4-title": "ชุมพรมุมใหม่ ที่คุณยังจะไม่เคยเห็น | มะกอก On Tour ล่องใต้หรอยเแรง Ep.2", "video4-desc": "ตอนหนึ่งของซีรีส์ท่องเที่ยว มะกอก On Tour พาสำรวจมุมใหม่ๆ ของจังหวัดชุมพร",
+        "video5-source": "YouTube", "video5-title": "อวดรวย อวดหรู หรือจะสู้ อวดชุม!! | Jumbo เคลียร์ Bug EP.20", "video5-desc": "ตอนหนึ่งของพอดแคสต์ Everyday Podcast ที่พูดคุยถึงบ้านต้นไม้อวดชุม",
+        "video6-source": "YouTube", "video6-title": "ณัฐนรี แต้งไพศิฐพงษ์ | คิดบวก", "video6-desc": "บทสัมภาษณ์จากรายการ ช่วยคิดช่วยทำ พูดคุยถึงแนวคิดเบื้องหลังบ้านต้นไม้อวดชุม",
+        "news-read-more": "อ่านต่อ", "news-watch-video": "ดูวิดีโอ",
 
         "footer-sub": "ปะทิว ชุมพร ประเทศไทย<br>คาเฟ่ ร้านอาหาร ที่พักสไตล์บ้านต้นไม้ 10 ห้อง<br><br>เปิดทุกวัน 8:00-20:00",
         "footer-copy": "© 2026 บ้านต้นไม้อวดชุม สงวนลิขสิทธิ์ทั้งหมด",
@@ -1420,7 +1589,7 @@ let currentLang = 'en';
 
 const metaI18n = {
     th: {
-        title: "บทความ | บ้านต้นไม้อวดชุม",
+        title: "สื่อ | บ้านต้นไม้อวดชุม",
         description: "เรื่องราว ข่าวสาร และบทความออกแบบเกี่ยวกับบ้านต้นไม้อวดชุม รีสอร์ทบ้านต้นไม้เพื่อความยั่งยืนและศูนย์รวมชุมชน ปะทิว ชุมพร",
         ogLocale: "th_TH"
     },
@@ -1498,12 +1667,13 @@ function unlockBodyScroll() {
 }
 
 const heroVariants = {
-    default: { source: "news1-source", title: "news1-title", desc: "news1-desc", img: "/Background/IMG_2692.JPG", href: "https://readthecloud.com/travel/share-location/baan-ouad-chum/" },
-    design: { source: "news5-source", title: "news5-title", desc: "news5-desc", img: "/Background/DSC00171.JPG", href: "https://dsignsomething.com/2025/07/30/house-5/" }
+    default: { source: "news1-source", title: "news1-title", desc: "news1-desc", img: "Press/news1-readthecloud.webp", href: "https://readthecloud.com/travel/share-location/baan-ouad-chum/" },
+    design: { source: "news5-source", title: "news5-title", desc: "news5-desc", img: "Press/news5-dsignsomething.webp", href: "https://dsignsomething.com/2025/07/30/house-5/" },
+    video: { source: "video1-source", title: "video1-title", desc: "video1-desc", img: "Press/video1-facebook.webp", href: "https://fb.watch/ITE-FF_ReN/?fs=e", cta: "news-watch-video" }
 };
 
 function updateHero(category) {
-    const variant = category === 'design' ? heroVariants.design : heroVariants.default;
+    const variant = heroVariants[category] || heroVariants.default;
     const hero = document.getElementById('articleHero');
     hero.href = variant.href;
     hero.querySelector('.news-hero-img').src = variant.img;
@@ -1517,15 +1687,22 @@ function updateHero(category) {
     sourceEl.textContent = langData[currentLang][variant.source];
     titleEl.textContent = langData[currentLang][variant.title];
     descEl.innerHTML = langData[currentLang][variant.desc];
+
+    const ctaKey = variant.cta || 'news-read-more';
+    const ctaEl = hero.querySelector('.news-hero-link span[data-key]');
+    ctaEl.setAttribute('data-key', ctaKey);
+    ctaEl.textContent = langData[currentLang][ctaKey];
 }
 
 function filterArticles(category, btn) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    updateHero(category);
+    // Video filter: no featured/oversized card, every video shows as an equal-sized grid card.
+    document.getElementById('articleHero').style.display = category === 'video' ? 'none' : '';
+    if (category !== 'video') updateHero(category);
     document.querySelectorAll('.news-grid .news-card').forEach(card => {
         const matches = category === 'all' || card.getAttribute('data-category') === category;
-        const duplicatesHero = card.getAttribute('data-hero-item') === category;
+        const duplicatesHero = category !== 'video' && card.getAttribute('data-hero-item') === category;
         card.style.display = (matches && !duplicatesHero) ? '' : 'none';
     });
 }
@@ -1537,7 +1714,7 @@ function openLineContact() {
 function openReserveModal() {
     document.getElementById("reserveModal").classList.add("active");
     lockBodyScroll();
-    document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
+    window.scrollTo({ top: window.innerWidth <= 1024 ? 7720 : 4835.33349609375, behavior: "smooth" });
 }
 function closeReserveModal() {
     document.getElementById("reserveModal").classList.remove("active");
@@ -1612,7 +1789,7 @@ document.addEventListener("DOMContentLoaded", () => {
             nav.style.background = "rgba(255, 255, 255, 0.9)";
         }
 
-        if (window.innerWidth <= 767 && window.scrollY > 80 && window.scrollY > lastScrollY) {
+        if (window.innerWidth <= 1024 && window.scrollY > 80 && window.scrollY > lastScrollY) {
             nav.classList.add('nav-hidden');
         } else {
             nav.classList.remove('nav-hidden');

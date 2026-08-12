@@ -18,8 +18,8 @@
 <meta name="twitter:title" content="เวิร์คช็อป | บ้านต้นไม้อวดชุม">
 <meta name="twitter:description" content="ร่วมกิจกรรมเวิร์คช็อปที่บ้านต้นไม้อวดชุม เก็บน้ำผึ้งแบบอนุรักษ์ ทำน้ำตาลจากตาล ทำกะปิเคยแบบโบราณ ทำช็อกโกแลตจากเมล็ดโกโก้ และทำน้ำหอมจากสมุนไพร ที่ชุมพร">
 <meta name="twitter:image" content="https://ouadchum.com/Workshop/1.webp">
-<link rel="icon" href="/logo.webp" type="image/webp">
-<link rel="apple-touch-icon" href="/logo.webp">
+<link rel="icon" href="logo.webp" type="image/webp">
+<link rel="apple-touch-icon" href="logo.webp">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -71,6 +71,10 @@ body{
 }
 
 body.modal-locked {
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 100%;
     overflow: hidden;
     touch-action: none;
     overscroll-behavior: none;
@@ -109,7 +113,7 @@ nav{
     transition: var(--transition);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     nav.nav-hidden {
         transform: translateY(-100%);
     }
@@ -181,7 +185,7 @@ nav{
 .nav-links a:hover::after { width: 100%; }
 .nav-links a:hover{ color:var(--primary); }
 
-@media (min-width: 768px) and (max-width: 1100px) {
+@media (min-width: 1025px) and (max-width: 1100px) {
     .nav-menu-wrapper { margin-left: 18px; }
     .nav-links { gap: 24px; }
     .nav-links a { font-size: 0.82rem; letter-spacing: 0.3px; }
@@ -302,11 +306,11 @@ nav{
     .grid-2 { grid-template-columns: 1fr; }
 }
 
-@media(min-width: 768px) {
+@media(min-width: 1025px) {
     .grid-3 { grid-template-columns: repeat(2, 1fr); }
     .grid-4 { grid-template-columns: repeat(2, 1fr); }
 }
-@media(min-width: 992px) {
+@media(min-width: 1025px) {
     .grid-3 { grid-template-columns: repeat(3, 1fr); }
     .grid-4 { grid-template-columns: repeat(4, 1fr); }
     .grid-5 { grid-template-columns: repeat(5, 1fr); }
@@ -552,7 +556,7 @@ nav{
     gap: 14px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     .news-hero {
         height: 420px;
         border-radius: 14px;
@@ -607,87 +611,188 @@ nav{
     margin-bottom: 10px;
 }
 
-.workshop-strip-wrap {
+/* Workshop cards: a standard photo-top card grid (same "card + hover-lift +
+   colored glow" language as the news cards elsewhere on the site) instead of
+   the old fan-strip - each card opens a modal with the full write-up rather
+   than expanding in place, so it works the same on mobile and desktop. */
+/* Contained, safe-by-default strip: no viewport-breakout tricks here, so
+   iPad/mobile never risks the horizontal-overflow bugs those cause on
+   touch browsers. The full-bleed 5-across grid only kicks in at desktop
+   widths, below in the min-width:1025px block. */
+.workshop-grid {
     display: flex;
-    width: 100%;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: var(--shadow-lg);
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 10px;
 }
 .workshop-card {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 78%;
+    scroll-snap-align: start;
+    min-width: 0;
     text-decoration: none;
     color: inherit;
     border: none;
-    border-radius: 0;
     padding: 0;
     margin: 0;
     font: inherit;
     text-align: left;
-    flex: 1;
-    min-width: 0;
-    background: var(--white);
     cursor: pointer;
-    transition: flex 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    border-radius: 14px;
+    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s ease;
 }
-.workshop-card .img-wrapper {
-    height: 820px;
+.workshop-card:hover {
+    transform: translateY(-8px);
+    box-shadow:
+        0 20px 40px -14px color-mix(in srgb, var(--ws-accent, var(--primary)) 55%, transparent),
+        var(--shadow-md);
 }
-.workshop-card .card-img {
-    transition: filter 0.35s ease;
-    filter: saturate(0.95) brightness(0.97);
+/* Cards run in a single row across the full screen width, so the photo
+   only needs a shorter, more landscape-shaped crop rather than the tall
+   portrait one a narrower column would need. */
+.workshop-card .img-wrapper { height: 240px; }
+/* Desktop-only: break the strip out to the full viewport width and lay
+   all 5 cards out as even columns so they fit on one screen with no
+   scrolling - see the contained default above for why this stays
+   scoped to min-width:1025px instead of applying everywhere. */
+@media (min-width: 1025px) {
+    .workshop-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        overflow-x: visible;
+        width: 100vw;
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        padding: 0 16px 10px;
+    }
+    .workshop-card { flex: initial; scroll-snap-align: none; }
+    .workshop-card .img-wrapper { height: 260px; }
 }
-.workshop-card:hover .card-img {
-    filter: saturate(1.05) brightness(1);
-}
-.workshop-tile-fade {
+.workshop-card .card-img { transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.workshop-card:hover .card-img { transform: scale(1.08); }
+.workshop-card .img-wrapper::after {
+    content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(15,20,18,0.8) 0%, rgba(15,20,18,0.25) 45%, rgba(15,20,18,0) 70%);
-    z-index: 1;
-}
-.workshop-card .card-body {
-    position: absolute;
-    left: 16px;
-    right: 60px;
-    top: 66px;
-    z-index: 2;
-    padding: 0;
-    text-align: left;
-}
-.workshop-card .card-body h3 {
-    font-size: 0.92rem;
-    font-weight: 600;
-    color: #fff;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
-    transition: font-size 0.35s ease;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.workshop-strip-wrap.has-active .workshop-card { flex: 0 0 0; opacity: 0; }
-.workshop-strip-wrap.has-active .workshop-card.active { flex: 1 1 100%; opacity: 1; }
-.workshop-strip-wrap.has-active .workshop-card.active .card-body h3 {
-    font-size: 1.4rem;
-    white-space: normal;
+    background: linear-gradient(180deg, rgba(15,20,18,0) 55%, rgba(15,20,18,0.35) 100%);
+    pointer-events: none;
 }
 
-.workshop-details {
+.workshop-tile-icon {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--white);
-    color: var(--dark);
-    padding: 24px 28px;
+    left: 14px;
+    top: 14px;
     z-index: 2;
-    clip-path: inset(0 100% 0 0);
-    pointer-events: none;
-    transition: clip-path 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ws-accent, var(--primary-dark));
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, color 0.3s ease, box-shadow 0.35s ease;
 }
-.workshop-card.active .workshop-details:not(:empty) {
-    clip-path: inset(0 0 0 0);
-    pointer-events: auto;
+.workshop-tile-icon svg { width: 28px; height: 28px; }
+.workshop-card:hover .workshop-tile-icon {
+    transform: scale(1.1);
+    background: var(--ws-accent, var(--primary));
+    color: #fff;
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--ws-accent, var(--primary)) 25%, transparent), 0 4px 14px rgba(0,0,0,0.2);
+}
+.workshop-card-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+    background: rgba(255,255,255,0.92);
+    padding: 5px 11px;
+    border-radius: 20px;
+    font-size: 0.64rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--ws-accent, var(--primary-dark));
+}
+.workshop-card .card-body {
+    position: relative;
+    padding: 28px 24px 30px;
+}
+.workshop-card .card-body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 24px;
+    width: 36px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--ws-accent, var(--primary));
+}
+.workshop-card h3 {
+    font-size: 1.25rem;
+    line-height: 1.35;
+    margin-bottom: 12px;
+    transition: color 0.25s ease;
+}
+.workshop-card:hover h3 { color: var(--ws-accent, var(--primary-dark)); }
+.workshop-card-teaser {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 14px;
+}
+.workshop-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--ws-accent, var(--primary-dark));
+}
+.workshop-card-cta-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--ws-accent, var(--primary));
+    color: #fff;
+    transition: transform 0.25s ease;
+}
+.workshop-card:hover .workshop-card-cta-arrow { transform: translateX(4px); }
+
+/* Workshop detail modal - the real write-up (ws1) uses these same classes it
+   always has (.ws-highlight / <ul><li> / .workshop-meta-grid), just rendered
+   inside a normal modal body now instead of an absolutely-positioned sheet. */
+.workshop-modal-header {
+    position: relative;
+    height: 200px;
+    margin: -30px -30px 20px -30px;
+    overflow: hidden;
+}
+.workshop-modal-header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 .workshop-details p {
     margin-bottom: 10px;
@@ -716,77 +821,306 @@ nav{
     font-size: 0.85rem;
 }
 .workshop-meta-grid strong { color: var(--primary-dark); }
-
-.workshop-tile-icon {
-    position: absolute;
-    left: 16px;
-    top: 16px;
-    z-index: 2;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    border: 1px solid rgba(255,255,255,0.35);
+/* 4 headline stats (minimum/age/duration/season) as solid-green boxes with
+   an icon in front, styled apart from the plainer .workshop-meta-grid used
+   for the lower-priority logistics details (travel time, transport, etc). */
+.ws-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 16px 0;
+}
+.ws-meta-box {
+    background: var(--primary);
+    color: #fff;
+    border-radius: 12px;
+    padding: 8px 12px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: #fff;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, box-shadow 0.35s ease;
+    gap: 8px;
+    min-width: 0;
 }
-.workshop-close-btn {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    z-index: 3;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.9);
-    border: 1px solid rgba(255,255,255,0.6);
-    color: var(--dark);
-    display: none;
+.ws-meta-box svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+}
+.ws-meta-box-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    min-width: 0;
+}
+.ws-meta-box-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    opacity: 0.85;
+}
+.ws-meta-box-value {
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+/* Stays on one row even on narrow phones - each box shrinks and switches
+   to a stacked icon-over-text layout instead of wrapping to a second row. */
+@media (max-width: 1024px) {
+    .ws-meta-grid {
+        gap: 6px;
+    }
+    .ws-meta-box {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 3px;
+        padding: 6px 4px;
+    }
+    .ws-meta-box svg {
+        width: 15px;
+        height: 15px;
+    }
+    .ws-meta-box-text {
+        align-items: center;
+    }
+    .ws-meta-box-label {
+        font-size: 0.56rem;
+    }
+    .ws-meta-box-value {
+        font-size: 0.68rem;
+        overflow-wrap: anywhere;
+    }
+}
+/* "What we provide" + "Workshop Location" boxes */
+.ws-provide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+    align-items: stretch;
+}
+.ws-provide-box {
+    background: var(--primary-light);
+    border: 1px solid rgba(62, 114, 59, 0.15);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.ws-provide-box h4 {
+    display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    line-height: 1;
-    cursor: pointer;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+    gap: 8px;
+    color: var(--primary-dark);
+    font-size: 0.88rem;
+    margin-bottom: 8px;
 }
-.workshop-card.active .workshop-close-btn { display: flex; }
-.workshop-close-btn:hover { background: #fff; }
-.workshop-tile-icon svg {
+.ws-provide-box h4 svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    color: var(--primary);
+}
+.ws-provide-box ul {
+    margin: 0 0 0 18px;
+}
+.ws-provide-box p {
+    margin-bottom: 0;
+}
+/* Placeholder map graphic for the Workshop Location box - stand-in until
+   a real map/photo is dropped in. */
+.ws-map-graphic {
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 4px 0 10px;
+}
+.ws-map-graphic svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+/* Section headings that carry an icon in front of the text (e.g. "About
+   the Coach") - layered on top of .ws-highlight rather than replacing it. */
+.ws-highlight-icon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.ws-highlight-icon svg {
+    flex-shrink: 0;
     width: 20px;
     height: 20px;
+    color: var(--primary);
 }
-.workshop-card:hover .workshop-tile-icon {
-    transform: scale(1.12);
-    background: var(--accent);
-    border-color: var(--accent);
-    box-shadow: 0 0 0 6px rgba(197,168,128,0.25), 0 4px 14px rgba(0,0,0,0.2);
+/* "About the Coach" - square photo placeholder next to a short bio. */
+.ws-coach-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--primary-light);
+    border: 1px solid rgba(62, 114, 59, 0.15);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 10px 0 16px;
+}
+.ws-coach-photo {
+    flex-shrink: 0;
+    width: 130px;
+    aspect-ratio: 1 / 1;
+    border-radius: 10px;
+    background: rgba(62, 114, 59, 0.12);
+    overflow: hidden;
+    border: none;
+    padding: 0;
+    cursor: zoom-in;
+    display: block;
+}
+@media (max-width: 480px) {
+    .ws-coach-box {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .ws-coach-photo {
+        width: 160px;
+    }
+}
+.ws-coach-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+.ws-coach-photo:hover img {
+    transform: scale(1.03);
+}
+.ws-coach-bio {
+    margin-bottom: 0 !important;
+}
+/* Single-photo lightbox for the coach portrait - same fade + backdrop-click
+   + Esc idiom as the rest of the site's modals, just without prev/next
+   arrows since there's only ever the one photo. */
+.coach-lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    padding: 20px;
+}
+.coach-lightbox-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.coach-lightbox-overlay img {
+    display: block;
+    max-width: 90vw;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    transform: scale(0.94);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.coach-lightbox-overlay.active img {
+    transform: scale(1);
+}
+.coach-lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+.coach-lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+@media (max-width: 600px) {
+    .coach-lightbox-close {
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        font-size: 1.3rem;
+    }
+}
+.workshop-modal-soon {
+    text-align: center;
+    padding: 10px 0 20px;
+    color: #666;
+    line-height: 1.6;
+}
+.workshop-modal-soon a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    color: var(--primary-dark);
+    font-weight: 700;
+    text-decoration: none;
 }
 
-@media (max-width: 767px) {
-    .workshop-strip-wrap { flex-direction: column; }
-    .workshop-card { flex: none; }
-    .workshop-card .img-wrapper { height: 200px; }
-    .workshop-strip-wrap.has-active .workshop-card { flex: none; height: 0; opacity: 0; overflow: hidden; }
-    .workshop-strip-wrap.has-active .workshop-card.active { flex: none; height: auto; opacity: 1; }
-}
-
-/* Contact section (lives inside the footer) */
+/* Contact section (lives inside the footer) - all 7 boxes stay on one row
+   on every screen size: each card shrinks equally (flex + min-width:0)
+   to fit the available width instead of wrapping or overflowing the frame.
+   The media query below shrinks icon/text sizing further on narrow phones
+   so the shrunk cards stay legible instead of squeezing their content. */
 .footer-contact-grid {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
     margin: 0 auto;
     max-width: 980px;
-    gap: 20px;
+    gap: 10px;
 }
 .footer-contact-grid .contact-card {
-    flex: 0 1 160px;
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 20px 8px;
+}
+.footer-contact-grid .contact-card h4,
+.footer-contact-grid .contact-card p {
+    overflow-wrap: anywhere;
+}
+@media (max-width: 1024px) {
+    .footer-contact-grid {
+        gap: 6px;
+    }
+    .footer-contact-grid .contact-card {
+        padding: 12px 4px;
+    }
+    .footer-contact-grid .contact-icon {
+        width: 34px;
+        height: 34px;
+        margin: 0 auto 8px auto;
+    }
+    .footer-contact-grid .contact-card h4 {
+        font-size: 0.68rem;
+        margin-bottom: 3px;
+    }
+    .footer-contact-grid .contact-card p {
+        font-size: 0.58rem;
+    }
 }
 .footer-map-wrapper {
     max-width: 900px;
@@ -1006,6 +1340,17 @@ nav{
     transform: scale(1);
 }
 
+/* Zero-height sticky wrapper so the close button tracks the top of the
+   scrollable .modal-content as it's scrolled, instead of scrolling away
+   with the content underneath it (position:absolute alone still scrolls
+   with its container - only lifting it out via a sticky wrapper keeps it
+   pinned to the visible top-right corner of the card). */
+.close-modal-sticky-wrap {
+    position: sticky;
+    top: 0;
+    height: 0;
+    z-index: 21;
+}
 .close-modal {
     position: absolute;
     top: 14px;
@@ -1131,22 +1476,22 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 /* News page section: sits directly under the fixed nav (no hero above it),
    so it needs its own clearance instead of relying on a hero for spacing. */
 .news-page-section {
-    padding-top: 160px;
+    padding-top: 120px;
 }
 
 /* MEDIA QUERIES FOR SMALLER DEVICES */
-@media(max-width:767px){
+@media(max-width:1024px){
     body { padding-bottom: 75px; }
     section { padding: 70px 0; }
     .section-title { font-size: 1.85rem; }
-    .news-page-section { padding-top: 150px; }
+    .news-page-section { padding-top: 110px; }
 
     .booking-fields { display: none; }
     .mobile-book-trigger { display: block; }
     .booking-bar { padding: 10px 0; }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     :root { --nav-h: 200px; } /* nav is taller here since it wraps to two rows */
     .hamburger { display: none; }
     .nav-inner {
@@ -1211,17 +1556,17 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 <nav id="navbar">
 <div class="container nav-inner">
 <a href="index.html" class="logo">
-    <img src="/logo.webp" alt="Baan OuadChum Logo" class="logo-icon" width="594" height="600">
+    <img src="logo.webp" alt="Baan OuadChum Logo" class="logo-icon" width="594" height="600">
     <span class="logo-word">Baan OuadChum</span>
 </a>
 
 <div class="nav-menu-wrapper" id="navMenuWrapper">
     <div class="nav-links">
         <a href="index.html" data-key="menu-about" onclick="closeMenu()">หน้าแรก</a>
-        <a href="index.html#stay" data-key="menu-stay" onclick="closeMenu()">ห้องพัก</a>
-        <a href="workshop.html" data-key="menu-workshop" onclick="closeMenu()">เวิร์คช็อป</a>
+        <a href="index.html#stayTitle" data-key="menu-stay" onclick="closeMenu()">ห้องพัก</a>
+        <a href="workshop.html" data-key="menu-workshop" onclick="event.preventDefault(); closeMenu(); window.scrollTo({top:0, behavior:'smooth'});">เวิร์คช็อป</a>
         <a href="menu.html" data-key="menu-menu" onclick="closeMenu()">เมนู</a>
-        <a href="articles.html" data-key="menu-articles" onclick="closeMenu()">บทความ</a>
+        <a href="articles.html" data-key="menu-articles" onclick="closeMenu()">สื่อ</a>
     </div>
 </div>
 
@@ -1246,61 +1591,60 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
         <h2 class="section-title" data-key="page-title">เวิร์คช็อป</h2>
     </div>
 
-    <div class="workshop-strip-wrap">
-        <button type="button" class="card workshop-card" onclick="toggleWorkshopCard(event, this)">
+    <div class="workshop-grid">
+        <button type="button" class="card workshop-card" style="--ws-accent:#3E723B;" onclick="openWorkshopModal('ws1')">
             <div class="img-wrapper">
-                <img class="card-img" src="/Workshop/1.webp" alt="">
+                <img class="card-img" src="Workshop/1.webp" alt="">
                 <span class="workshop-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="13.5" rx="4.5" ry="6"/><path d="M7.5 11h9M7.5 14h9M8.5 17h7"/><path d="M12 7.5V5"/><path d="M10 5.5l2-1 2 1"/><ellipse cx="6.3" cy="11" rx="2.2" ry="1.5" transform="rotate(-20 6.3 11)"/><ellipse cx="17.7" cy="11" rx="2.2" ry="1.5" transform="rotate(20 17.7 11)"/></svg></span>
-                <span class="workshop-close-btn" onclick="event.stopPropagation(); toggleWorkshopCard(event, this.closest('.workshop-card'))">&times;</span>
-                <div class="workshop-tile-fade"></div>
-                <div class="card-body">
+            </div>
+            <div class="card-body">
                 <h3 data-key="ws1-title">เวิร์คช็อปเก็บน้ำผึ้งแบบอนุรัก</h3>
-                </div>
-                <div class="workshop-details" data-key="ws1-details"></div>
+                <p class="workshop-card-teaser" data-key="ws1-teaser">เก็บน้ำผึ้งอย่างยั่งยืนกลางป่าปะทิว สัมผัสประสบการณ์ผู้เลี้ยงผึ้งตัวจริง</p>
+                <span class="workshop-card-cta"><span data-key="btn-workshop-details">ดูรายละเอียด</span><span class="workshop-card-cta-arrow">›</span></span>
             </div>
         </button>
-        <button type="button" class="card workshop-card" onclick="toggleWorkshopCard(event, this)">
+        <button type="button" class="card workshop-card" style="--ws-accent:#3E723B;" onclick="openWorkshopModal('ws2')">
             <div class="img-wrapper">
-                <img class="card-img" src="/Workshop/4.webp" alt="">
-                <span class="workshop-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c4.5-1 7-5.5 7-10.5C19 6 16 3 12 3S5 6 5 10.5C5 15.5 7.5 20 12 21z"/><path d="M12 4v16"/></svg></span>
-                <span class="workshop-close-btn" onclick="event.stopPropagation(); toggleWorkshopCard(event, this.closest('.workshop-card'))">&times;</span>
-                <div class="workshop-tile-fade"></div>
-                <div class="card-body">
-                <h3 data-key="ws4-title">เวิร์คช็อปทำช็อกโกแลตจากเมล็ดโกโก้</h3>
-                </div>
-            </div>
-        </button>
-        <button type="button" class="card workshop-card" onclick="toggleWorkshopCard(event, this)">
-            <div class="img-wrapper">
-                <img class="card-img" src="/Workshop/2.webp" alt="">
+                <img class="card-img" src="Workshop/2.webp" alt="">
                 <span class="workshop-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V10"/><path d="M12 10c-2-3-5-4-8-3"/><path d="M12 10c2-3 5-4 8-3"/><path d="M12 10c-1-4-3-6-6-6"/><path d="M12 10c1-4 3-6 6-6"/><path d="M12 10c0-3 0-5-1-7"/></svg></span>
-                <span class="workshop-close-btn" onclick="event.stopPropagation(); toggleWorkshopCard(event, this.closest('.workshop-card'))">&times;</span>
-                <div class="workshop-tile-fade"></div>
-                <div class="card-body">
+            </div>
+            <div class="card-body">
                 <h3 data-key="ws2-title">เวิร์คช็อปทำน้ำตาลจาก</h3>
-                </div>
+                <p class="workshop-card-teaser" data-key="ws2-teaser">ลุยคลองบางสนเก็บน้ำหวานจากต้นจาก มาทำ 'น้ำตาลจาก' ความหวานหายากที่ดีต่อสุขภาพ</p>
+                <span class="workshop-card-cta"><span data-key="btn-workshop-details">ดูรายละเอียด</span><span class="workshop-card-cta-arrow">›</span></span>
             </div>
         </button>
-        <button type="button" class="card workshop-card" onclick="toggleWorkshopCard(event, this)">
+        <button type="button" class="card workshop-card" style="--ws-accent:#3E723B;" onclick="openWorkshopModal('ws3')">
             <div class="img-wrapper">
-                <img class="card-img" src="/Workshop/3.webp" alt="">
+                <img class="card-img" src="Workshop/3.webp" alt="">
                 <span class="workshop-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14c0-5 4-9 10-9 2.5 0 4 1.5 4 3.5S16.5 12 14 12H8"/><path d="M8 12c-2.2 0-4 1.5-4 3.5S5.8 19 8 19c1.5 0 2.5-.7 3-1.5"/><path d="M14 5l1.8-2M16.5 6l2.5-1"/><path d="M4.5 16l-2 1.2M5 18l-1.5 2"/></svg></span>
-                <span class="workshop-close-btn" onclick="event.stopPropagation(); toggleWorkshopCard(event, this.closest('.workshop-card'))">&times;</span>
-                <div class="workshop-tile-fade"></div>
-                <div class="card-body">
+            </div>
+            <div class="card-body">
                 <h3 data-key="ws3-title">เวิร์คช็อปทำกะปิเคยขัดน้ำแบบโบราณ</h3>
-                </div>
+                <p class="workshop-card-teaser" data-key="ws3-teaser">เรียนสูตรกะปิเคยแบบโบราณสืบทอดหลายรุ่นจากป้าปิ่น หอมอร่อยเป็นเอกลักษณ์ของชุมพร</p>
+                <span class="workshop-card-cta"><span data-key="btn-workshop-details">ดูรายละเอียด</span><span class="workshop-card-cta-arrow">›</span></span>
             </div>
         </button>
-        <button type="button" class="card workshop-card" onclick="toggleWorkshopCard(event, this)">
+        <button type="button" class="card workshop-card" style="--ws-accent:#3E723B;" onclick="openWorkshopModal('ws4')">
             <div class="img-wrapper">
-                <img class="card-img" src="/Workshop/5.webp" alt="">
+                <img class="card-img" src="Workshop/4.webp" alt="">
+                <span class="workshop-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c4.5-1 7-5.5 7-10.5C19 6 16 3 12 3S5 6 5 10.5C5 15.5 7.5 20 12 21z"/><path d="M12 4v16"/></svg></span>
+            </div>
+            <div class="card-body">
+                <h3 data-key="ws4-title">เวิร์คช็อปทำช็อกโกแลตจากเมล็ดโกโก้</h3>
+                <p class="workshop-card-teaser" data-key="ws4-teaser">เวิร์คช็อปช็อกโกแลตจากไร่โกโก้ท้องถิ่นกับ J&amp;O ชิมช็อกโกแลตเข้มข้นสูตรขายดีของร้าน</p>
+                <span class="workshop-card-cta"><span data-key="btn-workshop-details">ดูรายละเอียด</span><span class="workshop-card-cta-arrow">›</span></span>
+            </div>
+        </button>
+        <button type="button" class="card workshop-card" style="--ws-accent:#3E723B;" onclick="openWorkshopModal('ws5')">
+            <div class="img-wrapper">
+                <img class="card-img" src="Workshop/5.webp" alt="">
                 <span class="workshop-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="2.6"/><circle cx="7.5" cy="12" r="2.6"/><circle cx="16.5" cy="12" r="2.6"/><circle cx="12" cy="17" r="2.6"/><circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none"/></svg></span>
-                <span class="workshop-close-btn" onclick="event.stopPropagation(); toggleWorkshopCard(event, this.closest('.workshop-card'))">&times;</span>
-                <div class="workshop-tile-fade"></div>
-                <div class="card-body">
-                <h3 data-key="ws5-title">เวิร์คช็อปทำน้ำหอมจากสมุนไพรสวนป่าเล้งเหลา</h3>
-                </div>
+            </div>
+            <div class="card-body">
+                <h3 data-key="ws5-title">เวิร์คช็อปสวนป่าในขวด</h3>
+                <p class="workshop-card-teaser" data-key="ws5-teaser">ผสมไม้หอมและสมุนไพรจากสวนป่าเล้งเหลา สร้างสรรค์กลิ่นยาดมสูตรเฉพาะตัวคุณเอง</p>
+                <span class="workshop-card-cta"><span data-key="btn-workshop-details">ดูรายละเอียด</span><span class="workshop-card-cta-arrow">›</span></span>
             </div>
         </button>
     </div>
@@ -1390,11 +1734,27 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
     </div>
 </div>
 
+<div class="modal" id="workshopModal">
+    <div class="modal-content" style="max-width: 820px; padding: 30px;">
+        <div class="close-modal-sticky-wrap"><button class="close-modal" onclick="closeWorkshopModal()">&times;</button></div>
+        <div class="workshop-modal-header">
+            <img id="workshopModalImg" src="" alt="">
+        </div>
+        <h2 id="workshopModalTitle" style="color: var(--primary-dark); margin-bottom: 16px;"></h2>
+        <div id="workshopModalBody" class="workshop-details"></div>
+    </div>
+</div>
+
+<div class="coach-lightbox-overlay" id="coachLightboxOverlay" onclick="handleCoachLightboxBackdropClick(event)">
+    <button class="coach-lightbox-close" onclick="closeCoachLightbox()" aria-label="Close">&times;</button>
+    <img id="coachLightboxImage" src="" alt="">
+</div>
+
 <div class="modal" id="reserveModal">
     <div class="modal-content reserve-modal-content">
-        <button class="close-modal" onclick="closeReserveModal()">&times;</button>
+        <div class="close-modal-sticky-wrap"><button class="close-modal" onclick="closeReserveModal()">&times;</button></div>
         <div class="reserve-modal-banner">
-            <div class="reserve-modal-banner-icon"><img src="/logo.webp" alt="Baan OuadChum Logo"></div>
+            <div class="reserve-modal-banner-icon"><img src="logo.webp" alt="Baan OuadChum Logo"></div>
             <h2 data-key="reserve-modal-title">Reserve Your Stay</h2>
             <p data-key="reserve-modal-desc">Contact us directly via LINE or phone to check availability and book.</p>
         </div>
@@ -1437,8 +1797,19 @@ const langData = {
         "menu-about": "Home", "menu-stay": "Stay", "menu-workshop": "Workshop", "menu-menu": "Menu", "menu-articles": "Articles", "menu-shop": "Contact",
         "btn-reserve": "Reserve",
         "page-sub": "Activities & Experiences", "page-title": "Workshop",
-        "ws1-title": "Conservation-Style Honey Harvesting Workshop", "ws2-title": "Nipa Palm Sugar Making Workshop", "ws3-title": "Ancient-Style Krill Paste Making Workshop", "ws4-title": "Beans to Bar Chocolate Workshop", "ws5-title": "Herbal Perfume Making Workshop from Leng Lao Forest Garden",
-        "ws1-details": "<p>A hands-on workshop where you'll get to harvest honey sustainably in the middle of a forest in Pathio District, Chumphon Province. Experience what it's like to be a real beekeeper and gain extensive knowledge about beekeeping.</p><p class='ws-highlight'>Fun and educational!</p><ul><li>Learn about bee conservation and tools</li><li>Learn about the components of a beehive and local vegetation</li><li>Try harvesting honey in a way that conserves the larvae</li><li>Filtering raw honey</li><li>Taste fresh honey straight from the hive</li></ul><p class='ws-highlight'>We'll provide the rest</p><p>Bee protection suit, mesh hat, gloves, drinking water</p><div class='workshop-meta-grid'><span><strong>Minimum:</strong> 2 people</span><span><strong>Age:</strong> 8 years and above</span><span><strong>Duration:</strong> 2-3 hours</span><span><strong>Season:</strong> February - June</span><span><strong>Location:</strong> Pathio, Chumphon</span><span><strong>Travel time:</strong> 20 minutes, or arrange pickup at Baan OuadChum</span><span><strong>Transport:</strong> Own arrangement</span><span><strong>Language:</strong> Conducted in Thai</span></div>",
+        "ws1-title": "Conservation-Style Honey Harvesting Workshop", "ws2-title": "Nipa Palm Sugar Making Workshop", "ws3-title": "Ancient-Style Krill Paste Making Workshop", "ws4-title": "Beans to Bar Chocolate Workshop", "ws5-title": "Food Forest in a Bottle Workshop",
+        "ws1-details": "<p>A hands-on workshop where you'll get to harvest honey sustainably in the middle of a forest in Pathio District, Chumphon Province. Experience what it's like to be a real beekeeper and gain extensive knowledge about beekeeping.</p><div class='ws-meta-grid'><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='9' cy='8' r='3'/><circle cx='16.5' cy='9.5' r='2.2'/><path d='M3.5 20v-1a5.5 5.5 0 0111 0v1'/><path d='M14.3 14.2A4 4 0 0119 18v1.2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Minimum</span><span class='ws-meta-box-value'>2 people</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='8' r='3.5'/><path d='M5 20v-1a7 7 0 0114 0v1'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Age</span><span class='ws-meta-box-value'>6 years and above</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='8.25'/><path d='M12 7.5V12l3 2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Duration</span><span class='ws-meta-box-value'>2-3 hours</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M5 20c8 0 14-6 14-14 0 0-11-2-14 8-1 3-1 6 0 6z'/><path d='M5 20c2-4 5-8 10-11'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Season</span><span class='ws-meta-box-value'>February - June</span></div></div></div><p class='ws-highlight ws-highlight-icon'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='5' width='18' height='14' rx='2'/><circle cx='9' cy='11' r='2'/><path d='M6 16c0-1.7 1.3-3 3-3s3 1.3 3 3'/><path d='M14 9h4M14 13h4'/></svg>About the Coach</p><div class='ws-coach-box'><button type='button' class='ws-coach-photo' onclick='openCoachLightbox(\"Coach/jongkoy.webp\", \"Mr. Phruehat Wongdamrongsak (Jongkoy)\")'><img src='Coach/jongkoy.webp' alt='Mr. Phruehat Wongdamrongsak (Jongkoy)'></button><p class='ws-coach-bio'>Mr. Phruehat Wongdamrongsak (known as &quot;Jongkoy&quot;) is the innovator behind the &quot;needle-pricking&quot; technique - a core element of a bee-rearing method that prioritizes brood conservation to produce high-quality honey. He has been collaborating with OuadChum since 2023.<br><br>Currently, Mr. Jongkoy serves as a guest speaker for various organizations interested in beekeeping and has also established the Bee Keeping Community Enterprise.</p></div><p class='ws-highlight'>Fun and educational!</p><ul><li>Learn about bee conservation and tools</li><li>Learn about the components of a beehive and local vegetation</li><li>Try harvesting honey in a way that conserves the larvae</li><li>Filtering raw honey</li><li>Taste fresh honey straight from the hive</li></ul><div class='ws-provide-grid'><div class='ws-provide-box'><h4><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M9 12.75L11.25 15 15 9.75'/><circle cx='12' cy='12' r='9'/></svg>What we provide</h4><ul><li>Bee protection suit</li><li>Mesh hat</li><li>Gloves</li><li>Boots</li><li>Drinking water</li></ul></div><div class='ws-provide-box'><h4><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M15 10.5a3 3 0 11-6 0 3 3 0 016 0z'/><path d='M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z'/></svg>Workshop Location</h4><div class='ws-map-graphic'><svg viewBox='0 0 300 150' xmlns='http://www.w3.org/2000/svg'><rect width='300' height='150' fill='#e8f0e9'/><path d='M0 110 C60 90 120 130 180 100 S300 80 300 80' stroke='#c9dbcb' stroke-width='8' fill='none'/><path d='M40 0 C70 40 30 90 60 150' stroke='#c9dbcb' stroke-width='6' fill='none'/><circle cx='230' cy='40' r='26' fill='#d3e3d4'/><circle cx='70' cy='115' r='18' fill='#d3e3d4'/><path d='M150 55c-13 0-23 10-23 23 0 17 23 42 23 42s23-25 23-42c0-13-10-23-23-23z' fill='#3E723B'/><circle cx='150' cy='78' r='8' fill='#fff'/></svg></div><p>Uncle Jongkoy Farm, Pathio, Chumphon</p></div></div><p class='ws-highlight'>Our Collaboration</p><ul><li>Packaging development for 'Wildflower Raw Honey'</li><li>Shares expertise in sustainable beekeeping methods for the 'ผึ้งรู้ project', aiming to cultivate young entrepreneurs and pesticide-free communities</li><li>Ban Hin Kob School, Pathio, Chumphon</li><li>Thairath School, Pathio, Chumphon</li></ul><div class='ws-provide-box' style='margin-top:10px;'><h4><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M21 8l-9-4.5L3 8m18 0l-9 4.5M21 8v8l-9 4.5M3 8l9 4.5M3 8v8l9 4.5m0-8V21'/></svg>Product &amp; Service from Our Collaboration</h4><ul><li>Sustainable Beekeeping Workshop</li></ul></div><div class='workshop-meta-grid'><span><strong>Travel time:</strong> 20 minutes, or arrange pickup at Baan OuadChum</span><span><strong>Transport:</strong> Own arrangement</span><span><strong>Language:</strong> Conducted in Thai</span></div>",
+        "ws1-teaser": "Sustainably harvest honey in a Pathio forest and experience real beekeeping firsthand.",
+        "ws2-details": "<p>Roll up your pants and wade through the Bang Son canal to experience the age-old wisdom of Nipa palm syrup making - from harvesting fresh palm sap to crafting 'Nipa syrup,' a rare and healthy sweetness.</p><div class='ws-meta-grid'><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='9' cy='8' r='3'/><circle cx='16.5' cy='9.5' r='2.2'/><path d='M3.5 20v-1a5.5 5.5 0 0111 0v1'/><path d='M14.3 14.2A4 4 0 0119 18v1.2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Minimum</span><span class='ws-meta-box-value'>2 people</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='8' r='3.5'/><path d='M5 20v-1a7 7 0 0114 0v1'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Age</span><span class='ws-meta-box-value'>8 years and above</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='8.25'/><path d='M12 7.5V12l3 2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Duration</span><span class='ws-meta-box-value'>2 hours</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M5 20c8 0 14-6 14-14 0 0-11-2-14 8-1 3-1 6 0 6z'/><path d='M5 20c2-4 5-8 10-11'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Season</span><span class='ws-meta-box-value'>October - February</span></div></div></div><p class='ws-highlight'>Fun and educational!</p><ul><li>Learn how syrup is made in a palm forest</li><li>Techniques for extracting sap from the palm tree</li><li>Boil and taste fresh palm sap as it becomes syrup</li><li>Whip air into the syrup to build a thick, sticky consistency</li><li>Taste candy made from the syrup</li></ul><p class='ws-highlight'>What to bring</p><ul><li>Hat</li><li>Water</li><li>Mosquito repellent</li><li>Boots or fast-dry shoes</li><li>A towel, in case of a slip</li></ul><div class='workshop-meta-grid'><span><strong>Price:</strong> 1,000 THB per person</span><span><strong>Location:</strong> Pathio District, Chumphon</span><span><strong>Travel time:</strong> 20 minutes</span><span><strong>Transport:</strong> Own arrangement</span><span><strong>Language:</strong> Conducted in Thai</span><span><strong>Note:</strong> The path includes mud up to knee-deep</span></div>",
+        "ws2-teaser": "Wade through the Bang Son canal to harvest palm sap and make our rare, healthy Nipa palm syrup by hand.",
+        "ws3-details": "<p>&quot;It's not just krill paste, it's wisdom passed down through generations.&quot; Learn the secrets of making legendary, delicious shrimp paste with Auntie Pin, owner of this traditional krill paste recipe. Its uniqueness lies in the technique of using bamboo and palm leaves to create a fragrant, flavorful paste.</p><div class='ws-meta-grid'><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='9' cy='8' r='3'/><circle cx='16.5' cy='9.5' r='2.2'/><path d='M3.5 20v-1a5.5 5.5 0 0111 0v1'/><path d='M14.3 14.2A4 4 0 0119 18v1.2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Minimum</span><span class='ws-meta-box-value'>2 people</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='8' r='3.5'/><path d='M5 20v-1a7 7 0 0114 0v1'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Age</span><span class='ws-meta-box-value'>10 years and above</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='8.25'/><path d='M12 7.5V12l3 2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Duration</span><span class='ws-meta-box-value'>2 hours</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M5 20c8 0 14-6 14-14 0 0-11-2-14 8-1 3-1 6 0 6z'/><path d='M5 20c2-4 5-8 10-11'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Season</span><span class='ws-meta-box-value'>All year</span></div></div></div><p class='ws-highlight'>Fun and educational!</p><ul><li>Learn how to make shrimp paste at Auntie Pin's house</li><li>Techniques for selecting high-quality krill and pressing the paste</li><li>Taste the paste with Chumphon-style dipping sauces</li></ul><p class='ws-highlight'>What to bring</p><ul><li>Hat</li><li>Water</li><li>Mosquito repellent</li></ul><div class='workshop-meta-grid'><span><strong>Location:</strong> Pathio</span><span><strong>Travel time:</strong> 20 minutes, or arrange pickup at Baan OuadChum</span><span><strong>Transport:</strong> Own arrangement</span><span><strong>Language:</strong> Conducted in Thai</span></div>",
+        "ws3-teaser": "Learn Auntie Pin's generations-old technique for making Chumphon's fragrant, traditional krill paste.",
+        "ws4-details": "<p>Learn the whole cocoa journey - from growing and harvesting to processing - with J&amp;O, owners of a local cocoa farm. Their chocolate is intensely rich, and it's the best-selling drink at Baan OuadChum cafe.</p><div class='ws-meta-grid'><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='9' cy='8' r='3'/><circle cx='16.5' cy='9.5' r='2.2'/><path d='M3.5 20v-1a5.5 5.5 0 0111 0v1'/><path d='M14.3 14.2A4 4 0 0119 18v1.2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Minimum</span><span class='ws-meta-box-value'>2 people</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='8' r='3.5'/><path d='M5 20v-1a7 7 0 0114 0v1'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Age</span><span class='ws-meta-box-value'>No age limit</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='8.25'/><path d='M12 7.5V12l3 2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Duration</span><span class='ws-meta-box-value'>2 hours</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M5 20c8 0 14-6 14-14 0 0-11-2-14 8-1 3-1 6 0 6z'/><path d='M5 20c2-4 5-8 10-11'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Season</span><span class='ws-meta-box-value'>All year</span></div></div></div><p class='ws-highlight'>Fun and educational!</p><ul><li>Learn how fresh cocoa beans are harvested, fermented, dried, roasted, and ground into products like chocolate bars and cocoa drinks</li><li>Taste fresh cocoa juice and our intensely rich signature chocolate</li></ul><div class='workshop-meta-grid'><span><strong>Location:</strong> Pathio</span><span><strong>Travel time:</strong> 30 minutes, or arrange pickup at Baan OuadChum</span><span><strong>Transport:</strong> Own arrangement</span><span><strong>Language:</strong> Conducted in Thai</span></div>",
+        "ws4-teaser": "From bean to bar with J&amp;O: taste our intensely rich, best-selling cocoa straight from a local farm.",
+        "ws5-details": "<p>'Hom Pa' uses natural wood and aromatic ingredients from its own Leng Lao food forest - one of the largest food forests in Chumphon. Learn about different kinds of prized Thai aromatic woods and blend them into your own personal inhaler scent. Choose from more than 20 herbal scent styles, from refreshing and invigorating to relaxing and sweet.</p><div class='ws-meta-grid'><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='9' cy='8' r='3'/><circle cx='16.5' cy='9.5' r='2.2'/><path d='M3.5 20v-1a5.5 5.5 0 0111 0v1'/><path d='M14.3 14.2A4 4 0 0119 18v1.2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Minimum</span><span class='ws-meta-box-value'>2 persons</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='8' r='3.5'/><path d='M5 20v-1a7 7 0 0114 0v1'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Age</span><span class='ws-meta-box-value'>8 years and up</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='8.25'/><path d='M12 7.5V12l3 2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Duration</span><span class='ws-meta-box-value'>2 hours</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M5 20c8 0 14-6 14-14 0 0-11-2-14 8-1 3-1 6 0 6z'/><path d='M5 20c2-4 5-8 10-11'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>Season</span><span class='ws-meta-box-value'>All year</span></div></div></div><p class='ws-highlight'>Fun and educational!</p><ul><li>The food forest and its importance to our environment</li><li>An introduction to herbs and how to choose a scent that suits you - then mix and create your own inhaler scent, step by step</li></ul><div class='workshop-meta-grid'><span><strong>Location:</strong> Thammachat Cafe and Leng Lao Food Forest, Tha Sae</span><span><strong>Travel time:</strong> 40 minutes</span><span><strong>Transport:</strong> Own arrangement</span><span><strong>Language:</strong> Conducted in Thai</span></div>",
+        "ws5-teaser": "Blend aromatic woods and herbs from the Leng Lao food forest into your own personal inhaler scent.",
+        "ws-coming-soon": "Details coming soon.", "btn-workshop-details": "View Details",
+        "workshop-modal-soon": "We're still writing up the details for this workshop. Message us on LINE or give us a call and we'll be happy to tell you more.",
 
         "footer-sub": "Pathio, Chumphon, Thailand<br>Cafe, Restaurant, 10-Room Treehouse-Style Accommodation<br><br>Open Daily 8:00 AM - 8:00 PM",
         "footer-copy": "© 2026 Baan OuadChum Coastal Treehouse. All Rights Reserved.",
@@ -1459,11 +1830,22 @@ const langData = {
         "footer-title": "Baan OuadChum Coastal Treehouse"
     },
     th: {
-        "menu-about": "หน้าแรก", "menu-stay": "ห้องพัก", "menu-workshop": "เวิร์คช็อป", "menu-menu": "เมนู", "menu-articles": "บทความ", "menu-shop": "ติดต่อ",
-        "btn-reserve": "จองห้องพัก",
+        "menu-about": "หน้าแรก", "menu-stay": "ห้องพัก", "menu-workshop": "เวิร์คช็อป", "menu-menu": "เมนู", "menu-articles": "สื่อ", "menu-shop": "ติดต่อ",
+        "btn-reserve": "ติดต่อ",
         "page-sub": "กิจกรรมและประสบการณ์", "page-title": "เวิร์คช็อป",
-        "ws1-title": "เวิร์คช็อปเก็บน้ำผึ้งแบบอนุรัก", "ws2-title": "เวิร์คช็อปทำน้ำตาลจาก", "ws3-title": "เวิร์คช็อปทำกะปิเคยขัดน้ำแบบโบราณ", "ws4-title": "เวิร์คช็อปทำช็อกโกแลตจากเมล็ดโกโก้", "ws5-title": "เวิร์คช็อปทำน้ำหอมจากสมุนไพรสวนป่าเล้งเหลา",
-        "ws1-details": "<p>เวิร์คช็อปเชิงปฏิบัติที่คุณจะได้เก็บน้ำผึ้งอย่างยั่งยืนกลางป่าในอำเภอปะทิว จังหวัดชุมพร สัมผัสประสบการณ์การเป็นผู้เลี้ยงผึ้งตัวจริง และเรียนรู้ความรู้เชิงลึกเกี่ยวกับการเลี้ยงผึ้ง</p><p class='ws-highlight'>สนุกและได้ความรู้!</p><ul><li>เรียนรู้การอนุรักษ์ผึ้งและอุปกรณ์</li><li>เรียนรู้องค์ประกอบของรังผึ้งและพืชพรรณท้องถิ่น</li><li>ลองเก็บน้ำผึ้งด้วยวิธีที่อนุรักษ์ตัวอ่อน</li><li>การกรองน้ำผึ้งดิบ</li><li>ชิมน้ำผึ้งสดจากรัง</li></ul><p class='ws-highlight'>เราเตรียมให้</p><p>ชุดป้องกันผึ้ง หมวกตาข่าย ถุงมือ น้ำดื่ม</p><div class='workshop-meta-grid'><span><strong>จำนวนขั้นต่ำ:</strong> 2 คน</span><span><strong>อายุ:</strong> 8 ปีขึ้นไป</span><span><strong>ระยะเวลา:</strong> 2-3 ชั่วโมง</span><span><strong>ฤดูกาล:</strong> กุมภาพันธ์ - มิถุนายน</span><span><strong>สถานที่:</strong> ปะทิว ชุมพร</span><span><strong>เวลาเดินทาง:</strong> 20 นาที หรือจัดรถรับที่บ้านอวดชุม</span><span><strong>การเดินทาง:</strong> จัดเตรียมเอง</span><span><strong>ภาษา:</strong> บรรยายเป็นภาษาไทย</span></div>",
+        "ws1-title": "เวิร์คช็อปเก็บน้ำผึ้งแบบอนุรัก", "ws2-title": "เวิร์คช็อปทำน้ำตาลจาก", "ws3-title": "เวิร์คช็อปทำกะปิเคยขัดน้ำแบบโบราณ", "ws4-title": "เวิร์คช็อปทำช็อกโกแลตจากเมล็ดโกโก้", "ws5-title": "เวิร์คช็อปสวนป่าในขวด",
+        "ws1-details": "<p>เวิร์คช็อปเชิงปฏิบัติที่คุณจะได้เก็บน้ำผึ้งอย่างยั่งยืนกลางป่าในอำเภอปะทิว จังหวัดชุมพร สัมผัสประสบการณ์การเป็นผู้เลี้ยงผึ้งตัวจริง และเรียนรู้ความรู้เชิงลึกเกี่ยวกับการเลี้ยงผึ้ง</p><div class='ws-meta-grid'><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='9' cy='8' r='3'/><circle cx='16.5' cy='9.5' r='2.2'/><path d='M3.5 20v-1a5.5 5.5 0 0111 0v1'/><path d='M14.3 14.2A4 4 0 0119 18v1.2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>จำนวนขั้นต่ำ</span><span class='ws-meta-box-value'>2 คน</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='8' r='3.5'/><path d='M5 20v-1a7 7 0 0114 0v1'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>อายุ</span><span class='ws-meta-box-value'>6 ปีขึ้นไป</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='8.25'/><path d='M12 7.5V12l3 2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>ระยะเวลา</span><span class='ws-meta-box-value'>2-3 ชั่วโมง</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M5 20c8 0 14-6 14-14 0 0-11-2-14 8-1 3-1 6 0 6z'/><path d='M5 20c2-4 5-8 10-11'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>ฤดูกาล</span><span class='ws-meta-box-value'>กุมภาพันธ์ - มิถุนายน</span></div></div></div><p class='ws-highlight ws-highlight-icon'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='5' width='18' height='14' rx='2'/><circle cx='9' cy='11' r='2'/><path d='M6 16c0-1.7 1.3-3 3-3s3 1.3 3 3'/><path d='M14 9h4M14 13h4'/></svg>เกี่ยวกับวิทยากร</p><div class='ws-coach-box'><button type='button' class='ws-coach-photo' onclick='openCoachLightbox(\"Coach/jongkoy.webp\", \"Mr. Phruehat Wongdamrongsak (Jongkoy)\")'><img src='Coach/jongkoy.webp' alt='Mr. Phruehat Wongdamrongsak (Jongkoy)'></button><p class='ws-coach-bio'>คุณพฤหัส วงศ์ดำรงศักดิ์ (หรือที่รู้จักกันในชื่อ 'จงคอย') คือผู้คิดค้นเทคนิค 'แทงเข็ม' ซึ่งเป็นหัวใจสำคัญของวิธีเลี้ยงผึ้งที่เน้นการอนุรักษ์ตัวอ่อนเพื่อผลิตน้ำผึ้งคุณภาพสูง ร่วมงานกับอวดชุมมาตั้งแต่ปี 2566<br><br>ปัจจุบันคุณจงคอยเป็นวิทยากรรับเชิญให้กับหน่วยงานต่างๆ ที่สนใจเรื่องการเลี้ยงผึ้ง และยังก่อตั้งวิสาหกิจชุมชนผู้เลี้ยงผึ้งอีกด้วย</p></div><p class='ws-highlight'>สนุกและได้ความรู้!</p><ul><li>เรียนรู้การอนุรักษ์ผึ้งและอุปกรณ์</li><li>เรียนรู้องค์ประกอบของรังผึ้งและพืชพรรณท้องถิ่น</li><li>ลองเก็บน้ำผึ้งด้วยวิธีที่อนุรักษ์ตัวอ่อน</li><li>การกรองน้ำผึ้งดิบ</li><li>ชิมน้ำผึ้งสดจากรัง</li></ul><div class='ws-provide-grid'><div class='ws-provide-box'><h4><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M9 12.75L11.25 15 15 9.75'/><circle cx='12' cy='12' r='9'/></svg>สิ่งที่เราเตรียมให้</h4><ul><li>ชุดป้องกันผึ้ง</li><li>หมวกตาข่าย</li><li>ถุงมือ</li><li>รองเท้าบูท</li><li>น้ำดื่ม</li></ul></div><div class='ws-provide-box'><h4><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M15 10.5a3 3 0 11-6 0 3 3 0 016 0z'/><path d='M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z'/></svg>สถานที่จัดเวิร์คช็อป</h4><div class='ws-map-graphic'><svg viewBox='0 0 300 150' xmlns='http://www.w3.org/2000/svg'><rect width='300' height='150' fill='#e8f0e9'/><path d='M0 110 C60 90 120 130 180 100 S300 80 300 80' stroke='#c9dbcb' stroke-width='8' fill='none'/><path d='M40 0 C70 40 30 90 60 150' stroke='#c9dbcb' stroke-width='6' fill='none'/><circle cx='230' cy='40' r='26' fill='#d3e3d4'/><circle cx='70' cy='115' r='18' fill='#d3e3d4'/><path d='M150 55c-13 0-23 10-23 23 0 17 23 42 23 42s23-25 23-42c0-13-10-23-23-23z' fill='#3E723B'/><circle cx='150' cy='78' r='8' fill='#fff'/></svg></div><p>ฟาร์มลุงจงคอย ปะทิว ชุมพร</p></div></div><p class='ws-highlight'>ความร่วมมือของเรา</p><ul><li>พัฒนาบรรจุภัณฑ์ให้กับผลิตภัณฑ์ 'น้ำผึ้งป่าดอกไม้' (Wildflower Raw Honey)</li><li>ถ่ายทอดความเชี่ยวชาญด้านการเลี้ยงผึ้งอย่างยั่งยืนให้กับโครงการ 'ผึ้งรู้' มุ่งบ่มเพาะผู้ประกอบการรุ่นใหม่และชุมชนปลอดสารเคมี</li><li>โรงเรียนบ้านหินกบ อำเภอปะทิว จังหวัดชุมพร</li><li>โรงเรียนไทยรัฐวิทยา อำเภอปะทิว จังหวัดชุมพร</li></ul><div class='ws-provide-box' style='margin-top:10px;'><h4><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M21 8l-9-4.5L3 8m18 0l-9 4.5M21 8v8l-9 4.5M3 8l9 4.5M3 8v8l9 4.5m0-8V21'/></svg>ผลิตภัณฑ์และบริการจากความร่วมมือ</h4><ul><li>เวิร์คช็อปเก็บน้ำผึ้งแบบอนุรักษ์</li></ul></div><div class='workshop-meta-grid'><span><strong>เวลาเดินทาง:</strong> 20 นาที หรือจัดรถรับที่บ้านอวดชุม</span><span><strong>การเดินทาง:</strong> จัดเตรียมเอง</span><span><strong>ภาษา:</strong> บรรยายเป็นภาษาไทย</span></div>",
+        "ws1-teaser": "เก็บน้ำผึ้งอย่างยั่งยืนกลางป่าปะทิว สัมผัสประสบการณ์ผู้เลี้ยงผึ้งตัวจริง",
+        "ws2-details": "<p>ม้วนขากางเกงแล้วลุยคลองบางสน ไปสัมผัสภูมิปัญญาโบราณของการทำน้ำตาลจาก ตั้งแต่การเก็บน้ำหวานสดจากต้นจาก จนกลายเป็น 'น้ำตาลจาก' ความหวานหายากที่ดีต่อสุขภาพ</p><div class='ws-meta-grid'><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='9' cy='8' r='3'/><circle cx='16.5' cy='9.5' r='2.2'/><path d='M3.5 20v-1a5.5 5.5 0 0111 0v1'/><path d='M14.3 14.2A4 4 0 0119 18v1.2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>จำนวนขั้นต่ำ</span><span class='ws-meta-box-value'>2 คน</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='8' r='3.5'/><path d='M5 20v-1a7 7 0 0114 0v1'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>อายุ</span><span class='ws-meta-box-value'>8 ปีขึ้นไป</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='8.25'/><path d='M12 7.5V12l3 2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>ระยะเวลา</span><span class='ws-meta-box-value'>2 ชั่วโมง</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M5 20c8 0 14-6 14-14 0 0-11-2-14 8-1 3-1 6 0 6z'/><path d='M5 20c2-4 5-8 10-11'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>ฤดูกาล</span><span class='ws-meta-box-value'>ตุลาคม - กุมภาพันธ์</span></div></div></div><p class='ws-highlight'>สนุกและได้ความรู้!</p><ul><li>เรียนรู้กระบวนการทำน้ำตาลในป่าจาก</li><li>เทคนิคการรองน้ำหวานจากต้นจาก</li><li>ต้มและชิมน้ำหวานสดจากต้นจากที่กำลังกลายเป็นน้ำตาล</li><li>ตีน้ำตาลให้ขึ้นฟูจนได้เนื้อสัมผัสข้นเหนียว</li><li>ชิมขนมที่ทำจากน้ำตาลจาก</li></ul><p class='ws-highlight'>สิ่งที่ควรเตรียมมา</p><ul><li>หมวก</li><li>น้ำดื่ม</li><li>ยากันยุง</li><li>รองเท้าบูทหรือรองเท้าที่แห้งเร็ว</li><li>ผ้าขนหนู เผื่อลื่นล้ม</li></ul><div class='workshop-meta-grid'><span><strong>ราคา:</strong> 1,000 บาทต่อคน</span><span><strong>สถานที่:</strong> อำเภอปะทิว จังหวัดชุมพร</span><span><strong>เวลาเดินทาง:</strong> 20 นาที</span><span><strong>การเดินทาง:</strong> จัดเตรียมเอง</span><span><strong>ภาษา:</strong> บรรยายเป็นภาษาไทย</span><span><strong>หมายเหตุ:</strong> เส้นทางมีโคลนลึกถึงระดับเข่า</span></div>",
+        "ws2-teaser": "ลุยคลองบางสนเก็บน้ำหวานจากต้นจาก มาทำ 'น้ำตาลจาก' ความหวานหายากที่ดีต่อสุขภาพ",
+        "ws3-details": "<p>&quot;ไม่ใช่แค่กะปิ แต่คือภูมิปัญญาที่ส่งต่อกันมาหลายรุ่น&quot; เรียนรู้เคล็ดลับการทำกะปิรสเลิศระดับตำนานกับป้าปิ่น เจ้าของสูตรกะปิเคยแบบดั้งเดิม ความพิเศษอยู่ที่เทคนิคการใช้ไม้ไผ่และใบตาลในการตำ ทำให้ได้กะปิที่หอมและอร่อยเป็นเอกลักษณ์</p><div class='ws-meta-grid'><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='9' cy='8' r='3'/><circle cx='16.5' cy='9.5' r='2.2'/><path d='M3.5 20v-1a5.5 5.5 0 0111 0v1'/><path d='M14.3 14.2A4 4 0 0119 18v1.2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>จำนวนขั้นต่ำ</span><span class='ws-meta-box-value'>2 คน</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='8' r='3.5'/><path d='M5 20v-1a7 7 0 0114 0v1'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>อายุ</span><span class='ws-meta-box-value'>10 ปีขึ้นไป</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='8.25'/><path d='M12 7.5V12l3 2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>ระยะเวลา</span><span class='ws-meta-box-value'>2 ชั่วโมง</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M5 20c8 0 14-6 14-14 0 0-11-2-14 8-1 3-1 6 0 6z'/><path d='M5 20c2-4 5-8 10-11'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>ฤดูกาล</span><span class='ws-meta-box-value'>ตลอดทั้งปี</span></div></div></div><p class='ws-highlight'>สนุกและได้ความรู้!</p><ul><li>เรียนรู้วิธีทำกะปิที่บ้านป้าปิ่น</li><li>เทคนิคการคัดเลือกเคยคุณภาพดีและการตำกะปิ</li><li>ชิมกะปิคู่กับน้ำจิ้มสไตล์ชุมพร</li></ul><p class='ws-highlight'>สิ่งที่ควรเตรียมมา</p><ul><li>หมวก</li><li>น้ำดื่ม</li><li>ยากันยุง</li></ul><div class='workshop-meta-grid'><span><strong>สถานที่:</strong> ปะทิว</span><span><strong>เวลาเดินทาง:</strong> 20 นาที หรือจัดรถรับที่บ้านอวดชุม</span><span><strong>การเดินทาง:</strong> จัดเตรียมเอง</span><span><strong>ภาษา:</strong> บรรยายเป็นภาษาไทย</span></div>",
+        "ws3-teaser": "เรียนสูตรกะปิเคยแบบโบราณสืบทอดหลายรุ่นจากป้าปิ่น หอมอร่อยเป็นเอกลักษณ์ของชุมพร",
+        "ws4-details": "<p>เรียนรู้กระบวนการผลิตโกโก้แบบครบวงจร ตั้งแต่การปลูก การเก็บเกี่ยว ไปจนถึงการแปรรูป กับ J&amp;O เจ้าของไร่โกโก้ท้องถิ่น ช็อกโกแลตของพวกเขามีรสเข้มข้นจัดจ้าน จนกลายเป็นเครื่องดื่มขายดีอันดับหนึ่งของคาเฟ่บ้านอวดชุม</p><div class='ws-meta-grid'><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='9' cy='8' r='3'/><circle cx='16.5' cy='9.5' r='2.2'/><path d='M3.5 20v-1a5.5 5.5 0 0111 0v1'/><path d='M14.3 14.2A4 4 0 0119 18v1.2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>จำนวนขั้นต่ำ</span><span class='ws-meta-box-value'>2 คน</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='8' r='3.5'/><path d='M5 20v-1a7 7 0 0114 0v1'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>อายุ</span><span class='ws-meta-box-value'>ไม่จำกัดอายุ</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='8.25'/><path d='M12 7.5V12l3 2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>ระยะเวลา</span><span class='ws-meta-box-value'>2 ชั่วโมง</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M5 20c8 0 14-6 14-14 0 0-11-2-14 8-1 3-1 6 0 6z'/><path d='M5 20c2-4 5-8 10-11'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>ฤดูกาล</span><span class='ws-meta-box-value'>ตลอดทั้งปี</span></div></div></div><p class='ws-highlight'>สนุกและได้ความรู้!</p><ul><li>เรียนรู้กระบวนการเก็บเกี่ยวเมล็ดโกโก้สด การหมัก การตาก การคั่ว การบด ไปจนถึงการแปรรูปเป็นผลิตภัณฑ์ต่างๆ เช่น ช็อกโกแลตแท่งหรือเครื่องดื่มโกโก้</li><li>ชิมน้ำโกโก้สดและช็อกโกแลตรสเข้มข้นสูตรพิเศษของเรา</li></ul><div class='workshop-meta-grid'><span><strong>สถานที่:</strong> ปะทิว</span><span><strong>เวลาเดินทาง:</strong> 30 นาที หรือจัดรถรับที่บ้านอวดชุม</span><span><strong>การเดินทาง:</strong> จัดเตรียมเอง</span><span><strong>ภาษา:</strong> บรรยายเป็นภาษาไทย</span></div>",
+        "ws4-teaser": "เวิร์คช็อปช็อกโกแลตจากไร่โกโก้ท้องถิ่นกับ J&amp;O ชิมช็อกโกแลตเข้มข้นสูตรขายดีของร้าน",
+        "ws5-details": "<p>'หอมป่า' ใช้ไม้หอมธรรมชาติและวัตถุดิบหอมจากสวนป่าเล้งเหลาของตัวเอง หนึ่งในสวนป่าที่ใหญ่ที่สุดของจังหวัดชุมพร เวิร์คช็อปนี้จะพาคุณไปรู้จักไม้หอมล้ำค่าของไทยหลากชนิด นำมาผสมผสานสร้างสรรค์เป็นยาดมกลิ่นเฉพาะตัวของคุณเอง ผู้เข้าร่วมสามารถเลือกกลิ่นสมุนไพรที่ชอบได้ มีให้เลือกกว่า 20 สไตล์กลิ่น ทั้งกลิ่นสดชื่น กลิ่นผ่อนคลาย กลิ่นกระปรี้กระเปร่า หรือกลิ่นหอมหวาน</p><div class='ws-meta-grid'><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='9' cy='8' r='3'/><circle cx='16.5' cy='9.5' r='2.2'/><path d='M3.5 20v-1a5.5 5.5 0 0111 0v1'/><path d='M14.3 14.2A4 4 0 0119 18v1.2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>จำนวนขั้นต่ำ</span><span class='ws-meta-box-value'>2 คน</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='8' r='3.5'/><path d='M5 20v-1a7 7 0 0114 0v1'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>อายุ</span><span class='ws-meta-box-value'>8 ปีขึ้นไป</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='8.25'/><path d='M12 7.5V12l3 2'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>ระยะเวลา</span><span class='ws-meta-box-value'>2 ชั่วโมง</span></div></div><div class='ws-meta-box'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M5 20c8 0 14-6 14-14 0 0-11-2-14 8-1 3-1 6 0 6z'/><path d='M5 20c2-4 5-8 10-11'/></svg><div class='ws-meta-box-text'><span class='ws-meta-box-label'>ฤดูกาล</span><span class='ws-meta-box-value'>ตลอดทั้งปี</span></div></div></div><p class='ws-highlight'>สนุกและได้ความรู้!</p><ul><li>สวนป่าอาหารและความสำคัญต่อสิ่งแวดล้อมของเรา</li><li>แนะนำสมุนไพรและวิธีเลือกกลิ่นที่เหมาะกับคุณ พร้อมผสมและสร้างสรรค์ยาดมกลิ่นเฉพาะตัวทีละขั้นตอน</li></ul><div class='workshop-meta-grid'><span><strong>สถานที่:</strong> ธรรมชาติคาเฟ่ และสวนป่าเล้งเหลา อำเภอท่าแซะ</span><span><strong>เวลาเดินทาง:</strong> 40 นาที</span><span><strong>การเดินทาง:</strong> จัดเตรียมเอง</span><span><strong>ภาษา:</strong> บรรยายเป็นภาษาไทย</span></div>",
+        "ws5-teaser": "ผสมไม้หอมและสมุนไพรจากสวนป่าเล้งเหลา สร้างสรรค์กลิ่นยาดมสูตรเฉพาะตัวคุณเอง",
+        "ws-coming-soon": "รายละเอียดกำลังจะมาเร็วๆ นี้", "btn-workshop-details": "ดูรายละเอียด",
+        "workshop-modal-soon": "เรากำลังเตรียมรายละเอียดของเวิร์คช็อปนี้อยู่ ทักไลน์หรือโทรหาเราได้เลย ยินดีให้ข้อมูลเพิ่มเติมครับ",
 
         "footer-sub": "ปะทิว ชุมพร ประเทศไทย<br>คาเฟ่ ร้านอาหาร ที่พักสไตล์บ้านต้นไม้ 10 ห้อง<br><br>เปิดทุกวัน 8:00-20:00",
         "footer-copy": "© 2026 บ้านต้นไม้อวดชุม สงวนลิขสิทธิ์ทั้งหมด",
@@ -1554,30 +1936,80 @@ function updateGuestDropdowns(lang) {
     });
 }
 
-// Prevent the page behind a popup/drawer from scrolling on mobile while it's open
+// Prevent the page behind a popup/drawer from scrolling while it's open.
+// Pins body with position:fixed (compensated by a negative top offset so
+// nothing visually jumps) rather than relying on overflow:hidden alone -
+// overflow:hidden on body doesn't reliably block background scroll/bounce
+// on mobile Safari.
 let modalOpenCount = 0;
+let scrollLockY = 0;
 function lockBodyScroll() {
+    if (modalOpenCount === 0) {
+        scrollLockY = window.scrollY;
+        document.body.style.top = `-${scrollLockY}px`;
+        document.body.classList.add('modal-locked');
+    }
     modalOpenCount++;
-    document.body.classList.add('modal-locked');
 }
 function unlockBodyScroll() {
     modalOpenCount = Math.max(0, modalOpenCount - 1);
     if (modalOpenCount === 0) {
         document.body.classList.remove('modal-locked');
+        document.body.style.top = '';
+        window.scrollTo(0, scrollLockY);
     }
 }
 
-function toggleWorkshopCard(event, el) {
-    event.preventDefault();
-    const wrap = el.parentElement;
-    const wasActive = el.classList.contains('active');
-    wrap.querySelectorAll('.workshop-card').forEach(c => c.classList.remove('active'));
-    if (!wasActive) {
-        el.classList.add('active');
-        wrap.classList.add('has-active');
+const workshopMeta = {
+    ws1: { img: "Workshop/1.webp" },
+    ws2: { img: "Workshop/2.webp" },
+    ws3: { img: "Workshop/3.webp" },
+    ws4: { img: "Workshop/4.webp" },
+    ws5: { img: "Workshop/5.webp" }
+};
+
+function openWorkshopModal(id) {
+    const meta = workshopMeta[id];
+    if (!meta) return;
+    const lang = langData[currentLang] || {};
+    document.getElementById("workshopModalImg").src = meta.img;
+    document.getElementById("workshopModalTitle").textContent = lang[`${id}-title`] || "";
+    const body = document.getElementById("workshopModalBody");
+    const details = lang[`${id}-details`];
+    if (details) {
+        body.innerHTML = details;
     } else {
-        wrap.classList.remove('has-active');
+        const soonText = lang["workshop-modal-soon"] || "";
+        body.innerHTML = `<div class="workshop-modal-soon"><p>${soonText}</p><a href="https://line.me/R/ti/p/%40ouadchum" target="_blank" rel="noopener">LINE @ouadchum →</a></div>`;
     }
+    document.getElementById("workshopModal").classList.add("active");
+    lockBodyScroll();
+}
+function closeWorkshopModal() {
+    document.getElementById("workshopModal").classList.remove("active");
+    unlockBodyScroll();
+}
+
+// Single-photo lightbox for the coach portrait inside the workshop modal.
+function openCoachLightbox(src, alt) {
+    const overlay = document.getElementById("coachLightboxOverlay");
+    const img = document.getElementById("coachLightboxImage");
+    img.src = src;
+    img.alt = alt || "";
+    overlay.classList.add("active");
+    lockBodyScroll();
+    document.addEventListener("keydown", handleCoachLightboxKeydown);
+}
+function closeCoachLightbox() {
+    document.getElementById("coachLightboxOverlay").classList.remove("active");
+    document.removeEventListener("keydown", handleCoachLightboxKeydown);
+    unlockBodyScroll();
+}
+function handleCoachLightboxBackdropClick(event) {
+    if (event.target.id === "coachLightboxOverlay") closeCoachLightbox();
+}
+function handleCoachLightboxKeydown(event) {
+    if (event.key === "Escape") closeCoachLightbox();
 }
 
 function openLineContact() {
@@ -1587,7 +2019,7 @@ function openLineContact() {
 function openReserveModal() {
     document.getElementById("reserveModal").classList.add("active");
     lockBodyScroll();
-    document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
+    window.scrollTo({ top: window.innerWidth <= 1024 ? 7720 : 4835.33349609375, behavior: "smooth" });
 }
 function closeReserveModal() {
     document.getElementById("reserveModal").classList.remove("active");
@@ -1662,7 +2094,7 @@ document.addEventListener("DOMContentLoaded", () => {
             nav.style.background = "rgba(255, 255, 255, 0.9)";
         }
 
-        if (window.innerWidth <= 767 && window.scrollY > 80 && window.scrollY > lastScrollY) {
+        if (window.innerWidth <= 1024 && window.scrollY > 80 && window.scrollY > lastScrollY) {
             nav.classList.add('nav-hidden');
         } else {
             nav.classList.remove('nav-hidden');
