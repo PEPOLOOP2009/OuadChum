@@ -12,14 +12,14 @@
 <meta property="og:title" content="บ้านต้นไม้อวดชุม ชุมพร | Baan OuadChum Coastal Treehouse">
 <meta property="og:description" content="บ้านต้นไม้ริมทะเลเพื่อการพัฒนาชุมชน และเชื่อมโยงภูมิปัญญาท้องถิ่นสู่การท่องเที่ยว ปะทิว ชุมพร">
 <meta property="og:url" content="https://ouadchum.com/">
-<meta property="og:image" content="https://ouadchum.com/Background/IMG_2692.webp">
+<meta property="og:image" content="https://ouadchum.com/Thumnail.jpg">
 <meta property="og:locale" content="th_TH">
 <meta property="og:locale:alternate" content="en_US">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="บ้านต้นไม้อวดชุม ชุมพร | Baan OuadChum Coastal Treehouse">
 <meta name="twitter:description" content="บ้านต้นไม้ริมทะเลเพื่อการพัฒนาชุมชน และเชื่อมโยงภูมิปัญญาท้องถิ่นสู่การท่องเที่ยว ปะทิว ชุมพร">
-<meta name="twitter:image" content="https://ouadchum.com/Background/IMG_2692.webp">
+<meta name="twitter:image" content="https://ouadchum.com/Thumnail.jpg">
 
 <link rel="icon" href="logo.webp" type="image/webp">
 <link rel="apple-touch-icon" href="logo.webp">
@@ -39,7 +39,7 @@
   "name": "Baan OuadChum Coastal Treehouse",
   "description": "A 10-room treehouse resort, cafe, and community space by the sea in Pathio, Chumphon, Thailand.",
   "url": "https://ouadchum.com/",
-  "image": "https://ouadchum.com/Background/IMG_2692.webp",
+  "image": "https://ouadchum.com/Thumnail.jpg",
   "logo": "https://ouadchum.com/logo.webp",
   "telephone": "+66821166905",
   "priceRange": "$$",
@@ -1816,7 +1816,7 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
 <div class="nav-menu-wrapper" id="navMenuWrapper">
     <div class="nav-links">
         <a href="#" data-key="menu-about" onclick="event.preventDefault(); closeMenu(); window.scrollTo({top:0, behavior:'smooth'});">หน้าแรก</a>
-        <a href="#stayTitle" data-key="menu-stay" onclick="closeMenu()">ห้องพัก</a>
+        <a href="#stayTitle" data-key="menu-stay" onclick="jumpToSection(event, 'stayTitle')">ห้องพัก</a>
         <a href="workshop.html" data-key="menu-workshop" onclick="closeMenu()">เวิร์คช็อป</a>
         <a href="menu.html" data-key="menu-menu" onclick="closeMenu()">เมนู</a>
         <a href="articles.html" data-key="menu-articles" onclick="closeMenu()">สื่อ</a>
@@ -1849,7 +1849,7 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
         <h1 data-key="hero-title">เว็บหลักของ บ้านต้นไม้อวดชุม อ.ปะทิว<br>พักผ่อนบนบ้านต้นไม้ริมทะเล พร้อมเรียนรู้แนวคิดการพัฒนาเชิงพื้นที่</h1>
         <p data-key="hero-desc">อิ่มอร่อยกับคาเฟ่และร้านอาหารท้องถิ่น เพลิดเพลินไปกับเวิร์กช็อปสุดสนุกร่วมกับชุมชน พร้อมอุดหนุนของฝากจากภูมิปัญญาท้องถิ่น ในพื้นที่ที่ขับเคลื่อนการพัฒนาชุมชน</p>
 
-        <button class="btn" style="background: var(--accent); color: var(--dark); font-weight:600; margin-top: 10px;" data-key="hero-btn" onclick="document.getElementById('stay').scrollIntoView({behavior:'smooth'});">จองห้องพัก</button>
+        <button class="btn" style="background: var(--accent); color: var(--dark); font-weight:600; margin-top: 10px;" data-key="hero-btn" onclick="jumpToSection(event, 'stay')">จองห้องพัก</button>
     </div>
 </div>
 </section>
@@ -3571,7 +3571,6 @@ function openLineContact() {
 function openReserveModal() {
     document.getElementById("reserveModal").classList.add("active");
     lockBodyScroll();
-    window.scrollTo({ top: window.innerWidth <= 1024 ? 7720 : 4835.33349609375, behavior: "smooth" });
 }
 function closeReserveModal() {
     document.getElementById("reserveModal").classList.remove("active");
@@ -3602,6 +3601,21 @@ function closeMenu() {
     document.getElementById("navMenuWrapper").classList.remove("active");
     document.getElementById("hamburgerBtn").classList.remove("active");
     document.getElementById("navBackdrop").classList.remove("active");
+}
+
+// Jumping down to a section (e.g. Stay) triggers the scroll-down auto-hide
+// on mobile, so the nav bar disappears right as you land. Suppress the
+// auto-hide for the duration of the jump and force the bar back down.
+let suppressNavHide = false;
+function jumpToSection(event, targetId) {
+    if (event) event.preventDefault();
+    closeMenu();
+    const nav = document.getElementById("navbar");
+    suppressNavHide = true;
+    nav.classList.remove("nav-hidden");
+    document.getElementById(targetId).scrollIntoView({ behavior: "smooth" });
+    clearTimeout(jumpToSection._t);
+    jumpToSection._t = setTimeout(() => { suppressNavHide = false; }, 1000);
 }
 
 // HERO BACKGROUND SLIDER
@@ -3843,7 +3857,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // On mobile/iPad, hide the whole nav while scrolling down; reveal it again when scrolling up
-        if (window.innerWidth <= 1024 && window.scrollY > 80 && window.scrollY > lastScrollY) {
+        if (!suppressNavHide && window.innerWidth <= 1024 && window.scrollY > 80 && window.scrollY > lastScrollY) {
             nav.classList.add('nav-hidden');
         } else {
             nav.classList.remove('nav-hidden');
