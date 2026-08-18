@@ -712,6 +712,8 @@ nav{
     justify-content: center;
     color: #fff;
 }
+.icon-self { background: linear-gradient(135deg,#d9b673,#bdaa8a); }
+.icon-other { background: linear-gradient(135deg,#909fa0,#5f6d6e); }
 .icon-line { background: linear-gradient(135deg,#06C755,#048f3f); }
 .icon-phone { background: linear-gradient(135deg,#5a9a56,#3E723B); }
 .icon-map { background: linear-gradient(135deg,#5b9dff,#3366d6); }
@@ -1228,7 +1230,7 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeBookingDrawer()"></div>
 <div class="booking-drawer" id="bookingDrawer">
     <div class="drawer-header">
-        <h3 style="color:var(--primary-dark);">Book Your Stay</h3>
+        <h3 style="color:var(--primary-dark);" data-key="book-drawer-title">Book Your Stay</h3>
         <button onclick="closeBookingDrawer()" style="background:none; border:none; font-size:1.5rem; color:#aaa; cursor:pointer;">&times;</button>
     </div>
     <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:24px;">
@@ -1245,15 +1247,24 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
         <div class="reserve-modal-banner">
             <div class="reserve-modal-banner-icon"><img src="logo-icon.webp" alt="Baan OuadChum Logo"></div>
             <h2 data-key="reserve-modal-title">Reserve Your Stay</h2>
-            <p data-key="reserve-modal-desc">Contact us directly via LINE or phone to check availability and book.</p>
+            <p data-key="reserve-modal-desc">Contact us directly with LINE or phone to check availability and book.</p>
         </div>
 
         <div class="reserve-modal-body">
+            <a href="https://reservation.roomscope.com/2698/th" target="_blank" rel="noopener" class="reserve-contact-row">
+                <div class="contact-icon icon-self"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-13.5-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm3-3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg></div>
+                <div class="reserve-contact-text">
+                    <h4 data-key="reserve-self-title">Book Online</h4>
+                    <p data-key="reserve-self-value">Reservation System</p>
+                </div>
+                <span class="reserve-contact-arrow">›</span>
+            </a>
+
             <a href="https://line.me/R/ti/p/%40ouadchum" target="_blank" rel="noopener" class="reserve-contact-row">
                 <div class="contact-icon icon-line"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></div>
                 <div class="reserve-contact-text">
-                    <h4 data-key="contact-line-title">LINE</h4>
-                    <p data-key="contact-line-value">@ouadchum</p>
+                    <h4 data-key="reserve-line-title">Book with LINE</h4>
+                    <p data-key="reserve-line-value">LINE: @ouadchum</p>
                 </div>
                 <span class="reserve-contact-arrow">›</span>
             </a>
@@ -1261,14 +1272,14 @@ footer p { opacity: 0.5; font-size: 0.9rem; }
             <a href="tel:0821166905" class="reserve-contact-row">
                 <div class="contact-icon icon-phone"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg></div>
                 <div class="reserve-contact-text">
-                    <h4 data-key="reserve-phone-title">Phone</h4>
+                    <h4 data-key="reserve-phone-title">Book by Phone</h4>
                     <p data-key="reserve-phone-value">082-116-6905</p>
                 </div>
                 <span class="reserve-contact-arrow">›</span>
             </a>
 
             <a href="tel:0980098842" class="reserve-contact-row">
-                <div class="contact-icon icon-phone"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg></div>
+                <div class="contact-icon icon-other"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm3.75 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm3.75 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"/></svg></div>
                 <div class="reserve-contact-text">
                     <h4 data-key="contact-other-title">Other</h4>
                     <p data-key="contact-other-value">098-009-8842</p>
@@ -1300,7 +1311,7 @@ const langData = {
 
         "footer-sub": "Pathio, Chumphon, Thailand<br>Cafe, Restaurant, 10-Room Treehouse-Style Accommodation<br><br>Open Daily 8:00 AM - 8:00 PM",
         "footer-copy": "© 2026 Baan OuadChum Coastal Treehouse. All Rights Reserved.",
-        "book-guests": "Guests",
+        "book-guests": "Guests", "book-drawer-title": "Book Your Stay",
 
         "contact-line-title": "LINE", "contact-line-value": "@ouadchum",
         "contact-phone-title": "Phone", "contact-phone-value": "098-009-8842",
@@ -1311,8 +1322,10 @@ const langData = {
         "contact-map-title": "Map", "contact-map-value": "View on Google Maps",
         "map-facade-btn": "Load interactive map",
 
-        "reserve-modal-title": "Reserve Your Stay", "reserve-modal-desc": "Contact us directly via LINE or phone to check availability and book.",
-        "reserve-phone-title": "Reserve", "reserve-phone-value": "082-116-6905", "contact-other-title": "Other", "contact-other-value": "098-009-8842",
+        "reserve-modal-title": "Reserve Your Stay", "reserve-modal-desc": "Contact us directly with LINE or phone to check availability and book.",
+        "reserve-self-title": "Book Online", "reserve-self-value": "Reservation System",
+        "reserve-line-title": "Book with LINE", "reserve-line-value": "LINE: @ouadchum",
+        "reserve-phone-title": "Book by Phone", "reserve-phone-value": "082-116-6905", "contact-other-title": "Other", "contact-other-value": "098-009-8842",
 
         "footer-title": "Baan OuadChum Coastal Treehouse"
     },
@@ -1334,7 +1347,7 @@ const langData = {
 
         "footer-sub": "ปะทิว ชุมพร ประเทศไทย<br>คาเฟ่ ร้านอาหาร ที่พักสไตล์บ้านต้นไม้ 10 ห้อง<br><br>เปิดทุกวัน 8:00-20:00",
         "footer-copy": "© 2026 บ้านต้นไม้อวดชุม สงวนลิขสิทธิ์ทั้งหมด",
-        "book-guests": "จำนวนผู้เข้าพัก",
+        "book-guests": "จำนวนผู้เข้าพัก", "book-drawer-title": "จองที่พัก",
 
         "contact-line-title": "LINE", "contact-line-value": "@ouadchum",
         "contact-phone-title": "โทรศัพท์", "contact-phone-value": "098-009-8842",
@@ -1346,7 +1359,9 @@ const langData = {
         "map-facade-btn": "โหลดแผนที่แบบอินเทอร์แอกทีฟ",
 
         "reserve-modal-title": "จองห้องพัก", "reserve-modal-desc": "ติดต่อเราโดยตรงผ่าน LINE หรือโทรศัพท์<br>เพื่อตรวจสอบห้องว่างและทำการจอง",
-        "reserve-phone-title": "จองห้องพัก", "reserve-phone-value": "082-116-6905", "contact-other-title": "อื่นๆ", "contact-other-value": "098-009-8842",
+        "reserve-self-title": "จองห้องพักด้วยตนเอง", "reserve-self-value": "ระบบจองห้องพักออนไลน์",
+        "reserve-line-title": "จองห้องพักผ่านแอดมิน", "reserve-line-value": "LINE: @ouadchum",
+        "reserve-phone-title": "จองห้องพักทางโทรศัพท์", "reserve-phone-value": "082-116-6905", "contact-other-title": "อื่นๆ", "contact-other-value": "098-009-8842",
 
         "footer-title": "Baan OuadChum Coastal Treehouse"
     }
@@ -1401,6 +1416,14 @@ function switchLanguage(lang) {
     document.getElementById(`btn-lang-${lang}`).classList.add("active");
 
     updateGuestDropdowns(lang);
+    applyAttrTranslations(lang);
+}
+
+// aria-label lives on attributes, which the innerHTML sweep above never touches -
+// translate the handful of accessible-name attributes here.
+function applyAttrTranslations(lang) {
+    const hamburger = document.querySelector("#hamburgerBtn");
+    if (hamburger) hamburger.setAttribute("aria-label", lang === "th" ? "เปิด/ปิดเมนู" : "Toggle Menu");
 }
 
 function updateGuestDropdowns(lang) {
@@ -1483,7 +1506,8 @@ function initMapLoader() {
     const wrap = document.getElementById("mapFacade");
     if (!wrap) return;
     const load = () => {
-        wrap.innerHTML = `<iframe src="https://maps.google.com/maps?q=Baan+Ouadchum+Treehouse,+89+8+%E0%B8%A1.6+Chum+Kho,+Pathio+District,+Chumphon+86160&output=embed" width="100%" height="320" style="border:0;" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" title="Google Maps location of Baan OuadChum Coastal Treehouse"></iframe>`;
+        const mapTitle = currentLang === "th" ? "ตำแหน่งบ้านต้นไม้อวดชุมบน Google Maps" : "Google Maps location of Baan OuadChum Coastal Treehouse";
+        wrap.innerHTML = `<iframe src="https://maps.google.com/maps?q=Baan+Ouadchum+Treehouse,+89+8+%E0%B8%A1.6+Chum+Kho,+Pathio+District,+Chumphon+86160&output=embed" width="100%" height="320" style="border:0;" allowfullscreen="" referrerpolicy="no-referrer-when-downgrade" title="${mapTitle}"></iframe>`;
     };
     if ("IntersectionObserver" in window) {
         const io = new IntersectionObserver((entries) => {
