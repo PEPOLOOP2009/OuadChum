@@ -1205,6 +1205,7 @@ nav{
     justify-content: center;
     color: #fff;
 }
+.icon-self { background: linear-gradient(135deg,#d9b673,#bdaa8a); }
 .icon-line { background: linear-gradient(135deg,#06C755,#048f3f); }
 .icon-phone { background: linear-gradient(135deg,#5a9a56,#3E723B); }
 .icon-map { background: linear-gradient(135deg,#5b9dff,#3366d6); }
@@ -1808,8 +1809,8 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
 <nav id="navbar">
 <div class="container nav-inner">
 <a href="#" class="logo" onclick="event.preventDefault(); window.scrollTo({top:0, behavior:'smooth'});">
-    <img src="logo-icon.webp" alt="Baan OuadChum Logo" class="logo-icon" width="218" height="220">
-    <span class="logo-word">Baan OuadChum</span>
+    <img src="logo-icon.webp" alt="Baan OuadChum Logo" class="logo-icon" width="220" height="220">
+    <span class="logo-word">OuadChum</span>
 </a>
 
 <!-- เมนูบาร์ที่ปรับเรียงลำดับและเพิ่มรายการใหม่ตามต้องการ -->
@@ -1844,10 +1845,10 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
 <button class="hero-arrow next" onclick="heroNext()" aria-label="Next background">&#10095;</button>
 <div class="container">
     <div class="hero-content">
-        <img src="logo.webp" alt="Baan OuadChum Logo" class="hero-logo" width="594" height="600" fetchpriority="high">
+        <img src="vdo-logo.webp" alt="Baan OuadChum Logo" class="hero-logo" width="600" height="600" fetchpriority="high">
 
-        <h1 data-key="hero-title">เว็บหลักของ บ้านต้นไม้อวดชุม อ.ปะทิว<br>พักผ่อนบนบ้านต้นไม้ริมทะเล พร้อมเรียนรู้แนวคิดการพัฒนาเชิงพื้นที่</h1>
-        <p data-key="hero-desc">อิ่มอร่อยกับคาเฟ่และร้านอาหารท้องถิ่น เพลิดเพลินไปกับเวิร์กช็อปสุดสนุกร่วมกับชุมชน พร้อมอุดหนุนของฝากจากภูมิปัญญาท้องถิ่น ในพื้นที่ที่ขับเคลื่อนการพัฒนาชุมชน</p>
+        <h1 data-key="hero-title">พักผ่อนบนบ้านต้นไม้ริมทะเล พร้อมเรียนรู้แนวคิดการพัฒนาเชิงพื้นที่กับอวดชุม อ.ปะทิว จ.ชุมพร (เว็ปหลัก)</h1>
+        <p data-key="hero-desc">บ้านต้นไม้ . คาเฟ่ . ร้านอาหาร . เวิร์กช็อป . ของฝากจากภูมิปัญญาท้องถิ่น</p>
 
         <button class="btn" style="background: var(--accent); color: var(--dark); font-weight:600; margin-top: 10px;" data-key="hero-btn" onclick="jumpToSection(event, 'stay')">จองห้องพัก</button>
     </div>
@@ -1902,6 +1903,7 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
 <div class="container container-wide">
     
     <div class="section-title-container section-title-center">
+        <img src="logo.webp" alt="Baan OuadChum Logo" width="150" height="150" style="width:150px; height:150px; margin: 0 auto 16px auto; display:block;" loading="lazy">
         <span class="subtitle" data-key="stay-sub" style="color: #7d6748; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px;">Accommodation</span>
         <h2 class="section-title" id="stayTitle" data-key="stay-title" style="font-size: 2.2rem; color: #2c3536; font-weight: 700; margin-bottom: 15px;">Treehouse Rooms</h2>
         <p data-key="stay-desc-nav" style="color: #666; max-width: 600px; margin: 0 auto; line-height: 1.6;">Select and filter the perfect height tier for your custom wilderness sanctuary experience.</p>
@@ -2492,7 +2494,8 @@ const roomImages = {
         "Tree house room/001/fotong (355).JPG",
         "Tree house room/001/fotong (419).JPG",
         "Tree house room/001/IMG_2370.JPG",
-        "Tree house room/001/IMG_3910.jpg"
+        "Tree house room/001/IMG_3910.jpg",
+        "Tree house room/001/VIP-floorplan.jpg"
     ],
     '201': [
         "Tree house room/201/IMG_3946.JPG",
@@ -2501,6 +2504,9 @@ const roomImages = {
         "Tree house room/201/IMG_3957.jpg"
     ],
     '202': [
+        "Tree house room/202/202-2.jpg",
+        "Tree house room/202/202-3.jpg",
+        "Tree house room/202/202-4.jpg",
         "Tree house room/202/IMG_3987.jpg"
     ],
     '203': [
@@ -2799,6 +2805,7 @@ const roomExtraData = {
 // Floor-plan drawings mixed into the photo folders — mostly-white line art that needs
 // to be shown in full (contain) rather than cropped/stretched like the real photos (cover)
 const floorPlanImages = new Set([
+    "Tree house room/001/VIP-floorplan.jpg",
     "Tree house room/201/IMG_3957.jpg",
     "Tree house room/203/IMG_3956.jpg",
     "Tree house room/301/IMG_3966.jpg"
@@ -3033,11 +3040,20 @@ function updateCarouselArrows(track) {
         </div>
 
         <div class="reserve-modal-body">
+            <a href="https://reservation.roomscope.com/2698/th" target="_blank" rel="noopener" class="reserve-contact-row">
+                <div class="contact-icon icon-self"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-13.5-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm3-3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg></div>
+                <div class="reserve-contact-text">
+                    <h3 data-key="reserve-self-title">Book Online</h3>
+                    <p data-key="reserve-self-value">Reservation System</p>
+                </div>
+                <span class="reserve-contact-arrow">›</span>
+            </a>
+
             <a href="https://line.me/R/ti/p/%40ouadchum" target="_blank" rel="noopener" class="reserve-contact-row">
                 <div class="contact-icon icon-line"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></div>
                 <div class="reserve-contact-text">
-                    <h3 data-key="contact-line-title">LINE</h3>
-                    <p data-key="contact-line-value">@ouadchum</p>
+                    <h3 data-key="reserve-line-title">Book via Admin</h3>
+                    <p data-key="reserve-line-value">LINE: @ouadchum</p>
                 </div>
                 <span class="reserve-contact-arrow">›</span>
             </a>
@@ -3045,7 +3061,7 @@ function updateCarouselArrows(track) {
             <a href="tel:0821166905" class="reserve-contact-row">
                 <div class="contact-icon icon-phone"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg></div>
                 <div class="reserve-contact-text">
-                    <h3 data-key="reserve-phone-title">Phone</h3>
+                    <h3 data-key="reserve-phone-title">Book by Phone</h3>
                     <p data-key="reserve-phone-value">082-116-6905</p>
                 </div>
                 <span class="reserve-contact-arrow">›</span>
@@ -3128,14 +3144,16 @@ const langData = {
         "map-facade-btn": "Load interactive map",
 
         "reserve-modal-title": "Reserve Your Stay", "reserve-modal-desc": "Contact us directly via LINE or phone to check availability and book.",
-        "reserve-phone-title": "Reserve", "reserve-phone-value": "082-116-6905", "contact-other-title": "Other", "contact-other-value": "098-009-8842",
+        "reserve-self-title": "Book Online", "reserve-self-value": "Reservation System",
+        "reserve-line-title": "Book via Admin", "reserve-line-value": "LINE: @ouadchum",
+        "reserve-phone-title": "Book by Phone", "reserve-phone-value": "082-116-6905", "contact-other-title": "Other", "contact-other-value": "098-009-8842",
 
         "footer-title": "Baan OuadChum Coastal Treehouse"
     },
     th: {
         "menu-about": "หน้าแรก", "menu-stay": "ห้องพัก", "menu-workshop": "เวิร์คช็อป", "menu-menu": "เมนู", "menu-articles": "สื่อ", "menu-shop": "ติดต่อ",
         "btn-reserve": "ติดต่อ",
-        "hero-title": "เว็บหลักของ บ้านต้นไม้อวดชุม อ.ปะทิว<br>พักผ่อนบนบ้านต้นไม้ริมทะเล พร้อมเรียนรู้แนวคิดการพัฒนาเชิงพื้นที่", "hero-desc": "อิ่มอร่อยกับคาเฟ่และร้านอาหารท้องถิ่น เพลิดเพลินไปกับเวิร์กช็อปสุดสนุกร่วมกับชุมชน พร้อมอุดหนุนของฝากจากภูมิปัญญาท้องถิ่น ในพื้นที่ที่ขับเคลื่อนการพัฒนาชุมชน", "hero-btn": "จองห้องพัก",
+        "hero-title": "พักผ่อนบนบ้านต้นไม้ริมทะเล พร้อมเรียนรู้แนวคิดการพัฒนาเชิงพื้นที่กับอวดชุม อ.ปะทิว จ.ชุมพร (เว็ปหลัก)", "hero-desc": "บ้านต้นไม้ . คาเฟ่ . ร้านอาหาร . เวิร์กช็อป . ของฝากจากภูมิปัญญาท้องถิ่น", "hero-btn": "จองห้องพัก",
         "about-sub": "ปรัชญาของเรา", "about-title": "ปรัชญาของอวดชุม : ธุรกิจ เพื่อช่วย", 
         "about-desc1": "ธุรกิจ เพื่อช่วย คือการสร้างธุรกิจที่ช่วยให้ชุมชนใช้ทรัพยากรที่มีอยู่แล้ว ทั้งของตนเองและจากภาครัฐ ให้เกิดประโยชน์สูงสุด",
         "about-desc2": "เราทำงานร่วมกับมหาวิทยาลัยและหน่วยงานภาครัฐ เพื่อนำงานวิจัยและเครือข่ายชุมชนมาสู่การปฏิบัติจริง โดยเริ่มต้นที่ชุมพร",
@@ -3143,7 +3161,7 @@ const langData = {
         "stat-hab-sub": "มิติการพัฒนาระดับตำบล",
         "dim-1": "มิติอาชีพ", "dim-2": "มิติสุขภาพ", "dim-3": "มิติสังคม", "dim-4": "มิติสิ่งแวดล้อม", "dim-5": "มิติการศึกษา",
         
-        "stay-sub": "ที่พักอาศัย", "stay-title": "ห้องพักบ้านต้นไม้", "stay-desc-nav": "สัมผัสประสบการณ์การพักผ่อนเหนือจินตนาการบนบ้านต้นไม้ ซึ่งมีให้คุณเลือกผ่อนคลายถึง 2 โซน (บ้านต้นไม้ 1 และ บ้านต้นไม้ 2) โดยแต่ละห้องได้รับการออกแบบอย่างมีเอกลักษณ์ โดดเด่น และลงตัวไปตามโคร้งสร้างธรรมชาติของต้นไม้",
+        "stay-sub": "ที่พักอาศัย", "stay-title": "ห้องพักบ้านต้นไม้อวดชุม", "stay-desc-nav": "สัมผัสประสบการณ์การพักผ่อนเหนือจินตนาการบนบ้านต้นไม้ ซึ่งมีให้คุณเลือกผ่อนคลายถึง 2 โซน (บ้านต้นไม้ 1 และ บ้านต้นไม้ 2) โดยแต่ละห้องได้รับการออกแบบอย่างมีเอกลักษณ์ โดดเด่น และลงตัวไปตามโคร้งสร้างธรรมชาติของต้นไม้",
         "filter-all": "ห้องพักทั้งหมด", "filter-low": "บ้านต้นไม้ 1-VIP1", "filter-f2": "บ้านต้นไม้ 2-ชั้น 2", "filter-high": "บ้านต้นไม้ 2-ชั้น 3", "filter-f4": "บ้านต้นไม้ 2-ชั้น 4",
         "filter-view-label": "วิว", "filter-view-ocean": "วิวทะเล", "filter-view-lake": "วิวทะเลสาบ", "filter-view-panoramic": "วิวพาโนรามา",
         "filter-amenity-label": "สิ่งอำนวยความสะดวก", "filter-bathtub": "ห้องน้ำแบบอ่างแช่", "filter-pet": "รองรับสัตว์เลี้ยง",
@@ -3192,7 +3210,9 @@ const langData = {
         "map-facade-btn": "โหลดแผนที่แบบอินเทอร์แอกทีฟ",
 
         "reserve-modal-title": "จองห้องพัก", "reserve-modal-desc": "ติดต่อเราโดยตรงผ่าน LINE หรือโทรศัพท์<br>เพื่อตรวจสอบห้องว่างและทำการจอง",
-        "reserve-phone-title": "จองห้องพัก", "reserve-phone-value": "082-116-6905", "contact-other-title": "อื่นๆ", "contact-other-value": "098-009-8842",
+        "reserve-self-title": "จองห้องพักด้วยตนเอง", "reserve-self-value": "ระบบจองห้องพักออนไลน์",
+        "reserve-line-title": "จองห้องพักผ่านแอดมิน", "reserve-line-value": "LINE: @ouadchum",
+        "reserve-phone-title": "จองห้องพักทางโทรศัพท์", "reserve-phone-value": "082-116-6905", "contact-other-title": "อื่นๆ", "contact-other-value": "098-009-8842",
 
         "footer-title": "Baan OuadChum Coastal Treehouse"
     }
