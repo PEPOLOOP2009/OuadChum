@@ -10,3 +10,8 @@
   from = "/api/availability"
   to = "/.netlify/functions/availability"
   status = 200
+
+[[redirects]]
+  from = "/api/weather"
+  to = "/.netlify/functions/weather"
+  status = 200

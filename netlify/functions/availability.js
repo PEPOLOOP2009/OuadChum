@@ -12,7 +12,6 @@ const ROOM_TYPE_IDS = {
   '001': 48944, '201': 48920, '202': 48990, '203': 48918, '204': 48992,
   '301': 48994, '302': 48996, '401': 48998, '403': 49000, '404': 49002
 };
-const TOTAL_ROOMS = Object.keys(ROOM_TYPE_IDS).length;
 
 const STATUS_MAP = {
   'bg-empty': 'available',
@@ -86,42 +85,21 @@ async function fetchCalendar(typeId, lang, monthParam) {
   return parsed;
 }
 
-// Combines every room type's calendar into one grid: a day's count is the sum of
-// rooms free that day across all types, banded into the same 4 status levels so
-// it renders with the same legend as a single-room calendar.
-function aggregateCalendars(calendars) {
+// Keeps every room type's calendar separate (rather than summing into one number)
+// so the "all rooms" view can render a room x day grid — which room is free on
+// which day, not just how many are free in total.
+function buildGrid(roomIds, calendars) {
   const base = calendars[0];
-  const byDate = new Map();
-
-  calendars.forEach((cal) => {
-    cal.days.forEach((d) => {
-      if (!byDate.has(d.date)) {
-        byDate.set(d.date, { date: d.date, inMonth: d.inMonth, weekend: d.weekend, holiday: d.holiday, statuses: [] });
-      }
-      byDate.get(d.date).statuses.push(d);
-    });
-  });
-
-  const days = Array.from(byDate.values()).map((entry) => {
-    const known = entry.statuses.filter((s) => s.status !== null);
-    if (known.length === 0) {
-      return { date: entry.date, inMonth: entry.inMonth, status: null, count: null, weekend: entry.weekend, holiday: entry.holiday };
-    }
-    const sum = known.reduce((acc, s) => acc + (s.count || 0), 0);
-    let status;
-    if (sum === 0) status = 'full';
-    else if (sum <= Math.ceil(TOTAL_ROOMS * 0.3)) status = 'almost-full';
-    else if (sum <= Math.ceil(TOTAL_ROOMS * 0.6)) status = 'almost-available';
-    else status = 'available';
-    return { date: entry.date, inMonth: entry.inMonth, status, count: sum, weekend: entry.weekend, holiday: entry.holiday };
-  }).sort((a, b) => a.date.localeCompare(b.date));
-
   return {
     month: base.month,
     prevDate: base.prevDate,
     nextDate: base.nextDate,
     hasPrev: base.hasPrev,
-    days
+    rooms: roomIds.map((roomId, i) => ({
+      roomId,
+      typeId: ROOM_TYPE_IDS[roomId],
+      days: calendars[i].days
+    }))
   };
 }
 
@@ -144,10 +122,11 @@ exports.handler = async (event) => {
   try {
     let calendar;
     if (isAll) {
+      const roomIds = Object.keys(ROOM_TYPE_IDS);
       const calendars = await Promise.all(
-        Object.values(ROOM_TYPE_IDS).map((id) => fetchCalendar(id, lang, monthParam))
+        roomIds.map((id) => fetchCalendar(ROOM_TYPE_IDS[id], lang, monthParam))
       );
-      calendar = aggregateCalendars(calendars);
+      calendar = buildGrid(roomIds, calendars);
     } else {
       calendar = await fetchCalendar(typeId, lang, monthParam);
     }
