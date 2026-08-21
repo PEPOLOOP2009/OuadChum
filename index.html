@@ -3442,6 +3442,7 @@ function updateCarouselArrows(track) {
             <div class="availability-error" id="availabilityError" style="display:none;">
                 <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
                 <p id="availabilityErrorText">Couldn't load the live calendar right now.</p>
+                <p id="availabilityErrorDetail" style="font-size:0.75rem; color:#999; margin-top:-8px; word-break:break-all;"></p>
                 <a id="availabilityFallbackLink" href="#" target="_blank" rel="noopener" class="btn btn-sm btn-outline">Open on RoomScope</a>
             </div>
             <div class="availability-calendar" id="availabilityCalendarEl" style="display:none;">
@@ -4084,6 +4085,7 @@ async function loadAvailability(roomId, monthStartDate) {
         document.getElementById("availabilityErrorText").textContent = lang === "th"
             ? "ไม่สามารถโหลดปฏิทินห้องว่างสดได้ในขณะนี้"
             : "Couldn't load the live calendar right now.";
+        document.getElementById("availabilityErrorDetail").textContent = err && err.message ? err.message : "";
         const fallback = document.getElementById("availabilityFallbackLink");
         fallback.href = `https://reservation.roomscope.com/2698/${lang}/rsvn/availability`;
         fallback.textContent = lang === "th" ? "เปิดปฏิทินบน RoomScope" : "Open on RoomScope";
