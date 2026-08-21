@@ -4067,7 +4067,7 @@ async function loadAvailability(roomId, monthStartDate) {
     document.getElementById("availabilityLoading").style.display = "flex";
     document.getElementById("availabilityLoadingText").textContent = lang === "th" ? "กำลังโหลดปฏิทินห้องว่าง..." : "Loading live calendar...";
 
-    let url = `/.netlify/functions/availability?roomId=${encodeURIComponent(roomId)}&lang=${lang}`;
+    let url = `/api/availability?roomId=${encodeURIComponent(roomId)}&lang=${lang}`;
     if (monthStartDate) url += `&month=${monthStartDate}`;
 
     let data;
@@ -4078,6 +4078,7 @@ async function loadAvailability(roomId, monthStartDate) {
         if (data.error) throw new Error(data.error);
     } catch (err) {
         if (token !== availabilityState.requestToken) return;
+        console.error("Availability calendar failed to load:", err);
         document.getElementById("availabilityLoading").style.display = "none";
         document.getElementById("availabilityError").style.display = "flex";
         document.getElementById("availabilityErrorText").textContent = lang === "th"

@@ -1,3 +1,12 @@
 [build]
   publish = "."
   functions = "netlify/functions"
+
+# Serve the function at a plain-looking path. Some ad-blocker / privacy-extension
+# blocklists flag "/.netlify/functions/*" specifically (it's a known ad-blocker
+# circumvention pattern), which silently kills the fetch() before it ever reaches
+# Netlify's servers. "/api/*" isn't targeted the same way.
+[[redirects]]
+  from = "/api/availability"
+  to = "/.netlify/functions/availability"
+  status = 200
