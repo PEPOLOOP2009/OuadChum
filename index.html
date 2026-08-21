@@ -21,8 +21,8 @@
 <meta name="twitter:description" content="บ้านต้นไม้ริมทะเลเพื่อการพัฒนาชุมชน และเชื่อมโยงภูมิปัญญาท้องถิ่นสู่การท่องเที่ยว ปะทิว ชุมพร">
 <meta name="twitter:image" content="https://ouadchum.com/ogimage.jpg">
 
-<link rel="icon" href="logo.webp" type="image/webp">
-<link rel="apple-touch-icon" href="logo.webp">
+<link rel="icon" href="logo-old.webp" type="image/webp">
+<link rel="apple-touch-icon" href="logo-old.webp">
 
 <link rel="preload" as="image" href="Background/background.webp" imagesrcset="Background/background-mobile.webp 800w, Background/background.webp 1600w" imagesizes="100vw" fetchpriority="high">
 
@@ -1206,6 +1206,7 @@ nav{
     color: #fff;
 }
 .icon-self { background: linear-gradient(135deg,#d9b673,#bdaa8a); }
+.icon-calendar { background: linear-gradient(135deg,#4fb0a5,#2c7d73); }
 .icon-other { background: linear-gradient(135deg,#909fa0,#5f6d6e); }
 .icon-line { background: linear-gradient(135deg,#06C755,#048f3f); }
 .icon-phone { background: linear-gradient(135deg,#5a9a56,#3E723B); }
@@ -1469,6 +1470,315 @@ nav{
 }
 .reserve-modal-body {
     padding: 22px 24px 26px;
+}
+.availability-modal-content {
+    max-width: 960px;
+    width: 100%;
+    height: 85vh;
+    max-height: 800px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 20px;
+    transform: translateY(18px) scale(0.96);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+.modal.active .availability-modal-content {
+    transform: translateY(0) scale(1);
+}
+.availability-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 24px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #fff;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+.availability-modal-header-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.16);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.availability-modal-header-titles {
+    flex: 1;
+    min-width: 0;
+}
+.availability-modal-header h3 {
+    font-size: 1.05rem;
+    margin: 0;
+    letter-spacing: 0.2px;
+}
+.availability-modal-header p {
+    font-size: 0.82rem;
+    margin: 3px 0 0;
+    color: rgba(255,255,255,0.8);
+}
+.availability-modal-header .close-modal {
+    position: static;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    box-shadow: none;
+}
+.availability-modal-header .close-modal:hover {
+    background: rgba(255,255,255,0.3);
+    transform: rotate(90deg);
+}
+.availability-modal-body {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    background: var(--white);
+    overflow-y: auto;
+}
+.availability-modal-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    background: var(--white);
+    z-index: 0;
+    padding: 30px;
+}
+.availability-error {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 30px;
+    text-align: center;
+    color: #7d8b89;
+}
+.availability-error svg {
+    color: #c98a5e;
+}
+.availability-error p {
+    font-size: 0.95rem;
+    max-width: 320px;
+}
+.availability-calendar {
+    padding: 22px 24px 26px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.availability-calendar.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.availability-cal-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+.availability-month-label {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--dark);
+}
+.availability-nav-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(44,125,115,0.25);
+    background: rgba(79,176,165,0.06);
+    color: #2c7d73;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.availability-nav-btn:hover:not(:disabled) {
+    background: #2c7d73;
+    color: #fff;
+    border-color: #2c7d73;
+}
+.availability-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+.availability-weekdays, .availability-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+.availability-weekdays {
+    margin-bottom: 8px;
+}
+.availability-weekdays span {
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #909fa0;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+.avail-cell {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--dark);
+    background: var(--gray-light);
+    position: relative;
+}
+.avail-cell.out-of-month {
+    background: transparent;
+    color: transparent;
+    pointer-events: none;
+}
+.avail-cell.status-available { background: rgba(62,114,59,0.14); color: #2c5429; }
+.avail-cell.status-almost-available { background: rgba(140,178,80,0.18); color: #4c6b2c; }
+.avail-cell.status-almost-full { background: rgba(197,168,128,0.28); color: #8a5f2a; }
+.avail-cell.status-full { background: rgba(193,90,66,0.14); color: #a34832; font-weight: 500; }
+.avail-cell.status-unknown { background: var(--gray-light); color: #b8bfbd; font-weight: 500; }
+.avail-cell .avail-count {
+    font-size: 0.62rem;
+    font-weight: 700;
+    opacity: 0.85;
+}
+.avail-cell .avail-dot {
+    position: absolute;
+    top: 5px;
+    right: 6px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.55;
+}
+.availability-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+}
+.availability-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: #666;
+}
+.availability-legend-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+.availability-skeleton {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    width: 100%;
+    max-width: 440px;
+}
+.availability-skeleton span {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    background: linear-gradient(100deg, #eef1ef 30%, #f6f8f7 50%, #eef1ef 70%);
+    background-size: 200% 100%;
+    animation: availability-shimmer 1.5s ease-in-out infinite;
+}
+@keyframes availability-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+.availability-loading-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #7d8b89;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+.availability-loading-text svg {
+    animation: availability-pulse 1.4s ease-in-out infinite;
+    color: #2c7d73;
+    flex-shrink: 0;
+}
+@keyframes availability-pulse {
+    0%, 100% { opacity: 0.45; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1); }
+}
+@media (max-width: 600px) {
+    .availability-modal-content {
+        height: 92vh;
+        max-height: none;
+        border-radius: 16px;
+    }
+    .availability-modal-header {
+        padding: 14px 16px;
+    }
+    .availability-modal-header-icon {
+        width: 30px;
+        height: 30px;
+    }
+    .availability-modal-header h3 {
+        font-size: 0.95rem;
+    }
+    .availability-skeleton {
+        max-width: 320px;
+    }
+    .availability-calendar {
+        padding: 18px 14px 20px;
+    }
+    .avail-cell {
+        border-radius: 8px;
+        font-size: 0.75rem;
+    }
+    .avail-cell .avail-count {
+        font-size: 0.55rem;
+    }
+    .availability-month-label {
+        font-size: 0.95rem;
+    }
+}
+.btn-availability {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(44,125,115,0.35);
+    background: rgba(79,176,165,0.08);
+    color: #2c7d73;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s;
+}
+.btn-availability:hover {
+    background: #2c7d73;
+    border-color: #2c7d73;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(44,125,115,0.25);
 }
 .reserve-modal-body .icon-phone {
     background: linear-gradient(135deg,#06C755,#048f3f);
@@ -1904,7 +2214,7 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
 <div class="container container-wide">
     
     <div class="section-title-container section-title-center">
-        <img src="logo.webp" alt="Baan OuadChum Logo" width="150" height="150" style="width:150px; height:150px; margin: 0 auto 16px auto; display:block;" loading="lazy">
+        <img src="logo-old.webp" alt="Baan OuadChum Logo" width="150" height="150" style="width:150px; height:150px; margin: 0 auto 16px auto; display:block;" loading="lazy">
         <span class="subtitle" data-key="stay-sub" style="color: #7d6748; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px;">Accommodation</span>
         <h2 class="section-title" id="stayTitle" data-key="stay-title" style="font-size: 2.2rem; color: #2c3536; font-weight: 700; margin-bottom: 15px;">Treehouse Rooms</h2>
         <p data-key="stay-desc-nav" style="color: #666; max-width: 600px; margin: 0 auto; line-height: 1.6;">Select and filter the perfect height tier for your custom wilderness sanctuary experience.</p>
@@ -1981,7 +2291,8 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
                         <span data-key="room001-guests">2-4 Guests</span>
                     </div>
                 </div>
-                <div class="card-footer" style="justify-content: flex-end;">
+                <div class="card-footer">
+                    <button class="btn-availability" onclick="openAvailabilityModal('001')" aria-label="Check Availability" title="Check Availability"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-13.5-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm3-3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg></button>
                     <button class="btn btn-outline btn-sm" data-key="btn-details" onclick="openRoomModal('001')">View Details</button>
                 </div>
             </div>
@@ -2008,7 +2319,8 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
                         <span data-key="room201-guests">2-4 Guests</span>
                     </div>
                 </div>
-                <div class="card-footer" style="justify-content: flex-end;">
+                <div class="card-footer">
+                    <button class="btn-availability" onclick="openAvailabilityModal('201')" aria-label="Check Availability" title="Check Availability"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-13.5-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm3-3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg></button>
                     <button class="btn btn-outline btn-sm" data-key="btn-details" onclick="openRoomModal('201')">View Details</button>
                 </div>
             </div>
@@ -2035,7 +2347,8 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
                         <span data-key="room202-guests">2-3 Guests</span>
                     </div>
                 </div>
-                <div class="card-footer" style="justify-content: flex-end;">
+                <div class="card-footer">
+                    <button class="btn-availability" onclick="openAvailabilityModal('202')" aria-label="Check Availability" title="Check Availability"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-13.5-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm3-3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg></button>
                     <button class="btn btn-outline btn-sm" data-key="btn-details" onclick="openRoomModal('202')">View Details</button>
                 </div>
             </div>
@@ -2062,7 +2375,8 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
                         <span data-key="room203-guests">2 Guests</span>
                     </div>
                 </div>
-                <div class="card-footer" style="justify-content: flex-end;">
+                <div class="card-footer">
+                    <button class="btn-availability" onclick="openAvailabilityModal('203')" aria-label="Check Availability" title="Check Availability"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-13.5-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm3-3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg></button>
                     <button class="btn btn-outline btn-sm" data-key="btn-details" onclick="openRoomModal('203')">View Details</button>
                 </div>
             </div>
@@ -2089,7 +2403,8 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
                         <span data-key="room204-guests">2-3 Guests</span>
                     </div>
                 </div>
-                <div class="card-footer" style="justify-content: flex-end;">
+                <div class="card-footer">
+                    <button class="btn-availability" onclick="openAvailabilityModal('204')" aria-label="Check Availability" title="Check Availability"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-13.5-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm3-3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg></button>
                     <button class="btn btn-outline btn-sm" data-key="btn-details" onclick="openRoomModal('204')">View Details</button>
                 </div>
             </div>
@@ -2116,7 +2431,8 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
                         <span data-key="room301-guests">2-3 Guests</span>
                     </div>
                 </div>
-                <div class="card-footer" style="justify-content: flex-end;">
+                <div class="card-footer">
+                    <button class="btn-availability" onclick="openAvailabilityModal('301')" aria-label="Check Availability" title="Check Availability"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-13.5-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm3-3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg></button>
                     <button class="btn btn-outline btn-sm" data-key="btn-details" onclick="openRoomModal('301')">View Details</button>
                 </div>
             </div>
@@ -2143,7 +2459,8 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
                         <span data-key="room302-guests">2-3 Guests</span>
                     </div>
                 </div>
-                <div class="card-footer" style="justify-content: flex-end;">
+                <div class="card-footer">
+                    <button class="btn-availability" onclick="openAvailabilityModal('302')" aria-label="Check Availability" title="Check Availability"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-13.5-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm3-3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg></button>
                     <button class="btn btn-outline btn-sm" data-key="btn-details" onclick="openRoomModal('302')">View Details</button>
                 </div>
             </div>
@@ -2170,7 +2487,8 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
                         <span data-key="room401-guests">2-4 Guests</span>
                     </div>
                 </div>
-                <div class="card-footer" style="justify-content: flex-end;">
+                <div class="card-footer">
+                    <button class="btn-availability" onclick="openAvailabilityModal('401')" aria-label="Check Availability" title="Check Availability"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-13.5-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm3-3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg></button>
                     <button class="btn btn-outline btn-sm" data-key="btn-details" onclick="openRoomModal('401')">View Details</button>
                 </div>
             </div>
@@ -2197,7 +2515,8 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
                         <span data-key="room403-guests">2-3 Guests</span>
                     </div>
                 </div>
-                <div class="card-footer" style="justify-content: flex-end;">
+                <div class="card-footer">
+                    <button class="btn-availability" onclick="openAvailabilityModal('403')" aria-label="Check Availability" title="Check Availability"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-13.5-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm3-3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg></button>
                     <button class="btn btn-outline btn-sm" data-key="btn-details" onclick="openRoomModal('403')">View Details</button>
                 </div>
             </div>
@@ -2224,7 +2543,8 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
                         <span data-key="room404-guests">2-4 Guests</span>
                     </div>
                 </div>
-                <div class="card-footer" style="justify-content: flex-end;">
+                <div class="card-footer">
+                    <button class="btn-availability" onclick="openAvailabilityModal('404')" aria-label="Check Availability" title="Check Availability"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-13.5-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm3-3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg></button>
                     <button class="btn btn-outline btn-sm" data-key="btn-details" onclick="openRoomModal('404')">View Details</button>
                 </div>
             </div>
@@ -3013,7 +3333,13 @@ function updateCarouselArrows(track) {
 
                     <h3 style="border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 6px; font-size:1rem;" data-key="modal-amenities-title">Room Amenities</h3>
                     <div class="amenities-list" id="modalAmenitiesList"></div>
-                    <button class="btn" style="width: 100%; margin-top: 20px;" data-key="btn-book-now" onclick="closeRoomModal(); openReserveModal();">Book This Room</button>
+                    <div style="display:flex; gap:10px; margin-top:20px;">
+                        <button class="btn btn-outline" style="flex:1; display:flex; align-items:center; justify-content:center; gap:8px; padding-left:10px; padding-right:10px;" onclick="closeRoomModal(); openAvailabilityModal(currentModalRoomId);">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+                            <span data-key="reserve-avail-title">Check Availability</span>
+                        </button>
+                        <button class="btn" style="flex:1;" data-key="btn-book-now" onclick="closeRoomModal(); openReserveModal();">Book This Room</button>
+                    </div>
                 </div>
             </div>
             <div class="room-modal-right room-modal-gallery">
@@ -3051,6 +3377,15 @@ function updateCarouselArrows(track) {
                 <span class="reserve-contact-arrow">›</span>
             </a>
 
+            <a href="#" onclick="event.preventDefault(); openAvailabilityModal('all');" class="reserve-contact-row">
+                <div class="contact-icon icon-calendar"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg></div>
+                <div class="reserve-contact-text">
+                    <h3 data-key="reserve-avail-title">Check Availability</h3>
+                    <p data-key="reserve-avail-value">Live Room Calendar</p>
+                </div>
+                <span class="reserve-contact-arrow">›</span>
+            </a>
+
             <a href="https://line.me/R/ti/p/%40ouadchum" target="_blank" rel="noopener" class="reserve-contact-row">
                 <div class="contact-icon icon-line"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></div>
                 <div class="reserve-contact-text">
@@ -3077,6 +3412,52 @@ function updateCarouselArrows(track) {
                 </div>
                 <span class="reserve-contact-arrow">›</span>
             </a>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="availabilityModal">
+    <div class="modal-content availability-modal-content">
+        <div class="availability-modal-header">
+            <div class="availability-modal-header-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-13.5-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm3-3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg></div>
+            <div class="availability-modal-header-titles">
+                <h3 data-key="reserve-avail-title">Check Availability</h3>
+                <p id="availabilityModalSubtitle" style="display:none;"></p>
+            </div>
+            <button class="close-modal" onclick="closeAvailabilityModal()">&times;</button>
+        </div>
+        <div class="availability-modal-body" id="availabilityModalBody">
+            <div class="availability-modal-loading" id="availabilityLoading">
+                <div class="availability-skeleton">
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <div class="availability-loading-text">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-13.5-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm3-3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg>
+                    <span id="availabilityLoadingText">Loading live calendar...</span>
+                </div>
+            </div>
+            <div class="availability-error" id="availabilityError" style="display:none;">
+                <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
+                <p id="availabilityErrorText">Couldn't load the live calendar right now.</p>
+                <a id="availabilityFallbackLink" href="#" target="_blank" rel="noopener" class="btn btn-sm btn-outline">Open on RoomScope</a>
+            </div>
+            <div class="availability-calendar" id="availabilityCalendarEl" style="display:none;">
+                <div class="availability-cal-nav">
+                    <button type="button" class="availability-nav-btn" id="availabilityPrevBtn" aria-label="Previous month">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <span class="availability-month-label" id="availabilityMonthLabel"></span>
+                    <button type="button" class="availability-nav-btn" id="availabilityNextBtn" aria-label="Next month">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+                <div class="availability-weekdays" id="availabilityWeekdays"></div>
+                <div class="availability-days" id="availabilityDays"></div>
+                <div class="availability-legend" id="availabilityLegend"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -3147,6 +3528,7 @@ const langData = {
 
         "reserve-modal-title": "Reserve Your Stay", "reserve-modal-desc": "Contact us directly with LINE or phone to check availability and book.",
         "reserve-self-title": "Book Online", "reserve-self-value": "Reservation System",
+        "reserve-avail-title": "Check Availability", "reserve-avail-value": "Live Room Calendar",
         "reserve-line-title": "Book with LINE", "reserve-line-value": "LINE: @ouadchum",
         "reserve-phone-title": "Book by Phone", "reserve-phone-value": "082-116-6905", "contact-other-title": "Other", "contact-other-value": "098-009-8842",
 
@@ -3213,6 +3595,7 @@ const langData = {
 
         "reserve-modal-title": "จองห้องพัก", "reserve-modal-desc": "ติดต่อเราโดยตรงผ่าน LINE หรือโทรศัพท์<br>เพื่อตรวจสอบห้องว่างและทำการจอง",
         "reserve-self-title": "จองห้องพักด้วยตนเอง", "reserve-self-value": "ระบบจองห้องพักออนไลน์",
+        "reserve-avail-title": "ตรวจสอบห้องว่าง", "reserve-avail-value": "ปฏิทินห้องว่างล่าสุด",
         "reserve-line-title": "จองห้องพักผ่านแอดมิน", "reserve-line-value": "LINE: @ouadchum",
         "reserve-phone-title": "จองห้องพักทางโทรศัพท์", "reserve-phone-value": "082-116-6905", "contact-other-title": "อื่นๆ", "contact-other-value": "098-009-8842",
 
@@ -3336,6 +3719,12 @@ function applyAttrTranslations(lang) {
 
     const modalSidePhoto = document.getElementById("modalSidePhoto");
     if (modalSidePhoto) modalSidePhoto.alt = lang === "th" ? "จองห้องพักของคุณ" : "Book your stay";
+
+    const availabilityLabel = lang === "th" ? "ตรวจสอบห้องว่าง" : "Check Availability";
+    document.querySelectorAll(".btn-availability").forEach(btn => {
+        btn.setAttribute("aria-label", availabilityLabel);
+        btn.setAttribute("title", availabilityLabel);
+    });
 }
 
 function updateGuestDropdowns(lang) {
@@ -3496,7 +3885,9 @@ const bookRoomPhotoNames = {
     '301': '301', '302': '302', '401': '401', '403': '403', '404': '404'
 };
 
+let currentModalRoomId = null;
 function openRoomModal(roomId) {
+    currentModalRoomId = roomId;
     document.getElementById("modalRoomTitle").innerHTML = langData[currentLang][`room${roomId}-title`] || (currentLang === "th" ? "สวีทบ้านต้นไม้" : "Treehouse Suite");
     document.getElementById("modalSidePhoto").src = `Book room/${bookRoomPhotoNames[roomId] || roomId}.webp`;
 
@@ -3617,6 +4008,120 @@ function openReserveModal() {
 function closeReserveModal() {
     document.getElementById("reserveModal").classList.remove("active");
     unlockBodyScroll();
+}
+
+// Custom-built availability calendar: a Netlify Function (netlify/functions/availability.js)
+// fetches RoomScope's own calendar page server-side and parses it into plain JSON
+// (day -> status/count), so this renders entirely in the site's own design and only
+// ever receives raw data from RoomScope, never their page/template.
+const AVAILABILITY_WEEKDAYS = {
+    th: ["อา.", "จ.", "อ.", "พ.", "พฤ.", "ศ.", "ส."],
+    en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+};
+const AVAILABILITY_MONTH_NAMES = {
+    th: ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
+    en: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+};
+const AVAILABILITY_LEGEND = [
+    { status: "available", th: "ว่าง", en: "Available" },
+    { status: "almost-available", th: "ค่อนข้างว่าง", en: "Fairly Available" },
+    { status: "almost-full", th: "ค่อนข้างแน่น", en: "Fairly Full" },
+    { status: "full", th: "เต็ม", en: "Full" }
+];
+
+let availabilityState = { roomId: null, requestToken: 0 };
+
+function openAvailabilityModal(roomId) {
+    const subtitleEl = document.getElementById("availabilityModalSubtitle");
+    if (roomId && roomId !== "all") {
+        subtitleEl.textContent = (langData[currentLang][`room${roomId}-title`] || roomId).replace(/<[^>]+>/g, '');
+        subtitleEl.style.display = "";
+    } else {
+        subtitleEl.style.display = "none";
+    }
+
+    availabilityState.roomId = roomId;
+    document.getElementById("availabilityLegend").innerHTML = AVAILABILITY_LEGEND.map(item =>
+        `<div class="availability-legend-item"><span class="availability-legend-swatch avail-cell status-${item.status}" style="width:12px;height:12px;"></span>${item[currentLang] || item.en}</div>`
+    ).join("");
+
+    closeReserveModal();
+    document.getElementById("availabilityModal").classList.add("active");
+    lockBodyScroll();
+
+    loadAvailability(roomId, null);
+}
+
+function closeAvailabilityModal() {
+    document.getElementById("availabilityModal").classList.remove("active");
+    unlockBodyScroll();
+    availabilityState.requestToken++;
+}
+
+async function loadAvailability(roomId, monthStartDate) {
+    const token = ++availabilityState.requestToken;
+    const lang = currentLang === "th" ? "th" : "en";
+
+    document.getElementById("availabilityCalendarEl").style.display = "none";
+    document.getElementById("availabilityError").style.display = "none";
+    document.getElementById("availabilityLoading").style.display = "flex";
+    document.getElementById("availabilityLoadingText").textContent = lang === "th" ? "กำลังโหลดปฏิทินห้องว่าง..." : "Loading live calendar...";
+
+    let url = `/.netlify/functions/availability?roomId=${encodeURIComponent(roomId)}&lang=${lang}`;
+    if (monthStartDate) url += `&month=${monthStartDate}`;
+
+    let data;
+    try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        data = await res.json();
+        if (data.error) throw new Error(data.error);
+    } catch (err) {
+        if (token !== availabilityState.requestToken) return;
+        document.getElementById("availabilityLoading").style.display = "none";
+        document.getElementById("availabilityError").style.display = "flex";
+        document.getElementById("availabilityErrorText").textContent = lang === "th"
+            ? "ไม่สามารถโหลดปฏิทินห้องว่างสดได้ในขณะนี้"
+            : "Couldn't load the live calendar right now.";
+        const fallback = document.getElementById("availabilityFallbackLink");
+        fallback.href = `https://reservation.roomscope.com/2698/${lang}/rsvn/availability`;
+        fallback.textContent = lang === "th" ? "เปิดปฏิทินบน RoomScope" : "Open on RoomScope";
+        return;
+    }
+
+    if (token !== availabilityState.requestToken) return;
+    document.getElementById("availabilityLoading").style.display = "none";
+    renderAvailabilityCalendar(data, roomId);
+}
+
+function renderAvailabilityCalendar(data, roomId) {
+    const lang = currentLang === "th" ? "th" : "en";
+
+    document.getElementById("availabilityMonthLabel").textContent =
+        `${AVAILABILITY_MONTH_NAMES[lang][data.month.month - 1]} ${data.month.year}`;
+
+    document.getElementById("availabilityWeekdays").innerHTML =
+        AVAILABILITY_WEEKDAYS[lang].map(d => `<span>${d}</span>`).join("");
+
+    document.getElementById("availabilityDays").innerHTML = data.days.map(d => {
+        if (!d.inMonth) return `<div class="avail-cell out-of-month">${d.date.slice(-2)}</div>`;
+        const statusClass = d.status ? `status-${d.status}` : "status-unknown";
+        const dayNum = parseInt(d.date.slice(-2), 10);
+        const dot = (d.weekend || d.holiday) ? '<span class="avail-dot"></span>' : '';
+        const count = (d.status && d.status !== "full" && d.count) ? `<span class="avail-count">${d.count}</span>` : '';
+        return `<div class="avail-cell ${statusClass}">${dot}${dayNum}${count}</div>`;
+    }).join("");
+
+    const prevBtn = document.getElementById("availabilityPrevBtn");
+    const nextBtn = document.getElementById("availabilityNextBtn");
+    prevBtn.disabled = !data.hasPrev;
+    prevBtn.onclick = () => loadAvailability(roomId, data.prevDate);
+    nextBtn.onclick = () => loadAvailability(roomId, data.nextDate);
+
+    const calEl = document.getElementById("availabilityCalendarEl");
+    calEl.style.display = "";
+    calEl.classList.remove("visible");
+    requestAnimationFrame(() => calEl.classList.add("visible"));
 }
 
 // MOBILE BOOKING DRAWER CONTROLLERS
