@@ -2645,13 +2645,13 @@ let currentLang = 'en';
 
 const metaI18n = {
     th: {
-        title: "เมนู | บ้านต้นไม้อวดชุม",
-        description: "เมนูอาหารและเครื่องดื่มของคาเฟ่และร้านอาหารบ้านต้นไม้อวดชุม ปะทิว ชุมพร เร็วๆ นี้",
+        title: "สินค้าชุมชน | บ้านต้นไม้อวดชุม",
+        description: "สินค้าชุมชนจากบ้านต้นไม้อวดชุม ปะทิว ชุมพร สนับสนุนผลิตภัณฑ์ท้องถิ่น เร็วๆ นี้",
         ogLocale: "th_TH"
     },
     en: {
-        title: "Menu | Baan OuadChum Coastal Treehouse",
-        description: "Food and drink menu at Baan OuadChum's cafe and restaurant in Pathio, Chumphon, Thailand.",
+        title: "Community Products | Baan OuadChum Coastal Treehouse",
+        description: "Community products from Baan OuadChum, supporting local producers in Pathio, Chumphon, Thailand. Coming soon.",
         ogLocale: "en_US"
     }
 };
@@ -2928,23 +2928,54 @@ document.addEventListener("DOMContentLoaded", () => {
     switchLanguage(savedLang === "en" ? "en" : "th");
     initMapLoader();
 
+    // Click-outside and Escape-to-close for every ".modal" (productModal,
+    // reserveModal, availabilityModal, ...). Relies on each modal having a
+    // matching close<Id> function (e.g. #productModal -> closeProductModal),
+    // which is already the naming convention every modal here follows.
+    function closeModalEl(modalEl) {
+        const fnName = 'close' + modalEl.id.charAt(0).toUpperCase() + modalEl.id.slice(1);
+        if (typeof window[fnName] === 'function') window[fnName]();
+    }
+    document.querySelectorAll('.modal').forEach(modalEl => {
+        modalEl.addEventListener('click', (e) => {
+            if (e.target === modalEl) closeModalEl(modalEl);
+        });
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        const openModal = document.querySelector('.modal.active');
+        if (openModal) closeModalEl(openModal);
+    });
+
+    const nav = document.getElementById('navbar');
     let lastScrollY = window.scrollY;
-    window.addEventListener('scroll', () => {
-        const nav = document.getElementById('navbar');
-        if (window.scrollY > 30) {
-            nav.style.boxShadow = "var(--shadow-md)";
-            nav.style.background = "rgba(255, 255, 255, 0.95)";
-        } else {
-            nav.style.boxShadow = "none";
-            nav.style.background = "rgba(255, 255, 255, 0.9)";
+    let isScrolled = null;
+    let scrollTicking = false;
+
+    function updateNavOnScroll() {
+        scrollTicking = false;
+        const scrollY = window.scrollY;
+
+        const scrolled = scrollY > 30;
+        if (scrolled !== isScrolled) {
+            nav.style.boxShadow = scrolled ? "var(--shadow-md)" : "none";
+            nav.style.background = scrolled ? "rgba(255, 255, 255, 0.95)" : "rgba(255, 255, 255, 0.9)";
+            isScrolled = scrolled;
         }
 
-        if (window.innerWidth <= 1024 && window.scrollY > 80 && window.scrollY > lastScrollY) {
+        if (window.innerWidth <= 1024 && scrollY > 80 && scrollY > lastScrollY) {
             nav.classList.add('nav-hidden');
         } else {
             nav.classList.remove('nav-hidden');
         }
-        lastScrollY = window.scrollY;
+        lastScrollY = scrollY;
+    }
+
+    window.addEventListener('scroll', () => {
+        if (!scrollTicking) {
+            scrollTicking = true;
+            requestAnimationFrame(updateNavOnScroll);
+        }
     });
 });
 </script>
@@ -2979,6 +3010,14 @@ function availabilityBucket(status) {
     if (status === "almost-full" || status === "full") return "limited";
     return null;
 }
+// The property is in Thailand (UTC+7); Date.toISOString() reports the UTC
+// calendar date, which is still "yesterday" from local midnight until 07:00 -
+// use this instead of `new Date().toISOString().slice(0,10)` for any
+// "what day is today" comparison so the is-today marker doesn't drift for
+// several hours every night.
+function todayInBangkok() {
+    return new Date(Date.now() + 7 * 3600000).toISOString().slice(0, 10);
+}
 const AVAILABILITY_MONTH_LEGEND = [
     { status: "open", th: "ว่าง", en: "Available" },
     { status: "limited", th: "เต็ม", en: "Full" }
@@ -2988,8 +3027,69 @@ const AVAILABILITY_GRID_LEGEND = [
     { status: "limited", th: "เต็ม / ไม่ว่าง", en: "Unavailable" }
 ];
 
-let availabilityState = { roomId: null, requestToken: 0 };
-const AVAILABILITY_MOCK_MODE = false;
+let availabilityState = { roomId: null, requestToken: 0, currentMonthStart: null };
+
+// Always tries the real /api/availability call first (works locally too, via
+// `netlify dev`, and always on the deployed site). Only on localhost/file, if
+// that real call fails (no `netlify dev` running), does it fall back to fake
+// availability data so the UI can still be reviewed. On a real deploy a failed
+// call always shows the real error instead of silently faking data.
+const AVAILABILITY_MOCK_MODE = ["localhost", "127.0.0.1", ""].includes(location.hostname);
+const MOCK_ROOM_IDS = ["001", "201", "202", "203", "204", "301", "302", "401", "403", "404"];
+
+function mockHash(str) {
+    let h = 0;
+    for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0;
+    return h;
+}
+function mockStatusForDay(roomId, dateStr) {
+    const r = mockHash(roomId + dateStr) % 100;
+    if (r < 55) return { status: "available", count: 1 + (r % 3) };
+    if (r < 75) return { status: "almost-available", count: 1 };
+    if (r < 90) return { status: "almost-full", count: 1 };
+    return { status: "full", count: 0 };
+}
+function mockMonthDays(year, month, roomId) {
+    const firstWeekday = new Date(Date.UTC(year, month - 1, 1)).getUTCDay();
+    const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+    const totalCells = Math.ceil((firstWeekday + daysInMonth) / 7) * 7;
+    const gridStart = new Date(Date.UTC(year, month - 1, 1 - firstWeekday));
+    const todayStr = todayInBangkok();
+
+    const days = [];
+    for (let i = 0; i < totalCells; i++) {
+        const d = new Date(gridStart);
+        d.setUTCDate(gridStart.getUTCDate() + i);
+        const dateStr = d.toISOString().slice(0, 10);
+        const inMonth = d.getUTCMonth() === month - 1;
+        const weekend = d.getUTCDay() === 0 || d.getUTCDay() === 6;
+        const known = inMonth && dateStr >= todayStr;
+        const s = known ? mockStatusForDay(roomId, dateStr) : { status: null, count: null };
+        days.push({ date: dateStr, inMonth, status: s.status, count: s.count, weekend, holiday: false });
+    }
+    return days;
+}
+function generateMockAvailability(roomId, monthStartDateParam) {
+    const base = monthStartDateParam ? new Date(monthStartDateParam + "T00:00:00Z") : new Date();
+    const year = base.getUTCFullYear();
+    const month = base.getUTCMonth() + 1;
+
+    const now = new Date();
+    const currentMonthStart = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1);
+    const hasPrev = Date.UTC(year, month - 1, 1) > currentMonthStart;
+
+    const monthInfo = { year, month, startDate: new Date(Date.UTC(year, month - 1, 1)).toISOString().slice(0, 10) };
+    const prevDate = new Date(Date.UTC(year, month - 2, 1)).toISOString().slice(0, 10);
+    const nextDate = new Date(Date.UTC(year, month, 1)).toISOString().slice(0, 10);
+
+    if (roomId === "all") {
+        return {
+            month: monthInfo, prevDate, nextDate, hasPrev,
+            rooms: MOCK_ROOM_IDS.map(id => ({ roomId: id, typeId: null, days: mockMonthDays(year, month, id) }))
+        };
+    }
+    return { month: monthInfo, prevDate, nextDate, hasPrev, days: mockMonthDays(year, month, roomId) };
+}
 
 function roomDisplayName(roomId) {
     return (langData[currentLang][`room${roomId}-title`] || roomId).replace(/<[^>]+>/g, '').trim();
@@ -3015,7 +3115,7 @@ function switchAvailabilityRoom(roomId) {
         `<div class="availability-legend-item"><span class="availability-legend-swatch ${swatchClass} status-${item.status}" style="width:12px;height:12px;"></span>${item[currentLang] || item.en}</div>`
     ).join("");
 
-    loadAvailability(roomId, null);
+    loadAvailability(roomId, availabilityState.currentMonthStart);
 }
 
 function openAvailabilityModal(roomId) {
@@ -3023,6 +3123,7 @@ function openAvailabilityModal(roomId) {
     document.getElementById("availabilityModal").classList.add("active");
     lockBodyScroll();
 
+    availabilityState.currentMonthStart = null;
     switchAvailabilityRoom(roomId);
 }
 
@@ -3048,33 +3149,36 @@ async function loadAvailability(roomId, monthStartDate) {
 
     let data;
     try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        data = await res.json();
+        if (data.error) throw new Error(data.error);
+    } catch (err) {
         if (AVAILABILITY_MOCK_MODE) {
+            // Real function isn't reachable (plain static localhost, no `netlify
+            // dev` running) - fall back to fake data so the UI stays reviewable.
             await new Promise(r => setTimeout(r, 300));
             data = generateMockAvailability(roomId, monthStartDate);
         } else {
-            const res = await fetch(url);
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            data = await res.json();
-            if (data.error) throw new Error(data.error);
+            if (token !== availabilityState.requestToken) return;
+            console.error("Availability calendar failed to load:", err);
+            document.getElementById("availabilityLoading").style.display = "none";
+            document.getElementById("availabilityError").style.display = "flex";
+            document.getElementById("availabilityErrorText").textContent = lang === "th"
+                ? "ไม่สามารถโหลดปฏิทินห้องว่างสดได้ในขณะนี้"
+                : "Couldn't load the live calendar right now.";
+            document.getElementById("availabilityErrorDetail").textContent = err && err.message ? err.message : "";
+            const fallback = document.getElementById("availabilityFallbackLink");
+            fallback.href = `https://reservation.roomscope.com/2698/${lang}/rsvn/availability`;
+            fallback.textContent = lang === "th" ? "เปิดปฏิทินบน RoomScope" : "Open on RoomScope";
+            return;
         }
-    } catch (err) {
-        if (token !== availabilityState.requestToken) return;
-        console.error("Availability calendar failed to load:", err);
-        document.getElementById("availabilityLoading").style.display = "none";
-        document.getElementById("availabilityError").style.display = "flex";
-        document.getElementById("availabilityErrorText").textContent = lang === "th"
-            ? "ไม่สามารถโหลดปฏิทินห้องว่างสดได้ในขณะนี้"
-            : "Couldn't load the live calendar right now.";
-        document.getElementById("availabilityErrorDetail").textContent = err && err.message ? err.message : "";
-        const fallback = document.getElementById("availabilityFallbackLink");
-        fallback.href = `https://reservation.roomscope.com/2698/${lang}/rsvn/availability`;
-        fallback.textContent = lang === "th" ? "เปิดปฏิทินบน RoomScope" : "Open on RoomScope";
-        return;
     }
 
     if (token !== availabilityState.requestToken) return;
     document.getElementById("availabilityLoading").style.display = "none";
 
+    availabilityState.currentMonthStart = data.month.startDate;
     document.getElementById("availabilityMonthLabel").textContent =
         `${AVAILABILITY_MONTH_NAMES[currentLang === "th" ? "th" : "en"][data.month.month - 1]} ${data.month.year}`;
     const prevBtn = document.getElementById("availabilityPrevBtn");
@@ -3097,7 +3201,7 @@ async function loadAvailability(roomId, monthStartDate) {
 
 function renderAvailabilityMonthView(data) {
     const lang = currentLang === "th" ? "th" : "en";
-    const todayStr = new Date().toISOString().slice(0, 10);
+    const todayStr = todayInBangkok();
 
     document.getElementById("availabilityWeekdays").innerHTML =
         AVAILABILITY_WEEKDAYS[lang].map(d => `<span>${d}</span>`).join("");
@@ -3124,7 +3228,7 @@ function renderAvailabilityMonthView(data) {
 function renderAvailabilityGridView(data) {
     const inMonthDays = (data.rooms[0]?.days || []).filter(d => d.inMonth);
     const totalDays = inMonthDays.length;
-    const todayStr = new Date().toISOString().slice(0, 10);
+    const todayStr = todayInBangkok();
     const todayIndex = inMonthDays.findIndex(d => d.date === todayStr);
 
     const tickDays = [...new Set([1, 5, 10, 15, 20, 25, totalDays])].filter(d => d <= totalDays);

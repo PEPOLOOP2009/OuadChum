@@ -2402,7 +2402,68 @@ const AVAILABILITY_GRID_LEGEND = [
 ];
 
 let availabilityState = { roomId: null, requestToken: 0 };
-const AVAILABILITY_MOCK_MODE = false;
+
+// Always tries the real /api/availability call first (works locally too, via
+// `netlify dev`, and always on the deployed site). Only on localhost/file, if
+// that real call fails (no `netlify dev` running), does it fall back to fake
+// availability data so the UI can still be reviewed. On a real deploy a failed
+// call always shows the real error instead of silently faking data.
+const AVAILABILITY_MOCK_MODE = ["localhost", "127.0.0.1", ""].includes(location.hostname);
+const MOCK_ROOM_IDS = ["001", "201", "202", "203", "204", "301", "302", "401", "403", "404"];
+
+function mockHash(str) {
+    let h = 0;
+    for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0;
+    return h;
+}
+function mockStatusForDay(roomId, dateStr) {
+    const r = mockHash(roomId + dateStr) % 100;
+    if (r < 55) return { status: "available", count: 1 + (r % 3) };
+    if (r < 75) return { status: "almost-available", count: 1 };
+    if (r < 90) return { status: "almost-full", count: 1 };
+    return { status: "full", count: 0 };
+}
+function mockMonthDays(year, month, roomId) {
+    const firstWeekday = new Date(Date.UTC(year, month - 1, 1)).getUTCDay();
+    const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+    const totalCells = Math.ceil((firstWeekday + daysInMonth) / 7) * 7;
+    const gridStart = new Date(Date.UTC(year, month - 1, 1 - firstWeekday));
+    const todayStr = new Date().toISOString().slice(0, 10);
+
+    const days = [];
+    for (let i = 0; i < totalCells; i++) {
+        const d = new Date(gridStart);
+        d.setUTCDate(gridStart.getUTCDate() + i);
+        const dateStr = d.toISOString().slice(0, 10);
+        const inMonth = d.getUTCMonth() === month - 1;
+        const weekend = d.getUTCDay() === 0 || d.getUTCDay() === 6;
+        const known = inMonth && dateStr >= todayStr;
+        const s = known ? mockStatusForDay(roomId, dateStr) : { status: null, count: null };
+        days.push({ date: dateStr, inMonth, status: s.status, count: s.count, weekend, holiday: false });
+    }
+    return days;
+}
+function generateMockAvailability(roomId, monthStartDateParam) {
+    const base = monthStartDateParam ? new Date(monthStartDateParam + "T00:00:00Z") : new Date();
+    const year = base.getUTCFullYear();
+    const month = base.getUTCMonth() + 1;
+
+    const now = new Date();
+    const currentMonthStart = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1);
+    const hasPrev = Date.UTC(year, month - 1, 1) > currentMonthStart;
+
+    const monthInfo = { year, month, startDate: new Date(Date.UTC(year, month - 1, 1)).toISOString().slice(0, 10) };
+    const prevDate = new Date(Date.UTC(year, month - 2, 1)).toISOString().slice(0, 10);
+    const nextDate = new Date(Date.UTC(year, month, 1)).toISOString().slice(0, 10);
+
+    if (roomId === "all") {
+        return {
+            month: monthInfo, prevDate, nextDate, hasPrev,
+            rooms: MOCK_ROOM_IDS.map(id => ({ roomId: id, typeId: null, days: mockMonthDays(year, month, id) }))
+        };
+    }
+    return { month: monthInfo, prevDate, nextDate, hasPrev, days: mockMonthDays(year, month, roomId) };
+}
 
 function roomDisplayName(roomId) {
     return (langData[currentLang][`room${roomId}-title`] || roomId).replace(/<[^>]+>/g, '').trim();
@@ -2461,28 +2522,30 @@ async function loadAvailability(roomId, monthStartDate) {
 
     let data;
     try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        data = await res.json();
+        if (data.error) throw new Error(data.error);
+    } catch (err) {
         if (AVAILABILITY_MOCK_MODE) {
+            // Real function isn't reachable (plain static localhost, no `netlify
+            // dev` running) - fall back to fake data so the UI stays reviewable.
             await new Promise(r => setTimeout(r, 300));
             data = generateMockAvailability(roomId, monthStartDate);
         } else {
-            const res = await fetch(url);
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            data = await res.json();
-            if (data.error) throw new Error(data.error);
+            if (token !== availabilityState.requestToken) return;
+            console.error("Availability calendar failed to load:", err);
+            document.getElementById("availabilityLoading").style.display = "none";
+            document.getElementById("availabilityError").style.display = "flex";
+            document.getElementById("availabilityErrorText").textContent = lang === "th"
+                ? "ไม่สามารถโหลดปฏิทินห้องว่างสดได้ในขณะนี้"
+                : "Couldn't load the live calendar right now.";
+            document.getElementById("availabilityErrorDetail").textContent = err && err.message ? err.message : "";
+            const fallback = document.getElementById("availabilityFallbackLink");
+            fallback.href = `https://reservation.roomscope.com/2698/${lang}/rsvn/availability`;
+            fallback.textContent = lang === "th" ? "เปิดปฏิทินบน RoomScope" : "Open on RoomScope";
+            return;
         }
-    } catch (err) {
-        if (token !== availabilityState.requestToken) return;
-        console.error("Availability calendar failed to load:", err);
-        document.getElementById("availabilityLoading").style.display = "none";
-        document.getElementById("availabilityError").style.display = "flex";
-        document.getElementById("availabilityErrorText").textContent = lang === "th"
-            ? "ไม่สามารถโหลดปฏิทินห้องว่างสดได้ในขณะนี้"
-            : "Couldn't load the live calendar right now.";
-        document.getElementById("availabilityErrorDetail").textContent = err && err.message ? err.message : "";
-        const fallback = document.getElementById("availabilityFallbackLink");
-        fallback.href = `https://reservation.roomscope.com/2698/${lang}/rsvn/availability`;
-        fallback.textContent = lang === "th" ? "เปิดปฏิทินบน RoomScope" : "Open on RoomScope";
-        return;
     }
 
     if (token !== availabilityState.requestToken) return;
