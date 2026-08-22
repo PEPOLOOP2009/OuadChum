@@ -111,6 +111,9 @@ body{
 }
 
 body.modal-locked {
+    position: fixed;
+    left: 0;
+    right: 0;
     overflow: hidden;
     touch-action: none;
     overscroll-behavior: none;
@@ -1489,12 +1492,13 @@ nav{
 }
 .availability-modal-header {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: space-between;
     gap: 12px;
-    padding: 18px 24px;
+    padding: 18px 20px;
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     color: #fff;
+    text-align: center;
     flex-shrink: 0;
     position: relative;
     z-index: 2;
@@ -1505,6 +1509,7 @@ nav{
     height: 34px;
     border-radius: 50%;
     background: rgba(255,255,255,0.16);
+    box-shadow: 0 0 0 6px rgba(255,255,255,0.08);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1515,17 +1520,29 @@ nav{
     min-width: 0;
 }
 .availability-modal-header h3 {
-    font-size: 1.05rem;
+    font-size: 1.2rem;
     margin: 0;
     letter-spacing: 0.2px;
 }
 .availability-modal-header p {
-    font-size: 0.82rem;
-    margin: 3px 0 0;
-    color: rgba(255,255,255,0.8);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin: 4px 0 0;
+    color: rgba(255,255,255,0.75);
+}
+.availability-modal-header-titles.no-room p {
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0.2px;
+    margin: 0;
+    color: #fff;
 }
 .availability-modal-header .close-modal {
     position: static;
+    flex-shrink: 0;
     background: rgba(255,255,255,0.15);
     color: #fff;
     box-shadow: none;
@@ -1615,131 +1632,209 @@ nav{
     opacity: 0.3;
     cursor: not-allowed;
 }
+.availability-calendar {
+    width: 100%;
+}
 .availability-weekdays, .availability-days {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, minmax(0, 1fr));
     gap: 6px;
 }
 .availability-weekdays {
-    margin-bottom: 8px;
+    margin-bottom: 7px;
 }
 .availability-weekdays span {
     text-align: center;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 600;
     color: #909fa0;
     text-transform: uppercase;
     letter-spacing: 0.3px;
 }
 .avail-cell {
-    aspect-ratio: 1;
-    border-radius: 10px;
+    aspect-ratio: 1.8 / 1;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 2px;
-    font-size: 0.85rem;
-    font-weight: 600;
+    font-size: 1.5rem;
+    font-weight: 700;
     color: var(--dark);
     background: var(--gray-light);
     position: relative;
+}
+.avail-cell-sub {
+    font-size: 0.64rem;
+    font-weight: 600;
+    opacity: 0.85;
+    letter-spacing: 0.2px;
+}
+.avail-cell-dot {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.65;
 }
 .avail-cell.out-of-month {
     background: transparent;
     color: transparent;
     pointer-events: none;
 }
-.avail-cell.status-available { background: rgba(62,114,59,0.14); color: #2c5429; }
-.avail-cell.status-almost-available { background: rgba(140,178,80,0.18); color: #4c6b2c; }
-.avail-cell.status-almost-full { background: rgba(197,168,128,0.28); color: #8a5f2a; }
-.avail-cell.status-full { background: rgba(193,90,66,0.14); color: #a34832; font-weight: 500; }
-.avail-cell.status-unknown { background: var(--gray-light); color: #b8bfbd; font-weight: 500; }
-.avail-cell .avail-count {
-    font-size: 0.62rem;
-    font-weight: 700;
-    opacity: 0.85;
+.avail-cell:not(.out-of-month) {
+    transition: transform 0.18s cubic-bezier(0.16,1,0.3,1), box-shadow 0.18s ease;
 }
-.avail-cell .avail-dot {
-    position: absolute;
-    top: 5px;
-    right: 6px;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: currentColor;
-    opacity: 0.55;
-}
-.availability-grid-wrap {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    border-radius: 12px;
-    border: 1px solid rgba(0,0,0,0.06);
-    max-height: 52vh;
-}
-.availability-grid-table {
-    border-collapse: separate;
-    border-spacing: 4px;
-    width: max-content;
-}
-.availability-grid-table thead th {
-    position: sticky;
-    top: 0;
+.avail-cell:not(.out-of-month):hover {
+    transform: translateY(-2px) scale(1.08);
+    box-shadow: 0 6px 12px rgba(35,43,40,0.14);
     z-index: 1;
-    background: var(--white);
+}
+.avail-cell.is-today {
+    box-shadow: inset 0 0 0 2px #fff, 0 0 0 2px var(--dark);
+}
+.avail-cell.is-today:hover {
+    box-shadow: inset 0 0 0 2px #fff, 0 0 0 2px var(--dark), 0 6px 12px rgba(35,43,40,0.14);
+}
+/* Bold, solid brand colors - the site's own green for open, an equally strong red
+   for full - rather than a soft tint, per the "make it very green / red as hard
+   as the green" request. */
+.avail-cell.status-open { background: var(--primary); color: #fff; }
+.avail-cell.status-limited { background: #b3413e; color: #fff; }
+.avail-cell.status-unknown { background: var(--gray-light); color: #b8bfbd; font-weight: 500; }
+/* All-rooms view: one horizontal status bar per room (a booking-timeline style
+   strip) instead of a per-day table, so the whole month reads at a glance in a
+   single card with no scrolling and no per-day hover targets. */
+.availability-bars-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.availability-bar-axis-row, .availability-bar-row {
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    align-items: center;
+    gap: 12px;
+}
+.availability-bar-axis {
+    position: relative;
+    height: 16px;
+}
+.availability-bar-axis span {
+    position: absolute;
+    transform: translateX(-50%);
     font-size: 0.68rem;
     font-weight: 700;
-    color: #909fa0;
-    padding: 4px 2px;
-    min-width: 30px;
+    color: #a3aca9;
 }
-.availability-grid-table thead th.weekend { color: #2c7d73; }
-.availability-grid-table thead th.corner { left: 0; z-index: 3; }
-.availability-grid-room-label {
-    position: sticky;
-    left: 0;
-    z-index: 2;
-    background: var(--white);
+.availability-bar-label {
+    background: none;
+    border: none;
+    padding: 0;
     text-align: left;
-    padding: 6px 14px 6px 6px;
     font-size: 0.8rem;
     font-weight: 600;
     color: var(--dark);
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     cursor: pointer;
+    font-family: inherit;
+}
+.availability-bar-label:hover { color: #2c7d73; }
+.availability-bar-track {
+    position: relative;
+    display: flex;
+    height: 26px;
     border-radius: 8px;
+    overflow: hidden;
+    background: var(--gray-light);
 }
-.availability-grid-room-label:hover { color: #2c7d73; }
-.avail-grid-cell {
-    width: 30px;
-    height: 30px;
-    border-radius: 7px;
+.availability-bar-seg { flex: 1 1 0; }
+.availability-bar-seg.status-open { background: #5c9c57; }
+.availability-bar-seg.status-limited { background: #eeba4d; }
+.availability-bar-seg.status-unknown { background: var(--gray-light); }
+.availability-bar-today {
+    position: absolute;
+    top: -3px;
+    bottom: -3px;
+    background: var(--dark);
+    opacity: 0.55;
+    border-radius: 2px;
+    pointer-events: none;
 }
-.avail-grid-cell.status-available { background: rgba(62,114,59,0.14); }
-.avail-grid-cell.status-almost-available { background: rgba(140,178,80,0.18); }
-.avail-grid-cell.status-almost-full { background: rgba(197,168,128,0.28); }
-.avail-grid-cell.status-full { background: rgba(193,90,66,0.14); }
-.avail-grid-cell.status-unknown, .avail-grid-cell.out-of-month { background: var(--gray-light); }
+.availability-day-tooltip {
+    position: fixed;
+    z-index: 3000;
+    background: var(--dark);
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.76rem;
+    line-height: 1.6;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+    pointer-events: none;
+    max-width: 260px;
+    opacity: 0;
+    transform: translate(-50%, calc(-100% - 10px));
+    transition: opacity 0.12s ease;
+}
+.availability-day-tooltip.visible { opacity: 1; }
+.availability-day-tooltip-date {
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: block;
+}
+.availability-day-tooltip-row {
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    margin-top: 3px;
+}
+.availability-day-tooltip-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+}
+.availability-day-tooltip-dot.open { background: #5c9c57; }
+.availability-day-tooltip-dot.limited { background: #eeba4d; }
 .availability-legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px 16px;
-    margin-top: 18px;
-    padding-top: 16px;
-    border-top: 1px solid rgba(0,0,0,0.06);
+    gap: 8px;
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 .availability-legend-item {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.78rem;
+    font-size: 0.76rem;
+    font-weight: 600;
     color: #666;
+    background: var(--gray-light);
+    padding: 5px 12px 5px 7px;
+    border-radius: 999px;
 }
-.availability-legend-swatch {
-    width: 12px;
-    height: 12px;
-    border-radius: 4px;
+.availability-legend-swatch.avail-cell {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
     flex-shrink: 0;
+    box-shadow: none;
+}
+.availability-legend-swatch.availability-bar-seg {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
 }
 .availability-skeleton {
     display: grid;
@@ -1798,25 +1893,25 @@ nav{
     .availability-content {
         padding: 18px 14px 20px;
     }
-    .avail-grid-cell {
-        width: 24px;
-        height: 24px;
-        border-radius: 6px;
+    .availability-bar-axis-row, .availability-bar-row {
+        grid-template-columns: 62px 1fr;
+        gap: 8px;
     }
-    .availability-grid-room-label {
-        font-size: 0.72rem;
-        padding: 4px 10px 4px 4px;
+    .availability-bar-label {
+        font-size: 0.68rem;
     }
-    .availability-grid-table thead th {
+    .availability-bar-track {
+        height: 20px;
+    }
+    .availability-bar-axis span {
         font-size: 0.6rem;
-        min-width: 24px;
     }
     .avail-cell {
-        border-radius: 8px;
-        font-size: 0.75rem;
+        border-radius: 7px;
+        font-size: 1rem;
     }
-    .avail-cell .avail-count {
-        font-size: 0.55rem;
+    .avail-cell-sub {
+        display: none;
     }
     .availability-month-label {
         font-size: 0.95rem;
@@ -1901,6 +1996,52 @@ nav{
     gap: 2px;
 }
 .weather-hour-precip svg { width: 10px; height: 10px; }
+.weather-daily-title {
+    font-size: 1.05rem;
+    color: var(--dark);
+    margin: 26px 0 10px;
+    font-weight: 700;
+}
+.weather-daily {
+    display: flex;
+    flex-direction: column;
+}
+.weather-daily-row {
+    display: grid;
+    grid-template-columns: 84px 30px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 4px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.weather-daily-row:last-child { border-bottom: none; }
+.weather-daily-day {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--dark);
+}
+.weather-daily-icon svg { width: 24px; height: 24px; color: #2c7d73; }
+.weather-daily-precip {
+    font-size: 0.75rem;
+    color: #3b7dc4;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    justify-self: start;
+}
+.weather-daily-precip svg { width: 11px; height: 11px; }
+.weather-daily-temps {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--dark);
+    display: flex;
+    gap: 8px;
+    justify-self: end;
+    min-width: 76px;
+    text-align: right;
+}
+.weather-daily-temps .weather-daily-low { color: #9aa6a2; font-weight: 600; }
 @media (max-width: 600px) {
     .weather-current {
         padding: 20px 18px;
@@ -1910,6 +2051,10 @@ nav{
     .weather-current-icon svg { width: 46px; height: 46px; }
     .weather-current-stats { gap: 14px; margin-left: 0; width: 100%; }
     .weather-hour-card { min-width: 64px; padding: 12px 10px; }
+    .weather-daily-row { grid-template-columns: 64px 26px 1fr auto; gap: 8px; padding: 9px 2px; }
+    .weather-daily-day { font-size: 0.76rem; }
+    .weather-daily-icon svg { width: 20px; height: 20px; }
+    .weather-daily-temps { font-size: 0.8rem; min-width: 60px; }
 }
 .btn-availability {
     width: 38px;
@@ -2183,14 +2328,57 @@ nav{
 
 /* FOOTER */
 footer{
-    background: #3E723B;
+    position: relative;
+    background-color: #3E723B;
     color: var(--white);
     text-align:center;
     padding:60px 0;
     border-top: 4px solid var(--accent);
+    overflow: hidden;
 }
+.footer-bg-slideshow {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+.footer-bg-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.4s ease;
+}
+.footer-bg-slide.active { opacity: 1; }
+.footer-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(20,30,24,0.74);
+    z-index: 1;
+}
+footer > .container { position: relative; z-index: 2; }
 footer h3 { font-size: 1.6rem; margin-bottom: 10px; }
 footer p { opacity: 0.85; font-size: 0.9rem; }
+
+/* Decorative treehouse line-art as the Stay section's background - sits behind
+   the room grid (which stays opaque and readable on top via z-index), so unlike
+   a margin accent it doesn't need extra-wide viewports to have room to sit in. */
+#stay { position: relative; overflow: hidden; }
+#stay > .container { position: relative; z-index: 1; }
+.stay-bg-graphic {
+    position: absolute;
+    top: -30px;
+    width: 640px;
+    height: auto;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+}
+.stay-bg-graphic-left { left: -420px; }
+.stay-bg-graphic-right { right: -20px; }
+@media (max-width: 700px) {
+    .stay-bg-graphic { display: none; }
+}
 
 /* MEDIA QUERIES FOR SMALLER DEVICES */
 @media(max-width:1024px){
@@ -2280,9 +2468,10 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
 <div class="nav-menu-wrapper" id="navMenuWrapper">
     <div class="nav-links">
         <a href="#" data-key="menu-about" onclick="event.preventDefault(); closeMenu(); window.scrollTo({top:0, behavior:'smooth'});">หน้าแรก</a>
-        <a href="#stayTitle" data-key="menu-stay" onclick="jumpToSection(event, 'stayTitle', 1344)">ห้องพัก</a>
+        <a href="#stayTitle" data-key="menu-stay" onclick="jumpToSection(event, 'stayTitle', 1466)">ห้องพัก</a>
         <a href="workshop.html" data-key="menu-workshop" onclick="closeMenu()">เวิร์คช็อป</a>
         <a href="menu.html" data-key="menu-menu" onclick="closeMenu()">เมนู</a>
+        <a href="product.html" data-key="menu-product" onclick="closeMenu()">สินค้า</a>
         <a href="articles.html" data-key="menu-articles" onclick="closeMenu()">สื่อ</a>
     </div>
 </div>
@@ -2363,6 +2552,8 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
 </section>
 
 <section id="stay" class="section-muted">
+<img src="BG graphic 1.PNG" class="stay-bg-graphic stay-bg-graphic-left" alt="" aria-hidden="true">
+<img src="BG graphic 2.PNG" class="stay-bg-graphic stay-bg-graphic-right" alt="" aria-hidden="true">
 <div class="container container-wide">
     
     <div class="section-title-container section-title-center">
@@ -2733,6 +2924,8 @@ footer p { opacity: 0.85; font-size: 0.9rem; }
             <div class="weather-hourly-wrap">
                 <div class="weather-hourly" id="weatherHourly"></div>
             </div>
+            <h3 class="weather-daily-title" data-key="weather-7day-title">พยากรณ์ 7 วัน</h3>
+            <div class="weather-daily" id="weatherDaily"></div>
         </div>
     </div>
 
@@ -3410,6 +3603,12 @@ function updateCarouselArrows(track) {
 </script>
 
 <footer id="contact">
+<div class="footer-bg-slideshow" id="footerBgSlideshow">
+    <div class="footer-bg-slide active" style="background-image:url('C1.JPG')"></div>
+    <div class="footer-bg-slide" style="background-image:url('C2.JPG')"></div>
+    <div class="footer-bg-slide" style="background-image:url('C3.JPG')"></div>
+</div>
+<div class="footer-bg-overlay"></div>
 <div class="container">
 <h3 data-key="footer-title">Baan OuadChum Coastal Treehouse</h3>
 <p style="margin-bottom: 30px;" data-key="footer-sub">Pathio, Chumphon, Thailand<br>คาเฟ่ ร้านอาหาร ที่พักสไตล์บ้านต้นไม้ 10 ห้อง<br><br>เปิดทุกวัน 8:00-20:00</p>
@@ -3602,10 +3801,10 @@ function updateCarouselArrows(track) {
 <div class="modal" id="availabilityModal">
     <div class="modal-content availability-modal-content">
         <div class="availability-modal-header">
-            <div class="availability-modal-header-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-13.5-6h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm3-3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/></svg></div>
+            <div class="availability-modal-header-icon"><svg width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/><circle cx="18.4" cy="18.4" r="5.1" fill="currentColor"/><path fill="none" stroke="#3E723B" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" d="M15.9 18.4l1.8 1.8 3-3.4"/></svg></div>
             <div class="availability-modal-header-titles">
-                <h3 data-key="reserve-avail-title">Check Availability</h3>
-                <p id="availabilityModalSubtitle" style="display:none;"></p>
+                <h3 id="availabilityModalSubtitle" style="display:none;"></h3>
+                <p data-key="reserve-avail-title">Check Availability</p>
             </div>
             <button class="close-modal" onclick="closeAvailabilityModal()">&times;</button>
         </div>
@@ -3629,6 +3828,7 @@ function updateCarouselArrows(track) {
                 <a id="availabilityFallbackLink" href="#" target="_blank" rel="noopener" class="btn btn-sm btn-outline">Open on RoomScope</a>
             </div>
             <div class="availability-content" id="availabilityContent" style="display:none;">
+                <div class="availability-legend" id="availabilityLegend"></div>
                 <div class="availability-cal-nav">
                     <button type="button" class="availability-nav-btn" id="availabilityPrevBtn" aria-label="Previous month">
                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
@@ -3642,20 +3842,18 @@ function updateCarouselArrows(track) {
                     <div class="availability-weekdays" id="availabilityWeekdays"></div>
                     <div class="availability-days" id="availabilityDays"></div>
                 </div>
-                <div class="availability-grid-wrap" id="availabilityGridEl" style="display:none;">
-                    <table class="availability-grid-table" id="availabilityGridTable"></table>
-                </div>
-                <div class="availability-legend" id="availabilityLegend"></div>
+                <div class="availability-bars-wrap" id="availabilityGridEl" style="display:none;"></div>
             </div>
         </div>
     </div>
 </div>
+<div class="availability-day-tooltip" id="availabilityDayTooltip"></div>
 
 <script>
 // Translation Database
 const langData = {
     en: {
-        "menu-about": "Home", "menu-stay": "Stay", "menu-workshop": "Workshop", "menu-menu": "Menu", "menu-articles": "Articles", "menu-shop": "Contact",
+        "menu-about": "Home", "menu-stay": "Stay", "menu-workshop": "Workshop", "menu-menu": "Menu", "menu-product": "Product", "menu-articles": "Articles", "menu-shop": "Contact",
         "btn-reserve": "Reserve",
         "hero-title": "The official website of Baan OuadChum:<br>Relax in a coastal treehouse while learning about area development concepts.", 
         "hero-desc": "A premium treehouse resort perfectly blending sustainable tourism with local community livelihoods and collaboration.", 
@@ -3670,6 +3868,7 @@ const langData = {
         "stay-sub": "Accommodation", "stay-title": "Treehouse Rooms","stay-desc-nav": "Experience relaxation beyond imagination at our treehouse, with two zones to choose from (Treehouse 1 and Treehouse 2), each room uniquely designed to stand out while blending perfectly with the natural shape of its tree.",
         "weather-sub": "Local Forecast", "weather-title": "Weather at Baan OuadChum", "weather-desc": "Live hourly conditions for Pathio, Chumphon, so you know what to expect before you head out.",
         "weather-loading": "Loading live weather...", "weather-error": "Couldn't load the weather right now.",
+        "weather-7day-title": "7-Day Forecast",
         "filter-all": "All Rooms", "filter-low": "Treehouse 1-VIP1", "filter-f2": "Treehouse 2-F.2", "filter-high": "Treehouse 2-F.3", "filter-f4": "Treehouse 2-F.4",
         "filter-view-label": "View", "filter-view-ocean": "Ocean View", "filter-view-lake": "Lake View", "filter-view-panoramic": "Panoramic View",
         "filter-amenity-label": "Amenities", "filter-bathtub": "Bathtub", "filter-pet": "Pet Friendly",
@@ -3726,7 +3925,7 @@ const langData = {
         "footer-title": "Baan OuadChum Coastal Treehouse"
     },
     th: {
-        "menu-about": "หน้าแรก", "menu-stay": "ห้องพัก", "menu-workshop": "เวิร์คช็อป", "menu-menu": "เมนู", "menu-articles": "สื่อ", "menu-shop": "ติดต่อ",
+        "menu-about": "หน้าแรก", "menu-stay": "ห้องพัก", "menu-workshop": "เวิร์คช็อป", "menu-menu": "เมนู", "menu-product": "สินค้า", "menu-articles": "สื่อ", "menu-shop": "ติดต่อ",
         "btn-reserve": "ติดต่อ",
         "hero-title": "พักผ่อนบนบ้านต้นไม้ริมทะเล พร้อมเรียนรู้แนวคิดการพัฒนาเชิงพื้นที่กับอวดชุม อ.ปะทิว จ.ชุมพร (เว็ปหลัก)", "hero-desc": "บ้านต้นไม้ . คาเฟ่ . ร้านอาหาร . เวิร์กช็อป . ของฝากจากภูมิปัญญาท้องถิ่น", "hero-btn": "จองห้องพัก",
         "about-sub": "ปรัชญาของเรา", "about-title": "ปรัชญาของอวดชุม : ธุรกิจ เพื่อช่วย", 
@@ -3739,6 +3938,7 @@ const langData = {
         "stay-sub": "ที่พักอาศัย", "stay-title": "ห้องพักบ้านต้นไม้อวดชุม", "stay-desc-nav": "สัมผัสประสบการณ์การพักผ่อนเหนือจินตนาการบนบ้านต้นไม้ ซึ่งมีให้คุณเลือกผ่อนคลายถึง 2 โซน (บ้านต้นไม้ 1 และ บ้านต้นไม้ 2) โดยแต่ละห้องได้รับการออกแบบอย่างมีเอกลักษณ์ โดดเด่น และลงตัวไปตามโคร้งสร้างธรรมชาติของต้นไม้",
         "weather-sub": "พยากรณ์อากาศท้องถิ่น", "weather-title": "สภาพอากาศที่บ้านอวดชุม", "weather-desc": "สภาพอากาศรายชั่วโมงแบบสดสำหรับพื้นที่ปะทิว จังหวัดชุมพร เพื่อให้คุณเตรียมตัวก่อนออกไปทำกิจกรรม",
         "weather-loading": "กำลังโหลดสภาพอากาศสด...", "weather-error": "ไม่สามารถโหลดสภาพอากาศได้ในขณะนี้",
+        "weather-7day-title": "พยากรณ์ 7 วัน",
         "filter-all": "ห้องพักทั้งหมด", "filter-low": "บ้านต้นไม้ 1-VIP1", "filter-f2": "บ้านต้นไม้ 2-ชั้น 2", "filter-high": "บ้านต้นไม้ 2-ชั้น 3", "filter-f4": "บ้านต้นไม้ 2-ชั้น 4",
         "filter-view-label": "วิว", "filter-view-ocean": "วิวทะเล", "filter-view-lake": "วิวทะเลสาบ", "filter-view-panoramic": "วิวพาโนรามา",
         "filter-amenity-label": "สิ่งอำนวยความสะดวก", "filter-bathtub": "ห้องน้ำแบบอ่างแช่", "filter-pet": "รองรับสัตว์เลี้ยง",
@@ -4060,16 +4260,39 @@ function updateAmenityChipAvailability() {
     });
 }
 
-// Prevent the page behind a popup/drawer from scrolling on mobile while it's open
+// Prevent the page behind a popup/drawer from scrolling while it's open.
+// overflow:hidden on <body> alone doesn't stop it on iOS Safari - touch drags
+// still rubber-band the page behind the modal. Pinning body to position:fixed
+// at its current scroll offset is what actually blocks that, so restore the
+// offset via scrollTo on unlock rather than letting the page jump to top.
 let modalOpenCount = 0;
+let modalLockScrollY = 0;
 function lockBodyScroll() {
     modalOpenCount++;
-    document.body.classList.add('modal-locked');
+    if (modalOpenCount === 1) {
+        modalLockScrollY = window.scrollY;
+        document.body.style.top = `-${modalLockScrollY}px`;
+        document.body.classList.add('modal-locked');
+    }
 }
 function unlockBodyScroll() {
     modalOpenCount = Math.max(0, modalOpenCount - 1);
     if (modalOpenCount === 0) {
         document.body.classList.remove('modal-locked');
+        document.body.style.top = '';
+        // Removing position:fixed doesn't synchronously recompute the page's
+        // scrollable height - without forcing a reflow here, scrollTo below
+        // runs against the still-collapsed layout and silently clamps to 0.
+        void document.body.offsetHeight;
+        // scrollTo's behavior option only accepts 'auto' (= "respect CSS") or
+        // 'smooth' per spec - there's no 'instant' value, so the only way to
+        // actually bypass the site-wide scroll-behavior:smooth on <html> is to
+        // override that CSS property itself for the instant of this one call.
+        const htmlEl = document.documentElement;
+        const prevScrollBehavior = htmlEl.style.scrollBehavior;
+        htmlEl.style.scrollBehavior = 'auto';
+        window.scrollTo(0, modalLockScrollY);
+        htmlEl.style.scrollBehavior = prevScrollBehavior;
     }
 }
 
@@ -4216,14 +4439,86 @@ const AVAILABILITY_MONTH_NAMES = {
     th: ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
     en: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 };
-const AVAILABILITY_LEGEND = [
-    { status: "available", th: "ว่าง", en: "Available" },
-    { status: "almost-available", th: "ค่อนข้างว่าง", en: "Fairly Available" },
-    { status: "almost-full", th: "ค่อนข้างแน่น", en: "Fairly Full" },
-    { status: "full", th: "เต็ม", en: "Full" }
+// RoomScope's own 4-tier status (available / fairly available / fairly full / full)
+// gets simplified everywhere in this UI down to a plain open/limited read - the
+// nuance is noise at a glance. "Available" and "fairly available" both mean "you
+// can still book it" (green); "fairly full" and "full" both mean "good luck".
+function availabilityBucket(status) {
+    if (status === "available" || status === "almost-available") return "open";
+    if (status === "almost-full" || status === "full") return "limited";
+    return null;
+}
+const AVAILABILITY_MONTH_LEGEND = [
+    { status: "open", th: "ว่าง", en: "Available" },
+    { status: "limited", th: "เต็ม", en: "Full" }
+];
+const AVAILABILITY_GRID_LEGEND = [
+    { status: "open", th: "ว่าง", en: "Available" },
+    { status: "limited", th: "เต็ม / ไม่ว่าง", en: "Unavailable" }
 ];
 
 let availabilityState = { roomId: null, requestToken: 0 };
+
+// TEMP DESIGN-PREVIEW SWITCH: true = generate fake availability locally instead of
+// calling RoomScope, so the redesign can be reviewed on localhost without touching
+// the real calendar or burning API calls. Flip to false (or delete this block and
+// the mock branch below in loadAvailability) to restore the live sync before deploy.
+const AVAILABILITY_MOCK_MODE = false;
+const MOCK_ROOM_IDS = ["001", "201", "202", "203", "204", "301", "302", "401", "403", "404"];
+
+function mockHash(str) {
+    let h = 0;
+    for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0;
+    return h;
+}
+function mockStatusForDay(roomId, dateStr) {
+    const r = mockHash(roomId + dateStr) % 100;
+    if (r < 55) return { status: "available", count: 1 + (r % 3) };
+    if (r < 75) return { status: "almost-available", count: 1 };
+    if (r < 90) return { status: "almost-full", count: 1 };
+    return { status: "full", count: 0 };
+}
+function mockMonthDays(year, month, roomId) {
+    const firstWeekday = new Date(Date.UTC(year, month - 1, 1)).getUTCDay();
+    const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+    const totalCells = Math.ceil((firstWeekday + daysInMonth) / 7) * 7;
+    const gridStart = new Date(Date.UTC(year, month - 1, 1 - firstWeekday));
+    const todayStr = new Date().toISOString().slice(0, 10);
+
+    const days = [];
+    for (let i = 0; i < totalCells; i++) {
+        const d = new Date(gridStart);
+        d.setUTCDate(gridStart.getUTCDate() + i);
+        const dateStr = d.toISOString().slice(0, 10);
+        const inMonth = d.getUTCMonth() === month - 1;
+        const weekend = d.getUTCDay() === 0 || d.getUTCDay() === 6;
+        const known = inMonth && dateStr >= todayStr;
+        const s = known ? mockStatusForDay(roomId, dateStr) : { status: null, count: null };
+        days.push({ date: dateStr, inMonth, status: s.status, count: s.count, weekend, holiday: false });
+    }
+    return days;
+}
+function generateMockAvailability(roomId, monthStartDateParam) {
+    const base = monthStartDateParam ? new Date(monthStartDateParam + "T00:00:00Z") : new Date();
+    const year = base.getUTCFullYear();
+    const month = base.getUTCMonth() + 1;
+
+    const now = new Date();
+    const currentMonthStart = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1);
+    const hasPrev = Date.UTC(year, month - 1, 1) > currentMonthStart;
+
+    const monthInfo = { year, month, startDate: new Date(Date.UTC(year, month - 1, 1)).toISOString().slice(0, 10) };
+    const prevDate = new Date(Date.UTC(year, month - 2, 1)).toISOString().slice(0, 10);
+    const nextDate = new Date(Date.UTC(year, month, 1)).toISOString().slice(0, 10);
+
+    if (roomId === "all") {
+        return {
+            month: monthInfo, prevDate, nextDate, hasPrev,
+            rooms: MOCK_ROOM_IDS.map(id => ({ roomId: id, typeId: null, days: mockMonthDays(year, month, id) }))
+        };
+    }
+    return { month: monthInfo, prevDate, nextDate, hasPrev, days: mockMonthDays(year, month, roomId) };
+}
 
 function roomDisplayName(roomId) {
     return (langData[currentLang][`room${roomId}-title`] || roomId).replace(/<[^>]+>/g, '').trim();
@@ -4231,16 +4526,22 @@ function roomDisplayName(roomId) {
 
 function switchAvailabilityRoom(roomId) {
     const subtitleEl = document.getElementById("availabilityModalSubtitle");
+    const titlesEl = subtitleEl.closest(".availability-modal-header-titles");
     if (roomId && roomId !== "all") {
         subtitleEl.textContent = roomDisplayName(roomId);
         subtitleEl.style.display = "";
+        titlesEl.classList.remove("no-room");
     } else {
         subtitleEl.style.display = "none";
+        titlesEl.classList.add("no-room");
     }
 
     availabilityState.roomId = roomId;
-    document.getElementById("availabilityLegend").innerHTML = AVAILABILITY_LEGEND.map(item =>
-        `<div class="availability-legend-item"><span class="availability-legend-swatch avail-cell status-${item.status}" style="width:12px;height:12px;"></span>${item[currentLang] || item.en}</div>`
+    const isGrid = roomId === "all";
+    const legendItems = isGrid ? AVAILABILITY_GRID_LEGEND : AVAILABILITY_MONTH_LEGEND;
+    const swatchClass = isGrid ? "availability-bar-seg" : "avail-cell";
+    document.getElementById("availabilityLegend").innerHTML = legendItems.map(item =>
+        `<div class="availability-legend-item"><span class="availability-legend-swatch ${swatchClass} status-${item.status}" style="width:12px;height:12px;"></span>${item[currentLang] || item.en}</div>`
     ).join("");
 
     loadAvailability(roomId, null);
@@ -4258,11 +4559,13 @@ function closeAvailabilityModal() {
     document.getElementById("availabilityModal").classList.remove("active");
     unlockBodyScroll();
     availabilityState.requestToken++;
+    hideAvailabilityDayTooltip();
 }
 
 async function loadAvailability(roomId, monthStartDate) {
     const token = ++availabilityState.requestToken;
     const lang = currentLang === "th" ? "th" : "en";
+    hideAvailabilityDayTooltip();
 
     document.getElementById("availabilityContent").style.display = "none";
     document.getElementById("availabilityError").style.display = "none";
@@ -4274,10 +4577,15 @@ async function loadAvailability(roomId, monthStartDate) {
 
     let data;
     try {
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        data = await res.json();
-        if (data.error) throw new Error(data.error);
+        if (AVAILABILITY_MOCK_MODE) {
+            await new Promise(r => setTimeout(r, 300));
+            data = generateMockAvailability(roomId, monthStartDate);
+        } else {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            data = await res.json();
+            if (data.error) throw new Error(data.error);
+        }
     } catch (err) {
         if (token !== availabilityState.requestToken) return;
         console.error("Availability calendar failed to load:", err);
@@ -4318,60 +4626,116 @@ async function loadAvailability(roomId, monthStartDate) {
 
 function renderAvailabilityMonthView(data) {
     const lang = currentLang === "th" ? "th" : "en";
+    const todayStr = new Date().toISOString().slice(0, 10);
 
     document.getElementById("availabilityWeekdays").innerHTML =
         AVAILABILITY_WEEKDAYS[lang].map(d => `<span>${d}</span>`).join("");
 
     document.getElementById("availabilityDays").innerHTML = data.days.map(d => {
         if (!d.inMonth) return `<div class="avail-cell out-of-month">${d.date.slice(-2)}</div>`;
-        const statusClass = d.status ? `status-${d.status}` : "status-unknown";
+        const bucket = availabilityBucket(d.status);
+        const statusClass = bucket ? `status-${bucket}` : "status-unknown";
+        const todayClass = d.date === todayStr ? "is-today" : "";
         const dayNum = parseInt(d.date.slice(-2), 10);
-        const dot = (d.weekend || d.holiday) ? '<span class="avail-dot"></span>' : '';
-        const count = (d.status && d.status !== "full" && d.count) ? `<span class="avail-count">${d.count}</span>` : '';
-        return `<div class="avail-cell ${statusClass}">${dot}${dayNum}${count}</div>`;
+        const dot = (d.weekend || d.holiday) ? '<span class="avail-cell-dot"></span>' : "";
+        let sub = "";
+        if (bucket === "open") sub = `<span class="avail-cell-sub">${lang === "th" ? "ว่าง" : "Available"}</span>`;
+        else if (bucket === "limited") sub = `<span class="avail-cell-sub">${lang === "th" ? "เต็ม" : "Full"}</span>`;
+        return `<div class="avail-cell ${statusClass} ${todayClass}">${dot}${dayNum}${sub}</div>`;
     }).join("");
 
     document.getElementById("availabilityGridEl").style.display = "none";
     document.getElementById("availabilityCalendarEl").style.display = "";
 }
 
-// Every room shares the same month, so the day list (and its weekend/holiday flags)
-// only needs reading once, off the first room, to build the grid's header row.
+// Every room shares the same month, so the day list only needs reading once,
+// off the first room, to know how many segments each bar needs.
 function renderAvailabilityGridView(data) {
-    const lang = currentLang === "th" ? "th" : "en";
     const inMonthDays = (data.rooms[0]?.days || []).filter(d => d.inMonth);
+    const totalDays = inMonthDays.length;
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const todayIndex = inMonthDays.findIndex(d => d.date === todayStr);
 
-    const statusLabel = (status) => {
-        const entry = AVAILABILITY_LEGEND.find(l => l.status === status);
-        return entry ? (entry[lang] || entry.en) : (lang === "th" ? "ไม่ทราบ" : "Unknown");
-    };
+    const tickDays = [...new Set([1, 5, 10, 15, 20, 25, totalDays])].filter(d => d <= totalDays);
+    const axisTicks = tickDays.map(dayNum =>
+        `<span style="left:${((dayNum - 0.5) / totalDays) * 100}%">${dayNum}</span>`
+    ).join("");
 
-    const headerCells = inMonthDays.map(d => {
-        const dayNum = parseInt(d.date.slice(-2), 10);
-        const weekendClass = (d.weekend || d.holiday) ? "weekend" : "";
-        return `<th class="${weekendClass}">${dayNum}</th>`;
-    }).join("");
+    const todayMarker = todayIndex >= 0
+        ? `<div class="availability-bar-today" style="left:${(todayIndex / totalDays) * 100}%; width:${(1 / totalDays) * 100}%;"></div>`
+        : "";
 
-    const bodyRows = data.rooms.map(room => {
+    // Hovering any segment shows every room's status for that day (not just the
+    // one room under the cursor), so collect open/limited room names per day here.
+    const dayRoomLists = inMonthDays.map(d => ({ date: d.date, open: [], limited: [] }));
+
+    const rows = data.rooms.map(room => {
         const label = roomDisplayName(room.roomId);
         const dayByDate = new Map(room.days.map(d => [d.date, d]));
-        const cells = inMonthDays.map(headerDay => {
+        const segs = inMonthDays.map((headerDay, i) => {
             const d = dayByDate.get(headerDay.date);
-            const statusClass = d && d.status ? `status-${d.status}` : "status-unknown";
-            const title = d && d.status
-                ? `${label} — ${headerDay.date}: ${statusLabel(d.status)}${d.count ? ` (${d.count})` : ""}`
-                : `${label} — ${headerDay.date}`;
-            return `<td class="avail-grid-cell ${statusClass}" title="${title}"></td>`;
+            const bucket = d ? availabilityBucket(d.status) : null;
+            if (bucket === "open") dayRoomLists[i].open.push(label);
+            else if (bucket === "limited") dayRoomLists[i].limited.push(label);
+            const cls = bucket ? `status-${bucket}` : "status-unknown";
+            return `<span class="availability-bar-seg ${cls}" data-day-index="${i}"></span>`;
         }).join("");
-        return `<tr><th class="availability-grid-room-label" onclick="switchAvailabilityRoom('${room.roomId}')">${label}</th>${cells}</tr>`;
+        return `
+            <div class="availability-bar-row">
+                <button type="button" class="availability-bar-label" onclick="switchAvailabilityRoom('${room.roomId}')">${label}</button>
+                <div class="availability-bar-track">${segs}${todayMarker}</div>
+            </div>`;
     }).join("");
 
-    document.getElementById("availabilityGridTable").innerHTML =
-        `<thead><tr><th class="corner"></th>${headerCells}</tr></thead><tbody>${bodyRows}</tbody>`;
+    availabilityState.gridDayData = dayRoomLists;
+    availabilityState.gridMonth = data.month;
+
+    document.getElementById("availabilityGridEl").innerHTML = `
+        <div class="availability-bar-axis-row">
+            <div></div>
+            <div class="availability-bar-axis">${axisTicks}</div>
+        </div>
+        ${rows}`;
 
     document.getElementById("availabilityCalendarEl").style.display = "none";
     document.getElementById("availabilityGridEl").style.display = "";
 }
+
+// Hovering a day segment (any room's row) shows every room's status for that
+// date, not just the one under the cursor - a static tooltip, not an animation.
+function showAvailabilityDayTooltip(segEl) {
+    const dayIndex = parseInt(segEl.dataset.dayIndex, 10);
+    const dayData = availabilityState.gridDayData && availabilityState.gridDayData[dayIndex];
+    const month = availabilityState.gridMonth;
+    if (!dayData || !month) return;
+
+    const lang = currentLang === "th" ? "th" : "en";
+    const none = lang === "th" ? "ไม่มี" : "None";
+    const dayNum = parseInt(dayData.date.slice(-2), 10);
+    const monthName = AVAILABILITY_MONTH_NAMES[lang][month.month - 1];
+
+    const tooltip = document.getElementById("availabilityDayTooltip");
+    tooltip.innerHTML = `
+        <span class="availability-day-tooltip-date">${dayNum} ${monthName}</span>
+        <div class="availability-day-tooltip-row"><span class="availability-day-tooltip-dot open"></span><span>${lang === "th" ? "ว่าง" : "Available"}: ${dayData.open.join(", ") || none}</span></div>
+        <div class="availability-day-tooltip-row"><span class="availability-day-tooltip-dot limited"></span><span>${lang === "th" ? "เต็ม" : "Full"}: ${dayData.limited.join(", ") || none}</span></div>
+    `;
+
+    const rect = segEl.getBoundingClientRect();
+    tooltip.style.left = `${rect.left + rect.width / 2}px`;
+    tooltip.style.top = `${rect.top}px`;
+    tooltip.classList.add("visible");
+}
+function hideAvailabilityDayTooltip() {
+    document.getElementById("availabilityDayTooltip").classList.remove("visible");
+}
+document.getElementById("availabilityGridEl").addEventListener("mouseover", (e) => {
+    const seg = e.target.closest(".availability-bar-seg");
+    if (seg) showAvailabilityDayTooltip(seg);
+});
+document.getElementById("availabilityGridEl").addEventListener("mouseout", (e) => {
+    if (e.target.closest(".availability-bar-seg")) hideAvailabilityDayTooltip();
+});
 
 // Live weather strip for the Stay section: a Netlify Function (netlify/functions/weather.js)
 // proxies Open-Meteo's free hourly forecast for Baan OuadChum's location (Pathio,
@@ -4436,6 +4800,12 @@ function weatherHourLabel(iso, lang, isFirst) {
     return `${String(hour).padStart(2, "0")}:00`;
 }
 
+function weatherDayLabel(dateStr, lang, isFirst) {
+    if (isFirst) return lang === "th" ? "วันนี้" : "Today";
+    const weekday = new Date(dateStr + "T00:00:00").getDay();
+    return AVAILABILITY_WEEKDAYS[lang][weekday];
+}
+
 async function loadWeather() {
     const lang = currentLang === "th" ? "th" : "en";
     const loadingEl = document.getElementById("weatherLoading");
@@ -4461,7 +4831,11 @@ async function loadWeather() {
 
     loadingEl.style.display = "none";
     weatherState.data = data;
-    renderWeather(data, lang);
+    // Re-read currentLang rather than reuse the const captured above: the
+    // page's own language-init handler also runs on DOMContentLoaded and can
+    // switch currentLang while this fetch is in flight, after this function's
+    // synchronous part already ran.
+    renderWeather(data, currentLang === "th" ? "th" : "en");
     contentEl.style.display = "";
 }
 
@@ -4493,9 +4867,33 @@ function renderWeather(data, lang) {
             ${h.precipitationProbability > 0 ? `<span class="weather-hour-precip"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 8 5 12 5 15.5A7 7 0 0019 15.5C19 12 16 8 12 2z"/></svg>${h.precipitationProbability}%</span>` : ""}
         </div>
     `).join("");
+
+    if (data.days) {
+        document.getElementById("weatherDaily").innerHTML = data.days.map((d, i) => `
+            <div class="weather-daily-row">
+                <span class="weather-daily-day">${weatherDayLabel(d.date, lang, i === 0)}</span>
+                <div class="weather-daily-icon">${weatherIconSvg(d.weatherCode, true)}</div>
+                ${d.precipitationProbability > 0 ? `<span class="weather-daily-precip"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 8 5 12 5 15.5A7 7 0 0019 15.5C19 12 16 8 12 2z"/></svg>${d.precipitationProbability}%</span>` : "<span></span>"}
+                <span class="weather-daily-temps"><span class="weather-daily-high">${d.tempMax}°</span><span class="weather-daily-low">${d.tempMin}°</span></span>
+            </div>
+        `).join("");
+    }
 }
 
 document.addEventListener("DOMContentLoaded", loadWeather);
+
+// Footer background: crossfades through one photo at a time instead of a
+// static multi-way split, advancing every 5s and looping back to the first.
+(function () {
+    const slides = document.querySelectorAll("#footerBgSlideshow .footer-bg-slide");
+    if (slides.length < 2) return;
+    let activeIndex = 0;
+    setInterval(() => {
+        slides[activeIndex].classList.remove("active");
+        activeIndex = (activeIndex + 1) % slides.length;
+        slides[activeIndex].classList.add("active");
+    }, 5000);
+})();
 
 // MOBILE BOOKING DRAWER CONTROLLERS
 function openBookingDrawer() {

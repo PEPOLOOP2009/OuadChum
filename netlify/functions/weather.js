@@ -25,10 +25,17 @@ const CURRENT_FIELDS = [
   'is_day'
 ].join(',');
 
+const DAILY_FIELDS = [
+  'weathercode',
+  'temperature_2m_max',
+  'temperature_2m_min',
+  'precipitation_probability_max'
+].join(',');
+
 exports.handler = async () => {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${LATITUDE}&longitude=${LONGITUDE}` +
-    `&hourly=${HOURLY_FIELDS}&current=${CURRENT_FIELDS}` +
-    `&timezone=Asia%2FBangkok&forecast_days=2`;
+    `&hourly=${HOURLY_FIELDS}&current=${CURRENT_FIELDS}&daily=${DAILY_FIELDS}` +
+    `&timezone=Asia%2FBangkok&forecast_days=7`;
 
   try {
     const upstream = await fetch(url);
@@ -51,6 +58,14 @@ exports.handler = async () => {
       isDay: raw.hourly.is_day[from + i] === 1
     }));
 
+    const days = raw.daily.time.map((date, i) => ({
+      date,
+      weatherCode: raw.daily.weathercode[i],
+      tempMax: Math.round(raw.daily.temperature_2m_max[i]),
+      tempMin: Math.round(raw.daily.temperature_2m_min[i]),
+      precipitationProbability: raw.daily.precipitation_probability_max[i]
+    }));
+
     const body = {
       location: { name: 'Pathio, Chumphon', latitude: raw.latitude, longitude: raw.longitude },
       current: {
@@ -62,7 +77,8 @@ exports.handler = async () => {
         windSpeed: Math.round(raw.current.wind_speed_10m),
         isDay: raw.current.is_day === 1
       },
-      hours
+      hours,
+      days
     };
 
     return {
